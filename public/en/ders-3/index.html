@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lesson 3: Planning a flight — Virtual Wings by Cenk</title>
+<meta name="description" content="Planning a flight with SimBrief: route, fuel and weight calculations, reading the OFP and importing the plan into the Fenix A320. Virtual Wings by Cenk training series, Lesson 3.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="../../images/logo-emblem.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="alternate" hreflang="tr" href="https://virtualwingsbycenk.com/ders-3/">
+<link rel="alternate" hreflang="en" href="https://virtualwingsbycenk.com/en/ders-3/">
+<script>try{var p=localStorage.getItem("vw_lang");if(p&&p!=="en"&&(p==="tr"||p==="en"))location.replace("../../ders-3/"+location.hash)}catch(e){}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../../images/logo-emblem.png" alt="Virtual Wings by Cenk logo"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="../#hakkimda">About me</a>       <a href="../#partner">Partnership</a>       <a href="../#fenix">Fenix Simulations</a>       <a href="../#canli">Live stream</a>       <a href="../#ekipman">Gear</a>       <a href="../#egitim">Training</a>       <a href="../#videolar">Videos</a>       <a href="../#galeri">Gallery</a>       <a href="../#abone" class="nav-cta">Subscribe</a>       <a href="../#iletisim">Contact</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="../../ders-3/" hreflang="tr" lang="tr" data-lang="tr">TR</a><a href="./" hreflang="en" lang="en" class="on" aria-current="true" data-lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="../">Home</a> › <a href="../#egitim">Training</a> › Lesson 3</p>
+    <p class="lesson-kicker">Lesson 3</p>
+    <h1>Planning a flight</h1>
+    <ul class="lesson-meta">
+      <li>Level: Intermediate</li>
+      <li>Reading time: about 12 minutes</li>
+      <li>SimBrief · Fenix A320</li>
+    </ul>
+  </div>
+</section>
+
+<article class="wrap lesson-body">
+  <p class="intro">A real flight starts at the desk long before the engines are running. Before takeoff, pilots receive a flight plan (OFP) with the route, fuel and weights, and study it carefully. In the sim, the best tool for that is SimBrief. In this lesson we'll plan an A320 flight from Istanbul (LTFM) to Antalya (LTAI).</p>
+  <p class="note">The diagrams and sample values are for teaching. Real values depend on the aircraft profile, the load and that day's winds.</p>
+
+  <section>
+    <h2><span class="n">1</span>What is SimBrief?</h2>
+    <p>SimBrief is a free website that produces flight plans very similar to the ones real airlines use. You log in with your Navigraph account. You can use it without a Navigraph subscription too; the only difference is that the navigation data is a slightly older cycle. What matters is that the data in SimBrief matches the navigation data of your aircraft in the sim.</p>
+    <figure class="diagram"><svg viewBox="0 0 660 300" role="img" aria-label="SimBrief planning workflow" xmlns="http://www.w3.org/2000/svg"><rect width="660" height="300" rx="12" fill="#0B1626"/><rect x="16" y="36" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="86.0" cy="36" r="15" fill="#2C8BF0"/><text x="86.0" y="42" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">1</text><text x="86.0" y="86" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Log in</text><text x="86.0" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Navigraph account</text><path d="M159 84.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M175 84.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="178" y="36" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="248.0" cy="36" r="15" fill="#2C8BF0"/><text x="248.0" y="42" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">2</text><text x="248.0" y="86" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Flight</text><text x="248.0" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Departure, arrival, time</text><path d="M321 84.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M337 84.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="340" y="36" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="410.0" cy="36" r="15" fill="#2C8BF0"/><text x="410.0" y="42" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">3</text><text x="410.0" y="86" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Aircraft</text><text x="410.0" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Type and profile</text><path d="M483 84.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M499 84.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="502" y="36" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="572.0" cy="36" r="15" fill="#2C8BF0"/><text x="572.0" y="42" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">4</text><text x="572.0" y="86" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Route</text><text x="572.0" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Automatic or manual</text><rect x="16" y="176" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="86.0" cy="176" r="15" fill="#2C8BF0"/><text x="86.0" y="182" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">5</text><text x="86.0" y="226" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Load, fuel</text><text x="86.0" y="250" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Passengers, cargo, policy</text><path d="M159 224.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M175 224.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="178" y="176" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="248.0" cy="176" r="15" fill="#2C8BF0"/><text x="248.0" y="182" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">6</text><text x="248.0" y="226" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">OFP</text><text x="248.0" y="250" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Generate the plan</text><path d="M321 224.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M337 224.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="340" y="176" width="140" height="96" rx="10" fill="#0F223A" stroke="#F5C518" stroke-width="2"/><circle cx="410.0" cy="176" r="15" fill="#F5C518"/><text x="410.0" y="182" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">7</text><text x="410.0" y="226" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Fenix</text><text x="410.0" y="250" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Import to the MCDU</text><path d="M572.0 136 v18 H86.0 v14" fill="none" stroke="#9AA9BD" stroke-width="2" stroke-dasharray="5 5"/><path d="M86.0 162 l-5 -8 h10z" fill="#9AA9BD"/></svg><figcaption>Planning workflow with SimBrief</figcaption></figure>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Flight details and aircraft</h2>
+    <p>When you start a new flight plan in SimBrief, you first enter the basics: the flight number (for example VWC001), the ICAO codes of the departure and arrival airports (<strong>LTFM</strong> and <strong>LTAI</strong>) and the departure time.</p>
+    <p>Then choose the aircraft type: A319, A320 or A321. You can save your own aircraft profile in SimBrief, which stores the registration, engine type and weight limits. If you build a profile that matches the engine type and weights of the aircraft you fly in the Fenix, your plan will be much more realistic and you won't have to set it up again for every flight.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Route</h2>
+    <p>You can type the route by hand, but at first I'd recommend SimBrief's route finder; it suggests routes that are actually flown between those airports. You can also leave the cruise altitude and the alternate on automatic. SimBrief works out the best altitude for the winds and the aircraft's weight.</p>
+    <p>One note: SimBrief's route usually doesn't include the departure (SID) and arrival (STAR) procedures. We'll pick those in the MCDU before the flight, based on the runway in use and ATC's instructions.</p>
+    <p>The <strong>Cost Index (CI)</strong> is set here too. This number says whether you value time or fuel more. A low CI means flying slower on less fuel; a high CI means flying faster on more fuel.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Fuel: What makes up the block fuel?</h2>
+    <p>This is the most important part of the lesson. The total fuel you put in the tanks is called <strong>block fuel</strong>, and every component has a job.</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 700 460" role="img" aria-label="Block fuel components" xmlns="http://www.w3.org/2000/svg"><rect width="700" height="460" rx="12" fill="#0B1626"/><rect x="70" y="387.2" width="150" height="12.8" fill="#6C7B90" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="393.6" x2="260" y2="393.6" stroke="#6C7B90" stroke-width="2"/><text x="268" y="399.6" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Taxi <tspan fill="#9AA9BD" font-weight="500" font-size="16"></tspan></text><text x="660" y="399.6" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#6C7B90">200 kg</text><rect x="70" y="208.5" width="150" height="178.7" fill="#3BE07A" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="297.9" x2="260" y2="297.9" stroke="#3BE07A" stroke-width="2"/><text x="268" y="303.9" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Trip <tspan fill="#9AA9BD" font-weight="500" font-size="16"></tspan></text><text x="660" y="303.9" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3BE07A">2.800 kg</text><rect x="70" y="199.6" width="150" height="8.9" fill="#3FD0FF" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="204.0" x2="260" y2="204.0" stroke="#3FD0FF" stroke-width="2"/><text x="268" y="210.0" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Contingency (5%) <tspan fill="#9AA9BD" font-weight="500" font-size="16"></tspan></text><text x="660" y="210.0" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3FD0FF">140 kg</text><rect x="70" y="110.2" width="150" height="89.4" fill="#2C8BF0" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="154.9" x2="260" y2="154.9" stroke="#2C8BF0" stroke-width="2"/><text x="268" y="160.9" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Alternate <tspan fill="#9AA9BD" font-weight="500" font-size="16"></tspan></text><text x="660" y="160.9" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#2C8BF0">1.400 kg</text><rect x="70" y="40.0" width="150" height="70.2" fill="#FFAA2B" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="75.1" x2="260" y2="75.1" stroke="#FFAA2B" stroke-width="2"/><text x="268" y="81.1" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Final reserve (30 min) <tspan fill="#9AA9BD" font-weight="500" font-size="16"></tspan></text><text x="660" y="81.1" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFAA2B">1.100 kg</text><text x="145.0" y="28" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#9AA9BD" letter-spacing="2">BLOCK FUEL</text><line x1="60" y1="414" x2="660" y2="414" stroke="#3A4B63"/><text x="70" y="444" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#F5C518">Total block fuel</text><text x="660" y="444" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#F5C518">5.640 kg</text></svg><figcaption>Sample block fuel for an LTFM–LTAI A320 flight</figcaption></figure>
+    <dl class="legend">
+      <div><dt style="background:#6C7B90">T</dt><dd><b>Taxi</b>Fuel burned on the ground before takeoff. At big airports like Istanbul, taxi times can be long.</dd></div>
+      <div><dt style="background:#3BE07A">Y</dt><dd><b>Trip</b>Fuel burned from takeoff to landing at the destination. This is the heart of the plan.</dd></div>
+      <div><dt style="background:#3FD0FF">E</dt><dd><b>Contingency</b>For the unexpected, usually 5% of the trip fuel. The wind may differ from the forecast, or ATC may route you the long way round.</dd></div>
+      <div><dt style="background:#2C8BF0">A</dt><dd><b>Alternate</b>The fuel needed to divert to the alternate airport (Dalaman, LTBS, in the example) if you can't land at the destination.</dd></div>
+      <div><dt style="background:#FFAA2B">R</dt><dd><b>Final reserve</b>Fuel that lets you hold for another 30 minutes at the alternate. On a normal flight it's never touched; if it becomes clear you'll land with less than this, the pilot declares a fuel emergency (MAYDAY FUEL).</dd></div>
+      <div><dt style="background:#FF5CF0">+</dt><dd><b>Extra</b>Fuel added at the captain's discretion, for example when bad weather or heavy traffic is expected. Zero in the example.</dd></div>
+    </dl>
+    <div class="tip"><b>Cenk's tip</b>Don't think "the more fuel, the safer". More fuel means more weight; the aircraft burns more and you might bump into the landing weight limit. Take the fuel the plan tells you, and add extra only for a reason.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>Weights and limits</h2>
+    <p>Passengers, baggage and cargo determine the aircraft's weight. When you enter the passenger count and cargo, SimBrief calculates three key weights. Each has an upper limit set by the aircraft's structural strength.</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 700 330" role="img" aria-label="Weights and limits" xmlns="http://www.w3.org/2000/svg"><rect width="700" height="330" rx="12" fill="#0B1626"/><line x1="200" y1="40" x2="200" y2="275" stroke="#1E2C40"/><text x="200" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">40 t</text><line x1="315" y1="40" x2="315" y2="275" stroke="#1E2C40"/><text x="315" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">50 t</text><line x1="430" y1="40" x2="430" y2="275" stroke="#1E2C40"/><text x="430" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">60 t</text><line x1="545" y1="40" x2="545" y2="275" stroke="#1E2C40"/><text x="545" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">70 t</text><line x1="660" y1="40" x2="660" y2="275" stroke="#1E2C40"/><text x="660" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">80 t</text><text x="24" y="84" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">ZFW</text><text x="24" y="104" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Zero fuel weight</text><rect x="200" y="64" width="236" height="34" rx="4" fill="#3BE07A"/><text x="428" y="88" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="800" fill="#040E1A">60.500</text><line x1="459" y1="56" x2="459" y2="106" stroke="#FF4040" stroke-width="3"/><text x="453" y="61" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" font-weight="700" fill="#FF4040">MAX 62.500</text><text x="24" y="156" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">TOW</text><text x="24" y="176" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Takeoff weight</text><rect x="200" y="136" width="298" height="34" rx="4" fill="#3BE07A"/><text x="490" y="160" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="800" fill="#040E1A">65.940</text><line x1="637" y1="128" x2="637" y2="178" stroke="#FF4040" stroke-width="3"/><text x="631" y="133" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" font-weight="700" fill="#FF4040">MAX 78.000</text><text x="24" y="228" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">LW</text><text x="24" y="248" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Landing weight</text><rect x="200" y="208" width="266" height="34" rx="4" fill="#3BE07A"/><text x="458" y="232" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="800" fill="#040E1A">63.140</text><line x1="499" y1="200" x2="499" y2="250" stroke="#FF4040" stroke-width="3"/><text x="493" y="205" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" font-weight="700" fill="#FF4040">MAX 66.000</text></svg><figcaption>Sample weights and their limits (green: planned, red: maximum)</figcaption></figure>
+    <dl class="legend"><div><dt>Z</dt><dd><b>ZFW (zero fuel weight)</b>The aircraft, passengers, baggage and cargo; everything except fuel. If you exceed the limit, cutting fuel won't help; you have to reduce the load.</dd></div><div><dt>T</dt><dd><b>TOW (takeoff weight)</b>ZFW plus the fuel on board at takeoff (block fuel minus taxi fuel). In the example: 60,500 + 5,440 = 65,940 kg.</dd></div><div><dt>L</dt><dd><b>LW (landing weight)</b>Takeoff weight minus trip fuel. In the example: 65,940 − 2,800 = 63,140 kg.</dd></div></dl>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>Generate and read the OFP</h2>
+    <p>When everything's ready, generate the plan. SimBrief gives you a long document called the OFP (operational flight plan). It contains the route, the wind and temperature at every waypoint, the fuel calculation, the weights, the airport weather and NOTAMs. Don't be put off; at first it's enough to look at these three sections:</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 700 300" role="img" aria-label="Sample flight plan summary" xmlns="http://www.w3.org/2000/svg"><rect width="700" height="300" rx="12" fill="#F4F1E6"/>
+<g font-family="Consolas,Courier New,monospace" font-size="16" fill="#1A1A1A">
+<text x="24" y="38" font-weight="700" font-size="18">VWC001 · LTFM-LTAI · A320</text><text x="600" y="38" text-anchor="end">ALTN LTBS</text>
+<line x1="24" y1="50" x2="676" y2="50" stroke="#1A1A1A"/>
+<text x="24" y="80">CRZ FL 360</text><text x="190" y="80">CI 30</text><text x="320" y="80">EET 01:05</text>
+<text x="24" y="106">ROUTE  Route suggested by SimBrief</text>
+<line x1="24" y1="120" x2="676" y2="120" stroke="#1A1A1A" stroke-dasharray="4 4"/>
+<text x="24" y="150">TRIP 2800</text><text x="190" y="150">CONT 140</text><text x="340" y="150">ALTN 1400</text>
+<text x="24" y="176">FINRES 1100</text><text x="190" y="176">EXTRA 0</text><text x="340" y="176">TAXI 200</text>
+<text x="24" y="202" font-weight="700">BLOCK 5640</text>
+<line x1="24" y1="216" x2="676" y2="216" stroke="#1A1A1A" stroke-dasharray="4 4"/>
+<text x="24" y="246">ZFW 60500/62500</text><text x="220" y="246">TOW 65940/78000</text><text x="420" y="246">LW 63140/66000</text>
+<text x="24" y="272">PAX 150</text><text x="220" y="272">CARGO 2100</text><text x="420" y="272">UNITS KG</text>
+</g>
+<g font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif"><circle cx="650" cy="80" r="14" fill="#F5C518"/><text x="650" y="86" text-anchor="middle" font-size="16" font-weight="800" fill="#040E1A">1</text>
+<circle cx="650" cy="164" r="14" fill="#F5C518"/><text x="650" y="170" text-anchor="middle" font-size="16" font-weight="800" fill="#040E1A">2</text>
+<circle cx="650" cy="250" r="14" fill="#F5C518"/><text x="650" y="256" text-anchor="middle" font-size="16" font-weight="800" fill="#040E1A">3</text></g>
+</svg><figcaption>The first parts of the OFP to look at (simplified summary)</figcaption></figure>
+    <dl class="legend"><div><dt>1</dt><dd><b>Flight summary</b>Cruise altitude, Cost Index and estimated elapsed time (EET). The route is written here too.</dd></div><div><dt>2</dt><dd><b>Fuel plan</b>The components we described above and, most importantly, BLOCK: the total fuel you'll put in the tanks.</dd></div><div><dt>3</dt><dd><b>Weights</b>Lists the planned weights next to their limits. Every planned value must be below its limit.</dd></div></dl>
+    <div class="tip"><b>Cenk's tip</b>Generate the plan just before the flight. SimBrief uses the current winds and weather. If live weather is on in the sim, your plan and the sky will match, and so will your fuel figures.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span>Importing the plan into the Fenix</h2>
+    <p>Thanks to the Fenix's SimBrief integration, you don't need to type the plan in by hand. You enter your SimBrief username once in the settings on the Fenix's cockpit tablet (EFB). After that:</p>
+    <p><strong>Route:</strong> Go to the INIT page on the MCDU and press <strong>INIT REQUEST</strong>. The departure, arrival and route load automatically. Then always check the F-PLN page for any gaps in the route (DISCONTINUITY).</p>
+    <p><strong>Fuel and load:</strong> From the loading page on the EFB you can load the fuel and payload from your SimBrief plan into the aircraft. When loading is complete, check that the values on the EFB match the OFP.</p>
+    <p class="note" style="margin:0">Menu names may differ slightly depending on your Fenix version. We'll do the SID, STAR and the rest of the MCDU step by step in Lesson 4, starting from a cold &amp; dark cockpit.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">✓</span>Planning checklist</h2>
+    <div class="checklist lesson-check">
+      <div class="cl-head">Pre-flight planning</div>
+      <ul>
+        <li>Departure, destination and alternate correct</li>
+        <li>Aircraft profile matches your aircraft in the Fenix</li>
+        <li>Block fuel calculated and looks sensible</li>
+        <li>ZFW, TOW and LW below their limits</li>
+        <li>Airport weather checked</li>
+        <li>Route imported into the MCDU, no discontinuities</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">?</span>Test yourself</h2>
+    <p>Click a question to see the answer.</p>
+    <div class="quiz">
+      <details><summary>What components make up the block fuel?</summary><p>Taxi, trip, contingency, alternate, final reserve and, if any, extra fuel.</p></details>
+      <details><summary>Your ZFW comes out at 63,000 kg and the limit is 62,500 kg. Can you fix it by taking less fuel?</summary><p>No. ZFW doesn't include fuel, so cutting fuel changes nothing. You need to reduce the cargo or the load.</p></details>
+      <details><summary>When is the final reserve fuel used?</summary><p>Normally never. It's the last safety margin that must stay in the tanks under all circumstances. If it becomes clear you'll land with less than this, the pilot declares a fuel emergency.</p></details>
+      <details><summary>What happens if you increase the Cost Index?</summary><p>The aircraft flies faster and arrives earlier, but burns more fuel.</p></details>
+      <details><summary>ZFW 60,500 kg, block fuel 5,640 kg, taxi fuel 200 kg. What's your takeoff weight?</summary><p>60,500 + (5,640 − 200) = 65,940 kg. Taxi fuel is burned before takeoff, so it's not included in the takeoff weight.</p></details>
+    </div>
+    <p style="margin-top:1.5rem">Your plan is ready! In the next lesson we'll prepare the Fenix from a cold &amp; dark cockpit and take off with this plan. ✈️</p>
+  </section>
+
+  <nav class="lesson-next" aria-label="Lesson navigation">
+    <a href="../ders-2/"><small>← Previous lesson</small><b>Lesson 2: Getting to know the Airbus cockpit</b></a>     <a class="right" href="../ders-4/"><small>Next lesson →</small><b>Lesson 4: Takeoff from a cold &amp; dark cockpit</b></a>
+  </nav>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk</span>     <span>The wings are virtual, the thrill is real.</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+const mb=document.getElementById("menuBtn"), mn=document.getElementById("menu");
+mb.addEventListener("click",()=>{const o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);});
+</script>
+<script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
+</body>
+</html>

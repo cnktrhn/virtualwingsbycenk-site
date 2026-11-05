@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Destek — CrossCheck · Virtual Wings by Cenk</title>
+<meta name="description" content="CrossCheck kurulumu: MSFS 2020 ve 2024 Community klasörü, panel kurulumu ve sorun giderme.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="/images/logo-emblem.png">
+<link rel="canonical" href="https://virtualwingsbycenk.com/crosscheck/support/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/crosscheck.css">
+<script>
+(function(){var l;try{l=localStorage.getItem("vw_lang")}catch(e){}
+if(l!=="tr"&&l!=="en")l=/^tr/i.test(navigator.language||"")?"tr":"en";
+document.documentElement.lang=l;document.documentElement.dataset.l=l;
+window.CC_T={tr:"Destek — CrossCheck · Virtual Wings by Cenk",en:"Support — CrossCheck · Virtual Wings by Cenk"};
+window.CC_D={tr:"CrossCheck kurulumu: MSFS 2020 ve 2024 Community klasörü, panel kurulumu ve sorun giderme.",en:"CrossCheck setup: the MSFS 2020 and 2024 Community folder, panel installation and troubleshooting."};
+document.title=CC_T[l];})();
+</script>
+</head>
+<body class="cc">
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/images/logo-emblem.png" alt="Virtual Wings by Cenk"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="/crosscheck/"><span data-l="tr">Ürün</span><span data-l="en" lang="en">Product</span></a>
+      <a href="/crosscheck/support/" aria-current="page" class="on"><span data-l="tr">Destek</span><span data-l="en" lang="en">Support</span></a>
+      <a href="/crosscheck/faq/"><span data-l="tr">SSS</span><span data-l="en" lang="en">FAQ</span></a>
+      <a href="/crosscheck/changelog/"><span data-l="tr">Sürüm notları</span><span data-l="en" lang="en">Changelog</span></a>
+      <a href="/crosscheck/map/"><span data-l="tr">Canlı harita</span><span data-l="en" lang="en">Live map</span></a>
+      <a href="/" class="cc-home"><span data-l="tr">Ana site ↗</span><span data-l="en" lang="en">Main site ↗</span></a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="#" data-lang="tr" lang="tr">TR</a><a href="#" data-lang="en" lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span data-l="tr">Menü</span><span data-l="en" lang="en">Menu</span></button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero cc-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="/">Virtual Wings</a> › <a href="/crosscheck/">CrossCheck</a> › <span data-l="tr">Destek</span><span data-l="en" lang="en">Support</span></p>
+    <p class="lesson-kicker">CrossCheck</p>
+    <h1><span data-l="tr">Kurulum ve destek</span><span data-l="en" lang="en">Setup and support</span></h1>
+    <p class="cc-lead"><span data-l="tr">Programı ve simülatör içi paneli adım adım kur, sorun çıkarsa buradan çöz.</span><span data-l="en" lang="en">Install the program and the in-sim panel step by step, and fix problems if they come up.</span></p>
+  </div>
+</section>
+
+<div class="wrap cc-body">
+<section class="cc-sec">
+  <h2><span class="n">1</span><span data-l="tr">Programı kur</span><span data-l="en" lang="en">Install the program</span></h2>
+  <ol class="cc-steps">
+    <li><span data-l="tr">CrossCheck'i <a href="https://secure.simmarket.com/virtualwings.mhtml" target="_blank" rel="noopener">SimMarket'ten</a> satın al ve kurulum dosyasını SimMarket hesabındaki indirme bölümünden indir.</span><span data-l="en" lang="en">Buy CrossCheck on <a href="https://secure.simmarket.com/virtualwings.mhtml" target="_blank" rel="noopener">SimMarket</a> and download the installer from the downloads section of your SimMarket account.</span></li>
+    <li><span data-l="tr">Kurulum dosyasını çalıştır ve adımları izle.</span><span data-l="en" lang="en">Run the installer and follow the steps.</span></li>
+    <li><span data-l="tr">Windows "Bilgisayarınız korundu" (SmartScreen) uyarısı gösterirse <b>Ek bilgi → Yine de çalıştır</b> seçeneğini kullanabilirsin. Dosyayı yalnızca bu siteden indir.</span><span data-l="en" lang="en">If Windows shows a "Windows protected your PC" (SmartScreen) warning, choose <b>More info → Run anyway</b>. Only download the file from this site.</span></li>
+  </ol>
+</section>
+
+<section class="cc-sec">
+  <h2><span class="n">2</span><span data-l="tr">Community klasörünü bul</span><span data-l="en" lang="en">Find your Community folder</span></h2>
+  <p><span data-l="tr">Simülatör içi panel, MSFS'in <b>Community</b> klasörüne kurulur. Klasörün yeri, simi nereden aldığına ve kurulumda seçtiğin konuma göre değişir.</span><span data-l="en" lang="en">The in-sim panel goes into the MSFS <b>Community</b> folder. Its location depends on where you bought the sim and the location you chose during installation.</span></p>
+  <div class="tip"><b><span data-l="tr">En kesin yol</span><span data-l="en" lang="en">The surest way</span></b><span data-l="tr">Aşağıdaki tabloda <code>UserCfg.opt</code> dosyasını Not Defteri ile aç. En alttaki <code>InstalledPackagesPath</code> satırı paket klasörünü gösterir; Community klasörü onun içindedir.</span><span data-l="en" lang="en">Open the <code>UserCfg.opt</code> file listed below with Notepad. The <code>InstalledPackagesPath</code> line at the bottom shows your packages folder; the Community folder is inside it.</span></div>
+  <h3>MSFS 2020</h3>
+  <table class="cc-table"><thead><tr><th><span data-l="tr">Sürüm</span><span data-l="en" lang="en">Version</span></th><th><span data-l="tr">Klasör</span><span data-l="en" lang="en">Folder</span></th></tr></thead><tbody><tr><td>Microsoft Store / Xbox</td><td><code>%LOCALAPPDATA%\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\UserCfg.opt</code></td></tr><tr><td>Steam</td><td><code>%APPDATA%\Microsoft Flight Simulator\UserCfg.opt</code></td></tr></tbody></table>
+  <h3>MSFS 2024</h3>
+  <table class="cc-table"><thead><tr><th><span data-l="tr">Sürüm</span><span data-l="en" lang="en">Version</span></th><th><span data-l="tr">Klasör</span><span data-l="en" lang="en">Folder</span></th></tr></thead><tbody><tr><td>Microsoft Store / Xbox</td><td><code>%LOCALAPPDATA%\Packages\Microsoft.Limitless_8wekyb3d8bbwe\LocalCache\UserCfg.opt</code></td></tr><tr><td>Steam</td><td><code>%APPDATA%\Microsoft Flight Simulator 2024\UserCfg.opt</code></td></tr></tbody></table>
+  <p class="cc-soft"><span data-l="tr">Yolu kopyalayıp Dosya Gezgini'nin adres çubuğuna yapıştırman yeterli.</span><span data-l="en" lang="en">Copy the path and paste it into the File Explorer address bar.</span></p>
+</section>
+
+<section class="cc-sec">
+  <h2><span class="n">3</span><span data-l="tr">Paneli kur</span><span data-l="en" lang="en">Install the panel</span></h2>
+  <ol class="cc-steps">
+    <li><span data-l="tr">Simülatörü kapat.</span><span data-l="en" lang="en">Close the simulator.</span></li>
+    <li><span data-l="tr">CrossCheck ile gelen panel klasörünü Community klasörünün içine kopyala.</span><span data-l="en" lang="en">Copy the panel folder that comes with CrossCheck into the Community folder.</span></li>
+    <li><span data-l="tr">Klasörün iç içe olmadığından emin ol: <code>layout.json</code> ve <code>manifest.json</code> dosyaları doğrudan panel klasörünün içinde görünmeli.</span><span data-l="en" lang="en">Make sure the folder isn't nested: <code>layout.json</code> and <code>manifest.json</code> should sit directly inside the panel folder.</span></li>
+    <li><span data-l="tr">Simi başlat, bir uçuşa gir ve üstteki araç çubuğundan CrossCheck panelini aç.</span><span data-l="en" lang="en">Start the sim, load a flight and open the CrossCheck panel from the toolbar at the top.</span></li>
+  </ol>
+</section>
+
+<section class="cc-sec">
+  <h2><span class="n">4</span><span data-l="tr">Sorun giderme</span><span data-l="en" lang="en">Troubleshooting</span></h2>
+  <dl class="cc-faq">
+    <div><dt><span data-l="tr">Panel araç çubuğunda görünmüyor</span><span data-l="en" lang="en">The panel doesn't appear in the toolbar</span></dt>
+      <dd><span data-l="tr">En sık neden iç içe klasördür (ör. <code>Community\crosscheck\crosscheck\…</code>). Klasörü bir seviye yukarı taşı ve simi yeniden başlat. Doğru Community klasörüne kopyaladığını <code>UserCfg.opt</code> ile kontrol et.</span><span data-l="en" lang="en">The most common cause is a nested folder (e.g. <code>Community\crosscheck\crosscheck\…</code>). Move it up one level and restart the sim. Use <code>UserCfg.opt</code> to check you used the right Community folder.</span></dd></div>
+    <div><dt><span data-l="tr">Program simülatöre bağlanmıyor</span><span data-l="en" lang="en">The program won't connect to the simulator</span></dt>
+      <dd><span data-l="tr">Simülatör açık ve bir uçuş yüklenmiş olmalı. Simi ve CrossCheck'i aynı yetkiyle çalıştır: biri yönetici olarak açıldıysa diğerini de öyle aç.</span><span data-l="en" lang="en">The simulator must be running with a flight loaded. Run the sim and CrossCheck with the same rights: if one runs as administrator, run the other the same way.</span></dd></div>
+    <div><dt><span data-l="tr">"Yeni sürüm var" uyarısı</span><span data-l="en" lang="en">"New version available" message</span></dt>
+      <dd><span data-l="tr">Son sürümü SimMarket hesabındaki indirme bölümünden indirip kur; ayarların ve kayıtların korunur. Uyarı daha belirgin görünüyorsa kullandığın sürüm artık desteklenmiyor demektir, güncellemen gerekir.</span><span data-l="en" lang="en">Download the latest version from the downloads section of your SimMarket account and install it; your settings and records are kept. If the message is more prominent, your version is no longer supported and you need to update.</span></dd></div>
+    <div><dt><span data-l="tr">Antivirüs dosyayı engelliyor</span><span data-l="en" lang="en">My antivirus blocks the file</span></dt>
+      <dd><span data-l="tr">Yeni yayınlanan programlarda bu olabilir. Dosyayı yalnızca bu siteden indirdiğinden emin ol; gerekirse antivirüsünde istisna ekle.</span><span data-l="en" lang="en">This can happen with newly released programs. Make sure you downloaded the file from this site only, and add an exception in your antivirus if needed.</span></dd></div>
+  </dl>
+</section>
+
+<section class="cc-sec cc-contact">
+  <h2><span data-l="tr">Hâlâ çözülmedi mi?</span><span data-l="en" lang="en">Still stuck?</span></h2>
+  <p><span data-l="tr">Sorunu, kullandığın sim sürümünü (2020/2024, Store/Steam) ve CrossCheck sürümünü yazarak e-posta gönder.</span><span data-l="en" lang="en">Send an email describing the problem, your sim version (2020/2024, Store/Steam) and your CrossCheck version.</span></p>
+  <a class="btn primary" href="mailto:info@virtualwingsbycenk.com?subject=CrossCheck%20destek">info@virtualwingsbycenk.com</a>
+  <p class="cc-soft"><a href="/crosscheck/faq/"><span data-l="tr">Sıkça sorulan sorulara da göz at →</span><span data-l="en" lang="en">See the frequently asked questions →</span></a></p>
+</section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk · CrossCheck</span>
+    <span><span data-l="tr">İletişim</span><span data-l="en" lang="en">Contact</span>: <a href="mailto:info@virtualwingsbycenk.com">info@virtualwingsbycenk.com</a></span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent=new Date().getFullYear();
+(function(){
+var mb=document.getElementById("menuBtn"),mn=document.getElementById("menu");
+mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o)});
+var md=document.querySelector('meta[name="description"]');
+function setL(l){document.documentElement.lang=l;document.documentElement.dataset.l=l;document.title=CC_T[l];md.content=CC_D[l];
+document.querySelectorAll(".lang-switch a").forEach(function(a){var on=a.dataset.lang===l;a.classList.toggle("on",on);a.setAttribute("aria-pressed",on)});
+try{localStorage.setItem("vw_lang",l)}catch(e){}
+document.dispatchEvent(new CustomEvent("cc-lang",{detail:l}))}
+document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();setL(a.dataset.lang)})});
+setL(document.documentElement.dataset.l);
+})();
+</script>
+</body>
+</html>

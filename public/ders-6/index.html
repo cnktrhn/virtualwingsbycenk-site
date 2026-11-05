@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ders 6: Online uçuş: VATSIM ve IVAO — Virtual Wings by Cenk</title>
+<meta name="description" content="VATSIM ve IVAO'da online uçuş: hesap, pilot programı, uçuş planı, kontrolör zinciri, telsiz dili ve örnek konuşmalar. Virtual Wings by Cenk eğitim serisi, Ders 6.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="../images/logo-emblem.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+
+
+
+
+
+
+
+
+
+
+<link rel="alternate" hreflang="tr" href="https://virtualwingsbycenk.com/ders-6/">
+<link rel="alternate" hreflang="en" href="https://virtualwingsbycenk.com/en/ders-6/">
+<script>try{var p=localStorage.getItem("vw_lang");if(p&&p!=="tr"&&(p==="tr"||p==="en"))location.replace("../en/ders-6/"+location.hash)}catch(e){}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../images/logo-emblem.png" alt="Virtual Wings by Cenk logosu"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="../#hakkimda">Ben kimim</a>
+      <a href="../#partner">Partnership</a>
+      <a href="../#fenix">Fenix Simulations</a>
+      <a href="../#canli">Canlı yayın</a>
+      <a href="../#ekipman">Ekipmanlar</a>
+      <a href="../#egitim">Eğitim</a>
+      <a href="../#videolar">Videolar</a>
+      <a href="../#galeri">Galeri</a>
+      <a href="../#abone" class="nav-cta">Abone ol</a>
+      <a href="../#iletisim">İletişim</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="./" hreflang="tr" lang="tr" class="on" aria-current="true" data-lang="tr">TR</a><a href="../en/ders-6/" hreflang="en" lang="en" data-lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menü</button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="../">Ana sayfa</a> › <a href="../#egitim">Eğitim</a> › Ders 6</p>
+    <p class="lesson-kicker">Ders 6</p>
+    <h1>Online uçuş: VATSIM ve IVAO</h1>
+    <ul class="lesson-meta">
+      <li>Seviye: İleri</li>
+      <li>Okuma süresi: yaklaşık 15 dakika</li>
+      <li>Gerçek kontrolörlerle telsiz</li>
+    </ul>
+  </div>
+</section>
+
+<article class="wrap lesson-body">
+  <p class="intro">Şimdiye kadar tek başına uçtun. Bu derste gökyüzünü paylaşacağız: VATSIM ve IVAO, dünyanın dört bir yanından binlerce sanal pilotun ve gönüllü hava trafik kontrolörünün aynı anda uçtuğu ücretsiz ağlardır. Kontrolörler gerçek prosedürleri ve gerçek telsiz dilini kullanır. Simülasyonun en heyecanlı hali burada başlar.</p>
+  <p class="note">Örnek konuşmalardaki kalkış prosedürü, taksi yolu ve frekanslar köşeli parantezle gösterilmiştir; uçarken gerçek değerleri haritalardan ve ATC'den al.</p>
+
+  <section>
+    <h2><span class="n">1</span>VATSIM mi, IVAO mu?</h2>
+    <p>İkisi de ücretsiz, ikisi de çok iyi ve ikisinde de aktif bir Türkiye topluluğu var. Ben ikisinde de uçuyorum. Seçerken en önemli soru şu: Senin uçtuğun saatlerde hangisinde daha çok kontrolör açık, arkadaşların hangisinde uçuyor?</p>
+    <div class="compare">
+      <div class="cmp-card">
+        <h3>IVAO</h3>
+        <dl>
+          <div><dt>Üyelik numarası</dt><dd>VID</dd></div>
+          <div><dt>Pilot programı</dt><dd>Altitude</dd></div>
+          <div><dt>Canlı harita</dt><dd>Webeye</dd></div>
+          <div><dt>Uçuş planı</dt><dd>IVAO sitesi ya da SimBrief</dd></div>
+        </dl>
+        <a class="btn" href="https://ivao.aero/" target="_blank" rel="noopener">ivao.aero ↗</a>
+      </div>
+      <div class="cmp-card">
+        <h3>VATSIM</h3>
+        <dl>
+          <div><dt>Üyelik numarası</dt><dd>CID</dd></div>
+          <div><dt>Pilot programı</dt><dd>vPilot (MSFS için)</dd></div>
+          <div><dt>Canlı harita</dt><dd>VATSpy, Vatsim Radar</dd></div>
+          <div><dt>Uçuş planı</dt><dd>VATSIM sitesi ya da SimBrief</dd></div>
+        </dl>
+        <a class="btn" href="https://vatsim.net/" target="_blank" rel="noopener">vatsim.net ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Başlamadan önce</h2>
+    <p><strong>Hesap aç:</strong> Seçtiğin ağın sitesinden ücretsiz kayıt ol. Kayıttan sonra kısa bir tanıtım ya da eğitim adımı istenebilir; bunu tamamla, zaten çok faydalı.</p>
+    <p><strong>Pilot programını kur:</strong> IVAO için Altitude, VATSIM için vPilot. Bu program MSFS'e bağlanır, uçağını ağa gönderir, diğer uçakları senin simine getirir ve telsiz sesini taşır. Bir mikrofon ve bir bas-konuş (push-to-talk) tuşu ayarla; joystick'indeki bir butonu kullanmak çok pratiktir.</p>
+    <p><strong>Simini hazırla:</strong> MSFS'te yapay zekâ trafiğini kapat (Ders 1). Diğer uçakları artık gerçek pilotlar oluşturacak.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Uçuş planını göndermek</h2>
+    <p>Online uçuşta ATC senin planını görür; bu yüzden bağlanmadan önce planı göndermen gerekir. En kolay yol, Ders 3'te hazırladığın SimBrief planını SimBrief'in ön gönderme (prefile) seçeneğiyle doğrudan ağa göndermektir.</p>
+    <p>Planın notlar kısmına iletişim şeklini yazarsın: <strong>/V/</strong> sesli konuşacağım, <strong>/R/</strong> sesli dinleyip yazıyla cevap vereceğim, <strong>/T/</strong> sadece yazıyla iletişim kuracağım. Henüz konuşmaya hazır değilsen /T/ ile başlamak tamamen normaldir.</p>
+    <div class="tip"><b>Cenk'in ipucu</b>İlk uçuşlarında plan notlarına "NEW MEMBER" (yeni üye) yaz. Kontrolörler bunu görür ve daha yavaş, daha yardımcı konuşur. Yeni olmak ayıp değil; hepimiz bir gün ilk kez telsize bastık.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Kiminle konuşacaksın?</h2>
+    <p>Bir uçuşta birden fazla kontrolörle konuşursun. Her biri uçuşun bir aşamasından sorumludur ve seni bir sonrakine devreder.</p>
+    <figure class="diagram"><svg viewBox="0 0 960 400" role="img" aria-label="Uçuş boyunca konuşulan kontrolörler" xmlns="http://www.w3.org/2000/svg"><rect width="960" height="400" rx="12" fill="#0B1626"/><rect x="0" y="300" width="960" height="100" rx="12" fill="#101C2C"/><path d="M110 300 C 230 300, 300 70, 430 62 L 530 62 C 660 70, 730 300, 850 300" fill="none" stroke="#2C8BF0" stroke-width="3" stroke-dasharray="9 7"/><rect x="40" y="296" width="140" height="8" rx="3" fill="#3A4656"/><rect x="780" y="296" width="140" height="8" rx="3" fill="#3A4656"/><text x="110" y="335" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#FFFFFF">LTFM</text><text x="110" y="355" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">İstanbul</text><text x="850" y="335" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#FFFFFF">LTAI</text><text x="850" y="355" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Antalya</text><rect x="10" y="224" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="62" y="247" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">DEL</text><text x="62" y="269" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">İzin</text><g><circle cx="16" cy="224" r="13" fill="#3FD0FF"/><text x="16" y="229" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">1</text></g><rect x="120" y="224" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="172" y="247" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">GND</text><text x="172" y="269" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Pushback, taksi</text><g><circle cx="126" cy="224" r="13" fill="#3FD0FF"/><text x="126" y="229" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">2</text></g><rect x="230" y="166" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="282" y="189" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">TWR</text><text x="282" y="211" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Kalkış</text><g><circle cx="236" cy="166" r="13" fill="#3FD0FF"/><text x="236" y="171" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">3</text></g><rect x="340" y="106" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="392" y="129" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">DEP</text><text x="392" y="151" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Tırmanış</text><g><circle cx="346" cy="106" r="13" fill="#3FD0FF"/><text x="346" y="111" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">4</text></g><rect x="428" y="36" width="104" height="60" rx="8" fill="#0F223A" stroke="#F5C518" stroke-width="2"/><text x="480" y="59" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#F5C518">CTR</text><text x="480" y="81" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Seyir</text><g><circle cx="434" cy="36" r="13" fill="#F5C518"/><text x="434" y="41" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">5</text></g><rect x="516" y="106" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="568" y="129" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">APP</text><text x="568" y="151" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Alçalma, ILS</text><g><circle cx="522" cy="106" r="13" fill="#3FD0FF"/><text x="522" y="111" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">6</text></g><rect x="626" y="166" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="678" y="189" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">TWR</text><text x="678" y="211" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">İniş</text><g><circle cx="632" cy="166" r="13" fill="#3FD0FF"/><text x="632" y="171" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">7</text></g><rect x="736" y="224" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="788" y="247" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">GND</text><text x="788" y="269" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Taksi, park</text><g><circle cx="742" cy="224" r="13" fill="#3FD0FF"/><text x="742" y="229" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">8</text></g><text x="480" y="385" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Kutular uçuşun hangi aşamasında kiminle konuştuğunu gösterir · ölçekli değildir</text></svg><figcaption>LTFM–LTAI uçuşunda kontrolör zinciri</figcaption></figure>
+    <p>Online ağlarda her pozisyon her zaman açık olmaz. Kural basit: <strong>yukarıdan aşağı kapsama</strong>. Örneğin İstanbul'da Delivery kapalıysa, iznini Ground'dan; o da kapalıysa Tower'dan istersin. Hiçbiri açık değilse ve sadece Ankara Control varsa, her şeyi ondan istersin.</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 720 360" role="img" aria-label="Yukarıdan aşağı kapsama" xmlns="http://www.w3.org/2000/svg"><rect width="720" height="360" rx="12" fill="#0B1626"/><rect x="30" y="24" width="340" height="54" rx="8" fill="#1B3556" stroke="#F5C518" stroke-width="2"/><text x="200" y="58" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">CTR</text><text x="450" y="49" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Saha kontrol (Control)</text><text x="450" y="69" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">Geniş bir bölge, seyir</text><rect x="55" y="88" width="290" height="54" rx="8" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><text x="200" y="122" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">APP / DEP</text><text x="450" y="113" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Yaklaşma ve kalkış</text><text x="450" y="133" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">Meydan çevresi</text><rect x="80" y="152" width="240" height="54" rx="8" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><text x="200" y="186" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">TWR</text><text x="450" y="177" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Kule</text><text x="450" y="197" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">Pist ve havası</text><rect x="105" y="216" width="190" height="54" rx="8" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><text x="200" y="250" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">GND</text><text x="450" y="241" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Yer</text><text x="450" y="261" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">Apron ve taksi yolları</text><rect x="130" y="280" width="140" height="54" rx="8" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><text x="200" y="314" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">DEL</text><text x="450" y="305" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">İzin</text><text x="450" y="325" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">Uçuş izni</text><path d="M410 40 V316" stroke="#F5C518" stroke-width="3"/><path d="M410 326 l-7 -12 h14z" fill="#F5C518"/><text x="360" y="352" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#F5C518">Alttaki pozisyon kapalıysa bir üstteki onun görevini üstlenir</text></svg><figcaption>Yukarıdan aşağı kapsama</figcaption></figure>
+    <p>Hiç kontrolör yoksa <strong>UNICOM</strong> frekansına (122.800) geçer ve ne yaptığını kısa yazılı mesajlarla bildirirsin; böylece çevredeki pilotlar seni bilir.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>Telsiz dilinin temelleri</h2>
+    <p>Havacılıkta telsiz dili İngilizcedir ve kısa, net bir kalıbı vardır. İlk çağrıda dört şeyi söylersin: <strong>kime</strong> (Istanbul Tower), <strong>kim</strong> (VWC001), <strong>nerede</strong> (holding point runway 35L) ve <strong>ne istiyorsun</strong> (ready for departure).</p>
+    <p><strong>Tekrar (readback):</strong> Kontrolörün verdiği izinleri, irtifaları, pruvaları, hızları, pist numarasını, squawk kodunu ve frekansları mutlaka geri okursun ve sonuna çağrı adını eklersin. Böylece kontrolör doğru anladığını teyit eder.</p>
+    <p><strong>Harfler ve rakamlar:</strong> Karışmasın diye harfler kod kelimelerle söylenir. Rakamlarda da üç özel telaffuz vardır: 3 "tree", 5 "fife", 9 "niner".</p>
+    <div class="alphabet">
+      <span><b>A</b>Alfa</span><span><b>B</b>Bravo</span><span><b>C</b>Charlie</span><span><b>D</b>Delta</span><span><b>E</b>Echo</span><span><b>F</b>Foxtrot</span><span><b>G</b>Golf</span><span><b>H</b>Hotel</span><span><b>I</b>India</span><span><b>J</b>Juliett</span><span><b>K</b>Kilo</span><span><b>L</b>Lima</span><span><b>M</b>Mike</span><span><b>N</b>November</span><span><b>O</b>Oscar</span><span><b>P</b>Papa</span><span><b>Q</b>Quebec</span><span><b>R</b>Romeo</span><span><b>S</b>Sierra</span><span><b>T</b>Tango</span><span><b>U</b>Uniform</span><span><b>V</b>Victor</span><span><b>W</b>Whiskey</span><span><b>X</b>X-ray</span><span><b>Y</b>Yankee</span><span><b>Z</b>Zulu</span>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>Örnek uçuş: LTFM'den LTAI'ye</h2>
+    <p>Ders 3'ten beri planladığımız uçuşu bu kez online yapıyoruz. Aşağıda en önemli dört anın konuşmaları var. Altın sarısı balonlar senin, mavi balonlar kontrolörün sözleri.</p>
+
+    <h3 class="dlg-title">İzin almak · Istanbul Delivery</h3>
+    <div class="dialog">
+      <p class="pilot">Istanbul Delivery, VWC001, stand C12, information Alpha, request IFR clearance to Antalya.</p>
+      <p class="atc">VWC001, cleared to Antalya via [SID] departure, runway 35L, climb initially 6000 feet, squawk 4521.</p>
+      <p class="pilot">Cleared to Antalya, [SID] departure, runway 35L, climb 6000 feet, squawk 4521, VWC001.</p>
+      <p class="atc">VWC001, readback correct, contact Istanbul Ground [frekans].</p>
+    </div>
+
+    <h3 class="dlg-title">Kalkış · Istanbul Tower</h3>
+    <div class="dialog">
+      <p class="pilot">Istanbul Tower, VWC001, holding point runway 35L, ready for departure.</p>
+      <p class="atc">VWC001, wind 340 degrees 8 knots, runway 35L, cleared for takeoff.</p>
+      <p class="pilot">Runway 35L, cleared for takeoff, VWC001.</p>
+    </div>
+
+    <h3 class="dlg-title">Yaklaşma · Antalya Approach</h3>
+    <div class="dialog">
+      <p class="pilot">Antalya Approach, VWC001, descending flight level 80, information Bravo.</p>
+      <p class="atc">VWC001, descend 3000 feet, cleared ILS approach runway 36C, report established.</p>
+      <p class="pilot">Descend 3000 feet, cleared ILS approach runway 36C, wilco, VWC001.</p>
+    </div>
+
+    <h3 class="dlg-title">İniş · Antalya Tower</h3>
+    <div class="dialog">
+      <p class="pilot">Antalya Tower, VWC001, established ILS runway 36C.</p>
+      <p class="atc">VWC001, wind 010 degrees 6 knots, runway 36C, cleared to land.</p>
+      <p class="pilot">Runway 36C, cleared to land, VWC001.</p>
+    </div>
+    <p>Bir kontrolör seni bir sonrakine devrettiğinde ("contact Ankara Control [frekans]") frekansı da geri okursun, yeni frekansa geçer ve kendini irtifanla birlikte tanıtırsın.</p>
+    <div class="tip"><b>Cenk'in ipucu</b>İlk online uçuşundan önce birkaç gün sadece dinle. Gerçek dünyadaki hava trafiğini internetten canlı dinleyebileceğin sitelerde ya da ağın canlı haritasında yoğun bir meydanı açıp kontrolörleri dinlemek, kalıpları kulağına çok hızlı yerleştirir.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span>Online görgü kuralları</h2>
+    <div class="checklist lesson-check">
+      <div class="cl-head">İyi bir online pilot</div>
+      <ul>
+        <li>Kapıda (park yerinde) bağlanır, asla pistte ya da havada değil</li>
+        <li>Konuşmadan önce frekansı birkaç saniye dinler</li>
+        <li>Ne diyeceğini düşünür, sonra kısa ve net konuşur</li>
+        <li>Anlamadığında çekinmeden "say again" der</li>
+        <li>Squawk kodunu ve frekansları doğru ayarlar</li>
+        <li>Uçuşu bitirmeden ayrılacaksa ATC'ye haber verir</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">?</span>Kendini test et</h2>
+    <p>Cevabı görmek için soruya tıkla.</p>
+    <div class="quiz">
+      <details><summary>İstanbul'da Delivery ve Ground kapalı, Tower açık. İznini kimden istersin?</summary><p>Tower'dan. Yukarıdan aşağı kapsama kuralına göre alttaki pozisyonlar kapalıysa bir üstteki onların görevini üstlenir.</p></details>
+      <details><summary>Hiç kontrolör yoksa ne yaparsın?</summary><p>UNICOM frekansına (122.800) geçer ve ne yaptığını kısa yazılı mesajlarla bildirirsin.</p></details>
+      <details><summary>Plan notlarındaki /T/ ne anlama gelir?</summary><p>Sadece yazıyla iletişim kuracağını. /V/ sesli konuşma, /R/ sesli dinleyip yazıyla cevap verme demektir.</p></details>
+      <details><summary>Kontrolör "climb flight level 240" dedi. Cevabın ne olmalı?</summary><p>"Climb flight level 240, VWC001." İrtifa talimatlarını her zaman geri okursun ve sonuna çağrı adını eklersin.</p></details>
+      <details><summary>Ağa nerede bağlanmalısın?</summary><p>Kapıda, park yerinde. Pistte ya da havada bağlanmak diğer trafiği tehlikeye atar.</p></details>
+    </div>
+  </section>
+
+  <section class="finale">
+    <h2><span class="n">🎓</span>Tebrikler, seriyi tamamladın!</h2>
+    <p>Kurulumdan kokpite, uçuş planından kalkışa, ILS inişinden online uçuşa kadar altı derste bir havayolu uçuşunun tamamını öğrendin. Artık sıra pratikte. Bir gün frekansta duyuşmak dileğiyle!</p>
+    <p>Yeni dersler ve yayınlardan haberdar olmak için <a href="../#abone">abone ol</a>; uçuşlarımı izlemek için de <a href="../#canli">canlı yayına</a> bekliyorum. ✈️</p>
+  </section>
+
+  <nav class="lesson-next" aria-label="Ders gezintisi">
+    <a href="../ders-5/"><small>← Önceki ders</small><b>Ders 5: ILS yaklaşma ve iniş</b></a>
+    <a class="right" href="../#egitim"><small>Seri tamamlandı</small><b>Tüm derslere dön</b></a>
+  </nav>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk</span>
+    <span>Kanatlar sanal, heyecan gerçek.</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+const mb=document.getElementById("menuBtn"), mn=document.getElementById("menu");
+mb.addEventListener("click",()=>{const o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);});
+</script>
+<script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
+</body>
+</html>

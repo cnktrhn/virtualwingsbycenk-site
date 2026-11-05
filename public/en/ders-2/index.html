@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lesson 2: Getting to know the Airbus cockpit — Virtual Wings by Cenk</title>
+<meta name="description" content="Getting to know the Airbus A320 cockpit: how to read the PFD, ND, ECAM and FCU, with diagrams. Virtual Wings by Cenk training series, Lesson 2.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="../../images/logo-emblem.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="alternate" hreflang="tr" href="https://virtualwingsbycenk.com/ders-2/">
+<link rel="alternate" hreflang="en" href="https://virtualwingsbycenk.com/en/ders-2/">
+<script>try{var p=localStorage.getItem("vw_lang");if(p&&p!=="en"&&(p==="tr"||p==="en"))location.replace("../../ders-2/"+location.hash)}catch(e){}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../../images/logo-emblem.png" alt="Virtual Wings by Cenk logo"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="../#hakkimda">About me</a>       <a href="../#partner">Partnership</a>       <a href="../#fenix">Fenix Simulations</a>       <a href="../#canli">Live stream</a>       <a href="../#ekipman">Gear</a>       <a href="../#egitim">Training</a>       <a href="../#videolar">Videos</a>       <a href="../#galeri">Gallery</a>       <a href="../#abone" class="nav-cta">Subscribe</a>       <a href="../#iletisim">Contact</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="../../ders-2/" hreflang="tr" lang="tr" data-lang="tr">TR</a><a href="./" hreflang="en" lang="en" class="on" aria-current="true" data-lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="../">Home</a> › <a href="../#egitim">Training</a> › Lesson 2</p>
+    <p class="lesson-kicker">Lesson 2</p>
+    <h1>Getting to know the Airbus cockpit</h1>
+    <ul class="lesson-meta">
+      <li>Level: Beginner</li>
+      <li>Reading time: about 12 minutes</li>
+      <li>A319 · A320 · A321</li>
+    </ul>
+  </div>
+</section>
+
+<article class="wrap lesson-body">
+  <p class="intro">At first glance the Airbus cockpit can be intimidating: six screens, hundreds of buttons and constantly changing coloured text. The good news is that there's logic to all of it. In this lesson we'll learn to read four key parts: the PFD, ND, ECAM and FCU. Once you understand them, eighty percent of the cockpit will fall into place.</p>
+  <p class="note">The diagrams are simplified drawings for teaching; the real displays have more detail. Everything here is the same in the Fenix A319, A320 and A321.</p>
+
+  <section>
+    <h2><span class="n">1</span>Cockpit overview</h2>
+    <p>On the main panel, each pilot has two screens: the <strong>PFD</strong> on the outside (the screen you fly from) and the <strong>ND</strong> on the inside (the map showing where you're going). In the centre, two <strong>ECAM</strong> screens, upper and lower, monitor the aircraft's systems. The long panel just above the screens is the <strong>FCU</strong>; this is where you tell the autopilot what to do. On the centre console below are the <strong>MCDU</strong>s, where you enter the flight plan.</p>
+    <figure class="diagram"><svg viewBox="0 0 900 470" role="img" aria-label="Airbus A320 cockpit layout diagram" xmlns="http://www.w3.org/2000/svg">
+<rect width="900" height="470" rx="12" fill="#0B1626"/>
+<path d="M30 30 H870 L850 78 H50 Z" fill="#1A2738" stroke="#3A4B63"/>
+<text x="450" y="22" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD" letter-spacing="2">GLARESHIELD</text>
+<rect x="300" y="38" width="300" height="32" rx="4" fill="#2A3442" stroke="#F5C518"/><text x="450" y="60" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#F5C518">FCU</text>
+<rect x="110" y="38" width="150" height="32" rx="4" fill="#2A3442" stroke="#6C7B90"/><text x="185" y="60" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#FFFFFF">EFIS (Captain)</text>
+<rect x="640" y="38" width="150" height="32" rx="4" fill="#2A3442" stroke="#6C7B90"/><text x="715" y="60" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#FFFFFF">EFIS (F/O)</text>
+<rect x="30" y="95" width="840" height="200" rx="10" fill="#141F2E" stroke="#2A3A52"/>
+<g><rect x="50" y="115" width="135" height="135" rx="8" fill="#050B14" stroke="#2C8BF0" stroke-width="2"/>
+<text x="117.5" y="182.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">PFD</text>
+<text x="117.5" y="204.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Primary flight display</text></g>
+<g><rect x="200" y="115" width="135" height="135" rx="8" fill="#050B14" stroke="#2C8BF0" stroke-width="2"/>
+<text x="267.5" y="182.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">ND</text>
+<text x="267.5" y="204.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Navigation display</text></g>
+<g><rect x="382" y="115" width="135" height="135" rx="8" fill="#050B14" stroke="#F5C518" stroke-width="2"/>
+<text x="449.5" y="182.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">E/WD</text>
+<text x="449.5" y="204.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Upper ECAM</text></g>
+<g><rect x="565" y="115" width="135" height="135" rx="8" fill="#050B14" stroke="#2C8BF0" stroke-width="2"/>
+<text x="632.5" y="182.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">ND</text>
+<text x="632.5" y="204.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Navigation display</text></g>
+<g><rect x="715" y="115" width="135" height="135" rx="8" fill="#050B14" stroke="#2C8BF0" stroke-width="2"/>
+<text x="782.5" y="182.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">PFD</text>
+<text x="782.5" y="204.5" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Primary flight display</text></g>
+<path d="M365 290 H535 V388 H365 Z" fill="#141F2E"/><line x1="365" y1="295" x2="365" y2="388" stroke="#2A3A52"/><line x1="535" y1="295" x2="535" y2="388" stroke="#2A3A52"/><line x1="365" y1="388" x2="535" y2="388" stroke="#2A3A52"/><path d="M290 392 H610 L635 466 H265 Z" fill="#101A28" stroke="#2A3A52"/><text x="450" y="463" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="11" fill="#6C7B90" letter-spacing="2">PEDESTAL</text>
+<g><rect x="382" y="305" width="135" height="72" rx="8" fill="#050B14" stroke="#F5C518" stroke-width="2"/>
+<text x="449.5" y="341.0" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">SD</text>
+<text x="449.5" y="363.0" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Lower ECAM</text></g>
+<rect x="300" y="397" width="95" height="52" rx="5" fill="#2A3442" stroke="#6C7B90"/><text x="347" y="429" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">MCDU 1</text>
+<rect x="405" y="397" width="90" height="52" rx="5" fill="#2A3442" stroke="#6C7B90"/><text x="450" y="419" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#FFFFFF">ECAM</text><text x="450" y="436" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#FFFFFF">control panel</text>
+<rect x="505" y="397" width="95" height="52" rx="5" fill="#2A3442" stroke="#6C7B90"/><text x="552" y="426" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="700" fill="#FFFFFF">MCDU 2</text>
+<circle cx="70" cy="380" r="30" fill="#1A2738" stroke="#6C7B90"/><rect x="62" y="345" width="16" height="40" rx="7" fill="#9AA9BD"/><text x="70" y="432" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Sidestick</text>
+<circle cx="830" cy="380" r="30" fill="#1A2738" stroke="#6C7B90"/><rect x="822" y="345" width="16" height="40" rx="7" fill="#9AA9BD"/><text x="830" y="432" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Sidestick</text>
+<text x="150" y="280" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">◄ CAPTAIN SIDE</text><text x="750" y="280" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">F/O SIDE ►</text>
+</svg><figcaption>A320 family cockpit layout (simplified)</figcaption></figure>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>The language of colours</h2>
+    <p>Colours on Airbus displays aren't random. Learn this table by heart and you'll know at a glance what's normal and what needs your attention.</p>
+    <div class="colors">
+      <div><i style="background:#3BE07A"></i><b>Green</b>Active modes and normal values</div>
+      <div><i style="background:#3FD0FF"></i><b>Cyan</b>Pilot-selected values, armed modes and actions to carry out</div>
+      <div><i style="background:#FF5CF0"></i><b>Magenta</b>Targets and constraints managed by the computer (FMGC)</div>
+      <div><i style="background:#FFAA2B"></i><b>Amber</b>Caution: a situation to keep an eye on</div>
+      <div><i style="background:#FF4040"></i><b>Red</b>Warning: immediate action required</div>
+      <div><i style="background:#FFE14D"></i><b>Yellow</b>Aircraft symbol and reference lines</div>
+      <div><i style="background:#FFFFFF"></i><b>White</b>Titles, labels and scales</div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>PFD: Primary flight display</h2>
+    <p>This is where your eyes spend most of the flight. The aircraft's attitude is in the middle, speed on the left, altitude and vertical speed on the right, and heading at the bottom. The strip across the top shows what the automation is doing at that moment.</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 620 510" role="img" aria-label="PFD diagram" xmlns="http://www.w3.org/2000/svg">
+<rect width="620" height="510" rx="12" fill="#000"/>
+<g font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700">
+<rect x="20" y="10" width="580" height="62" fill="none" stroke="#333"/>
+<line x1="136" y1="10" x2="136" y2="72" stroke="#555"/><line x1="252" y1="10" x2="252" y2="72" stroke="#555"/><line x1="368" y1="10" x2="368" y2="72" stroke="#555"/><line x1="484" y1="10" x2="484" y2="72" stroke="#555"/>
+<text x="78" y="36" text-anchor="middle" fill="#3BE07A">THR CLB</text>
+<text x="194" y="36" text-anchor="middle" fill="#3BE07A">CLB</text><text x="194" y="60" text-anchor="middle" fill="#3FD0FF">ALT</text>
+<text x="310" y="36" text-anchor="middle" fill="#3BE07A">NAV</text>
+<text x="542" y="30" text-anchor="middle" fill="#FFFFFF">AP1</text><text x="542" y="48" text-anchor="middle" fill="#FFFFFF">1FD2</text><text x="542" y="66" text-anchor="middle" fill="#FFFFFF">A/THR</text>
+</g>
+<clipPath id="att"><rect x="135" y="90" width="330" height="320" rx="20"/></clipPath>
+<g clip-path="url(#att)"><rect x="135" y="90" width="330" height="170" fill="#1F6FD1"/><rect x="135" y="260" width="330" height="160" fill="#7A4A21"/>
+<line x1="135" y1="260" x2="465" y2="260" stroke="#FFFFFF" stroke-width="3"/><line x1="255" y1="170" x2="345" y2="170" stroke="#FFFFFF" stroke-width="2"/><line x1="275" y1="210" x2="325" y2="210" stroke="#FFFFFF" stroke-width="2"/><line x1="275" y1="290" x2="325" y2="290" stroke="#FFFFFF" stroke-width="2"/><line x1="255" y1="330" x2="345" y2="330" stroke="#FFFFFF" stroke-width="2"/></g>
+<path d="M200 120 A140 140 0 0 1 400 120" fill="none" stroke="#FFFFFF" stroke-width="2"/><path d="M300 102 l-9 -14 h18 z" fill="#FFE14D"/>
+<line x1="300" y1="190" x2="300" y2="330" stroke="#3BE07A" stroke-width="4"/><line x1="230" y1="268" x2="370" y2="268" stroke="#3BE07A" stroke-width="4"/>
+<path d="M205 260 h55 v12 h-12 v-6 h-43z M395 260 h-55 v12 h12 v-6 h43z" fill="#000" stroke="#FFE14D" stroke-width="3"/><rect x="294" y="254" width="12" height="12" fill="#000" stroke="#FFE14D" stroke-width="3"/>
+<rect x="30" y="90" width="85" height="320" fill="#3A3F47"/>
+<rect x="104" y="90" width="11" height="45" fill="#FF4040"/><rect x="104" y="90" width="11" height="45" fill="url(#bp)"/>
+<pattern id="bp" width="11" height="14" patternUnits="userSpaceOnUse"><rect width="11" height="7" fill="#000"/></pattern>
+<rect x="104" y="335" width="8" height="75" fill="#FFAA2B"/>
+<line x1="100" y1="100" x2="112" y2="100" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="125" x2="112" y2="125" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="150" x2="112" y2="150" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="175" x2="112" y2="175" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="200" x2="112" y2="200" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="225" x2="112" y2="225" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="250" x2="112" y2="250" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="275" x2="112" y2="275" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="300" x2="112" y2="300" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="325" x2="112" y2="325" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="350" x2="112" y2="350" stroke="#FFFFFF" stroke-width="2"/><line x1="100" y1="375" x2="112" y2="375" stroke="#FFFFFF" stroke-width="2"/><text x="92" y="356" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">240</text><text x="92" y="306" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">250</text><text x="92" y="206" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">270</text><text x="92" y="156" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">280</text>
+<line x1="30" y1="260" x2="125" y2="260" stroke="#FFE14D" stroke-width="4"/>
+<line x1="118" y1="260" x2="118" y2="215" stroke="#FFE14D" stroke-width="3"/><path d="M118 205 l-6 12 h12z" fill="#FFE14D"/>
+<path d="M115 210 l14 -9 v18z" fill="#FF5CF0"/>
+<rect x="455" y="90" width="85" height="320" fill="#3A3F47"/>
+<text x="470" y="306.0" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">330</text><text x="470" y="281.0" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">340</text><text x="470" y="231.0" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">360</text>
+<rect x="450" y="240" width="96" height="40" fill="#000" stroke="#FFE14D" stroke-width="3"/><text x="498" y="268" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="700" fill="#3BE07A">34850</text>
+<text x="498" y="84" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3FD0FF">FL350</text>
+<text x="498" y="432" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#3FD0FF">STD</text>
+<path d="M552 120 L575 150 V370 L552 400 Z" fill="#3A3F47"/>
+<line x1="600" y1="260" x2="565" y2="215" stroke="#3BE07A" stroke-width="4"/><text x="588" y="205" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#3BE07A">15</text>
+<rect x="135" y="450" width="330" height="40" fill="#3A3F47"/><text x="150" y="478" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">32</text><text x="200" y="478" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">33</text><text x="250" y="478" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">34</text><text x="300" y="478" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">35</text><text x="350" y="478" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">36</text><text x="400" y="478" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">1</text><text x="450" y="478" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" fill="#FFFFFF">2</text>
+<line x1="300" y1="440" x2="300" y2="458" stroke="#FFE14D" stroke-width="4"/><path d="M350 452 l-8 -12 h16z" fill="#3FD0FF"/>
+<g><circle cx="14" cy="41" r="13" fill="#F5C518"/><text x="14" y="46" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">1</text></g><g><circle cx="72" cy="438" r="13" fill="#F5C518"/><text x="72" y="443" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">2</text></g><g><circle cx="210" cy="150" r="13" fill="#F5C518"/><text x="210" y="155" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">3</text></g><g><circle cx="552" cy="438" r="13" fill="#F5C518"/><text x="552" y="443" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">4</text></g><g><circle cx="605" cy="300" r="13" fill="#F5C518"/><text x="605" y="305" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">5</text></g><g><circle cx="120" cy="490" r="13" fill="#F5C518"/><text x="120" y="495" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">6</text></g>
+</svg><figcaption>PFD during the climb to FL350</figcaption></figure>
+    <dl class="legend"><div><dt>1</dt><dd><b>FMA (flight mode annunciator)</b>Made up of five columns: autothrust mode, vertical mode, lateral mode, approach capability and AP/FD/A/THR status. Green text shows the active mode; cyan text shows an armed mode that will engage when its turn comes. In the example the aircraft is climbing (CLB), following the route (NAV) and will level off at the target altitude (cyan ALT).</dd></div><div><dt>2</dt><dd><b>Speed tape</b>The yellow line shows the current speed. The yellow arrow shows the speed you'll reach in 10 seconds (the trend). The magenta triangle is the computer's target speed; if you select the speed yourself it turns cyan. The amber band at the bottom warns you're approaching the minimum safe speed (VLS), and the red-and-black band at the top the maximum speed.</dd></div><div><dt>3</dt><dd><b>Attitude indicator</b>Blue sky, brown ground. The yellow symbols are the aircraft itself. When hand-flying, the green flight director (FD) bars tell you where to steer: keep the yellow symbol where the bars cross.</dd></div><div><dt>4</dt><dd><b>Altitude tape</b>The yellow box shows the current altitude. The cyan value at the top is the target altitude you selected on the FCU. STD at the very bottom means standard pressure (1013 hPa) is set; down low you'll see the QNH value instead.</dd></div><div><dt>5</dt><dd><b>Vertical speed</b>The green needle shows how many feet per minute you're climbing or descending. The numbers are in hundreds: 15 means 1,500 feet per minute.</dd></div><div><dt>6</dt><dd><b>Heading</b>The yellow line is the direction the aircraft's nose is pointing. The cyan triangle is the heading you selected on the FCU.</dd></div></dl>
+    <div class="tip"><b>Cenk's tip</b>Real Airbus pilots call out every change on the FMA: "THR CLB, CLB, NAV, ALT blue, AP1". It may sound odd, but it makes you see what the aircraft is actually doing instead of assuming. Build this habit in the sim too.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>ND: Navigation display</h2>
+    <p>The ND is your map. It shows the flight plan, the upcoming waypoints, the wind and, if you like, weather radar or terrain. You change its view and range from the <strong>EFIS control panel</strong> above the screens.</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 620 510" role="img" aria-label="ND diagram, ARC mode" xmlns="http://www.w3.org/2000/svg">
+<rect width="620" height="510" rx="12" fill="#000"/>
+<clipPath id="ndc"><rect width="620" height="510" rx="12"/></clipPath><g clip-path="url(#ndc)">
+<path d="M34 239 A360 360 0 0 1 586 239" fill="none" stroke="#FFFFFF" stroke-width="2"/><line x1="34.2" y1="238.6" x2="48.0" y2="250.2" stroke="#FFFFFF" stroke-width="2"/><line x1="55.4" y1="215.4" x2="61.8" y2="221.8" stroke="#FFFFFF" stroke-width="2"/><line x1="78.6" y1="194.2" x2="90.2" y2="208.0" stroke="#FFFFFF" stroke-width="2"/><line x1="103.5" y1="175.1" x2="108.7" y2="182.5" stroke="#FFFFFF" stroke-width="2"/><line x1="130.0" y1="158.2" x2="139.0" y2="173.8" stroke="#FFFFFF" stroke-width="2"/><text x="149.0" y="198.1" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" fill="#FFFFFF">32</text><line x1="157.9" y1="143.7" x2="161.7" y2="151.9" stroke="#FFFFFF" stroke-width="2"/><line x1="186.9" y1="131.7" x2="193.0" y2="148.6" stroke="#FFFFFF" stroke-width="2"/><line x1="216.8" y1="122.3" x2="219.2" y2="131.0" stroke="#FFFFFF" stroke-width="2"/><line x1="247.5" y1="115.5" x2="250.6" y2="133.2" stroke="#FFFFFF" stroke-width="2"/><line x1="278.6" y1="111.4" x2="279.4" y2="120.3" stroke="#FFFFFF" stroke-width="2"/><line x1="310.0" y1="110.0" x2="310.0" y2="128.0" stroke="#FFFFFF" stroke-width="2"/><text x="310.0" y="155.0" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" fill="#FFFFFF">35</text><line x1="341.4" y1="111.4" x2="340.6" y2="120.3" stroke="#FFFFFF" stroke-width="2"/><line x1="372.5" y1="115.5" x2="369.4" y2="133.2" stroke="#FFFFFF" stroke-width="2"/><line x1="403.2" y1="122.3" x2="400.8" y2="131.0" stroke="#FFFFFF" stroke-width="2"/><line x1="433.1" y1="131.7" x2="427.0" y2="148.6" stroke="#FFFFFF" stroke-width="2"/><line x1="462.1" y1="143.7" x2="458.3" y2="151.9" stroke="#FFFFFF" stroke-width="2"/><line x1="490.0" y1="158.2" x2="481.0" y2="173.8" stroke="#FFFFFF" stroke-width="2"/><text x="471.0" y="198.1" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" fill="#FFFFFF">2</text><line x1="516.5" y1="175.1" x2="511.3" y2="182.5" stroke="#FFFFFF" stroke-width="2"/><line x1="541.4" y1="194.2" x2="529.8" y2="208.0" stroke="#FFFFFF" stroke-width="2"/><line x1="564.6" y1="215.4" x2="558.2" y2="221.8" stroke="#FFFFFF" stroke-width="2"/><line x1="585.8" y1="238.6" x2="572.0" y2="250.2" stroke="#FFFFFF" stroke-width="2"/><path d="M172 354 A180 180 0 0 1 448 354" fill="none" stroke="#FFFFFF" stroke-width="1.5" stroke-dasharray="6 8"/>
+<text x="166" y="348" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" fill="#3FD0FF">40</text>
+<line x1="310" y1="106" x2="310" y2="132" stroke="#FFE14D" stroke-width="4"/>
+<path d="M310 460 L310 140 " stroke="none"/>
+<polyline points="310,450 320,320 380,210 460,140" fill="none" stroke="#3BE07A" stroke-width="3"/>
+<g font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17"><path d="M320 310 l8 10 l-8 10 l-8 -10z" fill="none" stroke="#FFFFFF" stroke-width="2"/><text x="334" y="325" fill="#FFFFFF">BAGLI</text>
+<path d="M380 200 l8 10 l-8 10 l-8 -10z" fill="none" stroke="#3BE07A" stroke-width="2"/><text x="394" y="215" fill="#3BE07A">KUMRU</text></g>
+<path d="M310 440 v45 M282 465 h56 M298 482 h24" stroke="#FFE14D" stroke-width="5" fill="none"/>
+</g>
+<g font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="19" font-weight="700"><text x="20" y="30" fill="#FFFFFF">GS <tspan fill="#3BE07A">452</tspan>  TAS <tspan fill="#3BE07A">461</tspan></text>
+<text x="20" y="56" fill="#3BE07A">275°/42</text><line x1="38" y1="66" x2="22" y2="90" stroke="#3BE07A" stroke-width="3"/><path d="M22 90 l-2 -12 l10 6z" fill="#3BE07A"/>
+<text x="600" y="30" text-anchor="end" fill="#FFFFFF">BAGLI</text><text x="600" y="54" text-anchor="end" fill="#3BE07A">352° <tspan fill="#FFFFFF">34</tspan><tspan font-size="14" fill="#3FD0FF"> NM</tspan></text><text x="600" y="78" text-anchor="end" fill="#FFFFFF">14:22</text></g>
+<g><circle cx="20" cy="118" r="13" fill="#F5C518"/><text x="20" y="123" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">1</text></g><g><circle cx="585" cy="110" r="13" fill="#F5C518"/><text x="585" y="115" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">2</text></g><g><circle cx="300" cy="92" r="13" fill="#F5C518"/><text x="300" y="97" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">3</text></g><g><circle cx="350" cy="270" r="13" fill="#F5C518"/><text x="350" y="275" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">4</text></g><g><circle cx="240" cy="440" r="13" fill="#F5C518"/><text x="240" y="445" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">5</text></g><g><circle cx="130" cy="280" r="13" fill="#F5C518"/><text x="130" y="285" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">6</text></g>
+</svg><figcaption>ND in ARC mode, 80 NM range</figcaption></figure>
+    <dl class="legend"><div><dt>1</dt><dd><b>Ground speed, true airspeed and wind</b>GS is your speed over the ground, TAS your speed through the air. Below that is the wind direction and speed (from 275° at 42 knots); the green arrow shows where the wind is coming from relative to the aircraft.</dd></div><div><dt>2</dt><dd><b>Next waypoint (TO waypoint)</b>The name, bearing, distance and estimated arrival time of the waypoint the aircraft is heading for.</dd></div><div><dt>3</dt><dd><b>Heading mark</b>The yellow line on the compass shows where the aircraft's nose is pointing.</dd></div><div><dt>4</dt><dd><b>Flight plan</b>The green line is the active route. The white waypoint is the next one; the green waypoints follow.</dd></div><div><dt>5</dt><dd><b>Aircraft symbol</b>The aircraft's position on the map.</dd></div><div><dt>6</dt><dd><b>Range ring</b>Shows half of the selected range. 80 NM is selected here, so the ring marks 40 NM.</dd></div></dl>
+    <p><strong>ND modes:</strong> <strong>ROSE</strong> shows the full compass (with ILS, VOR and NAV options); it's used a lot on approach. <strong>ARC</strong> shows the 90 degrees ahead of you in large scale; ideal for cruise. <strong>PLAN</strong> shows the map north-up; used to check the flight plan. Range can be set from 10 to 320 NM.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>ECAM: The aircraft's health screen</h2>
+    <p>ECAM is made up of two screens. The upper <strong>E/WD</strong> shows the engines and warnings; the lower <strong>SD</strong> shows system details. When something fails, ECAM tells you what the problem is and lists what to do step by step.</p>
+    <figure class="diagram"><svg viewBox="0 0 900 400" role="img" aria-label="ECAM displays diagram" xmlns="http://www.w3.org/2000/svg">
+<rect width="900" height="400" rx="12" fill="#0B1626"/>
+<text x="225" y="28" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#9AA9BD" letter-spacing="1">UPPER ECAM · E/WD</text>
+<text x="675" y="28" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#9AA9BD" letter-spacing="1">ALT ECAM · SD</text>
+<rect x="20" y="40" width="410" height="345" rx="8" fill="#000"/>
+<path d="M52 128 A42 42 0 1 1 128 128" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+<line x1="90" y1="110" x2="120" y2="84" stroke="#3BE07A" stroke-width="4"/>
+<text x="90" y="152" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#3BE07A">85.2</text><path d="M172 128 A42 42 0 1 1 248 128" fill="none" stroke="#FFFFFF" stroke-width="3"/>
+<line x1="210" y1="110" x2="240" y2="84" stroke="#3BE07A" stroke-width="4"/>
+<text x="210" y="152" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#3BE07A">85.3</text>
+<text x="150" y="105" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" fill="#FFFFFF">N1</text><text x="150" y="122" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#3FD0FF">%</text>
+<text x="150" y="190" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" fill="#FFFFFF">EGT <tspan fill="#3FD0FF" font-size="13">°C</tspan></text>
+<text x="90" y="190" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#3BE07A">612</text><text x="210" y="190" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#3BE07A">609</text>
+<text x="150" y="222" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" fill="#FFFFFF">N2 <tspan fill="#3FD0FF" font-size="13">%</tspan></text>
+<text x="90" y="222" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#3BE07A">92.1</text><text x="210" y="222" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#3BE07A">92.0</text>
+<text x="150" y="254" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" fill="#FFFFFF">FF <tspan fill="#3FD0FF" font-size="13">KG/H</tspan></text>
+<text x="90" y="254" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#3BE07A">1240</text><text x="210" y="254" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#3BE07A">1235</text>
+<text x="290" y="80" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" fill="#FFFFFF">FOB: <tspan fill="#3BE07A" font-weight="700">9850</tspan> <tspan fill="#3FD0FF" font-size="13">KG</tspan></text>
+<text x="300" y="130" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#FFFFFF">S</text><text x="400" y="130" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#FFFFFF">F</text>
+<path d="M300 140 l40 6 M360 146 l40 -6" stroke="#3BE07A" stroke-width="3"/>
+<line x1="30" y1="285" x2="420" y2="285" stroke="#555"/>
+<text x="40" y="315" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="19" font-weight="700" fill="#3BE07A">SEAT BELTS</text>
+<text x="40" y="342" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="19" font-weight="700" fill="#FFAA2B">ENG 1 OIL LO PR</text>
+<text x="40" y="369" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" fill="#3FD0FF">- THR LEVER 1 ..... IDLE</text>
+<rect x="470" y="40" width="410" height="345" rx="8" fill="#000"/>
+<text x="675" y="72" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="700" fill="#FFFFFF" text-decoration="underline">CRUISE</text>
+<text x="500" y="112" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" fill="#3BE07A">ENG</text>
+<text x="520" y="142" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#FFFFFF">F.USED</text><text x="620" y="142" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3BE07A">1450</text><text x="720" y="142" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3BE07A">1460</text>
+<text x="520" y="170" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#FFFFFF">OIL</text><text x="620" y="170" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3BE07A">15.5</text><text x="720" y="170" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3BE07A">15.0</text>
+<text x="500" y="210" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" fill="#3BE07A">AIR</text>
+<text x="520" y="240" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#FFFFFF">CAB ALT</text><text x="640" y="240" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3BE07A">6800 <tspan fill="#3FD0FF" font-size="13">FT</tspan></text>
+<text x="520" y="268" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#FFFFFF">ΔP</text><text x="640" y="268" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3BE07A">7.9 <tspan fill="#3FD0FF" font-size="13">PSI</tspan></text>
+<line x1="480" y1="300" x2="870" y2="300" stroke="#555"/>
+<g font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#FFFFFF"><text x="490" y="330">TAT <tspan fill="#3BE07A">-24</tspan> °C</text><text x="490" y="358">SAT <tspan fill="#3BE07A">-51</tspan> °C</text>
+<text x="640" y="344" fill="#3BE07A">14 H 07</text><text x="745" y="330">GW <tspan fill="#3BE07A">68200</tspan></text><text x="800" y="358" fill="#3FD0FF">KG</text></g>
+<g><circle cx="42" cy="58" r="13" fill="#F5C518"/><text x="42" y="63" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">1</text></g><g><circle cx="410" cy="302" r="13" fill="#F5C518"/><text x="410" y="307" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">2</text></g><g><circle cx="492" cy="58" r="13" fill="#F5C518"/><text x="492" y="63" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">3</text></g><g><circle cx="860" cy="318" r="13" fill="#F5C518"/><text x="860" y="323" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">4</text></g>
+</svg><figcaption>Upper and lower ECAM displays during cruise (the warning message is just an example)</figcaption></figure>
+    <dl class="legend"><div><dt>1</dt><dd><b>Engine indications</b>N1 (fan speed, the main thrust indication), EGT (exhaust gas temperature), N2 (core speed) and FF (fuel flow). Total fuel on board (FOB) and slat/flap position are at the top right.</dd></div><div><dt>2</dt><dd><b>Message area</b>Green lines are memos. Amber is a caution, red a warning. The cyan lines underneath are actions for you to carry out: each disappears from the list as you complete it.</dd></div><div><dt>3</dt><dd><b>System page</b>Changes automatically with the flight phase: doors on the ground, engines on takeoff, the CRUISE page in cruise, and so on. You can also call up pages like ENG, BLEED, ELEC, HYD and FUEL manually from the ECAM control panel on the centre console.</dd></div><div><dt>4</dt><dd><b>Permanent data</b>Outside air temperatures (TAT, SAT), the time and the aircraft's gross weight (GW). Always here, whichever page is open.</dd></div></dl>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>FCU: Talking to the autopilot</h2>
+    <p>The FCU is the panel where you tell the autopilot and autothrust what you want them to do. It has four windows and four knobs: speed, heading, altitude and vertical speed.</p>
+    <figure class="diagram"><svg viewBox="0 0 900 210" role="img" aria-label="FCU diagram" xmlns="http://www.w3.org/2000/svg">
+<rect width="900" height="210" rx="12" fill="#3A4048"/>
+<text x="90.0" y="62" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#FFFFFF">SPD  MACH</text><rect x="30" y="70" width="120" height="42" rx="3" fill="#0A0A0A" stroke="#555"/><text x="90.0" y="100" text-anchor="middle" font-family="Consolas,Courier New,monospace" font-size="24" font-weight="700" fill="#FFB347">---</text><circle cx="138" cy="91" r="5" fill="#FFB347"/><circle cx="90.0" cy="158" r="24" fill="#20262E" stroke="#6C7B90" stroke-width="2"/><circle cx="90.0" cy="158" r="14" fill="#2D343E"/><rect x="165" y="80" width="80" height="34" rx="4" fill="#20262E" stroke="#6C7B90"/><rect x="195.0" y="86" width="20" height="4" rx="2" fill="#3BE07A" opacity=".25"/><text x="205.0" y="106" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">SPD/MACH</text>
+<text x="325.0" y="62" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#FFFFFF">HDG  LAT</text><rect x="265" y="70" width="120" height="42" rx="3" fill="#0A0A0A" stroke="#555"/><text x="325.0" y="100" text-anchor="middle" font-family="Consolas,Courier New,monospace" font-size="24" font-weight="700" fill="#FFB347">---</text><circle cx="373" cy="91" r="5" fill="#FFB347"/><circle cx="325.0" cy="158" r="24" fill="#20262E" stroke="#6C7B90" stroke-width="2"/><circle cx="325.0" cy="158" r="14" fill="#2D343E"/><rect x="400" y="80" width="80" height="34" rx="4" fill="#20262E" stroke="#6C7B90"/><rect x="430.0" y="86" width="20" height="4" rx="2" fill="#3BE07A" opacity=".25"/><text x="440.0" y="106" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">HDG V/S</text>
+<rect x="400" y="130" width="80" height="34" rx="4" fill="#20262E" stroke="#6C7B90"/><rect x="430.0" y="136" width="20" height="4" rx="2" fill="#3BE07A" opacity=".25"/><text x="440.0" y="156" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">LOC</text>
+<rect x="500" y="24" width="56" height="34" rx="4" fill="#20262E" stroke="#6C7B90"/><rect x="518.0" y="30" width="20" height="4" rx="2" fill="#3BE07A" opacity=".25"/><text x="528.0" y="50" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">AP1</text><rect x="562" y="24" width="56" height="34" rx="4" fill="#20262E" stroke="#6C7B90"/><rect x="580.0" y="30" width="20" height="4" rx="2" fill="#3BE07A" opacity=".25"/><text x="590.0" y="50" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">AP2</text><rect x="531" y="66" width="56" height="34" rx="4" fill="#20262E" stroke="#6C7B90"/><rect x="549.0" y="72" width="20" height="4" rx="2" fill="#3BE07A" opacity=".25"/><text x="559.0" y="92" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">A/THR</text>
+<text x="700.0" y="62" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#FFFFFF">ALT</text><rect x="640" y="70" width="120" height="42" rx="3" fill="#0A0A0A" stroke="#555"/><text x="700.0" y="100" text-anchor="middle" font-family="Consolas,Courier New,monospace" font-size="24" font-weight="700" fill="#FFB347">35000</text><circle cx="748" cy="91" r="5" fill="#FFB347"/><circle cx="700.0" cy="158" r="24" fill="#20262E" stroke="#6C7B90" stroke-width="2"/><circle cx="700.0" cy="158" r="14" fill="#2D343E"/><rect x="500" y="130" width="56" height="34" rx="4" fill="#20262E" stroke="#6C7B90"/><rect x="518.0" y="136" width="20" height="4" rx="2" fill="#3BE07A" opacity=".25"/><text x="528.0" y="156" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">EXPED</text><rect x="562" y="130" width="56" height="34" rx="4" fill="#20262E" stroke="#6C7B90"/><rect x="580.0" y="136" width="20" height="4" rx="2" fill="#3BE07A" opacity=".25"/><text x="590.0" y="156" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" font-weight="700" fill="#FFFFFF">APPR</text>
+<text x="830.0" y="62" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#FFFFFF">V/S  FPA</text><rect x="775" y="70" width="110" height="42" rx="3" fill="#0A0A0A" stroke="#555"/><text x="830.0" y="100" text-anchor="middle" font-family="Consolas,Courier New,monospace" font-size="24" font-weight="700" fill="#FFB347">-----</text><circle cx="830.0" cy="158" r="24" fill="#20262E" stroke="#6C7B90" stroke-width="2"/><circle cx="830.0" cy="158" r="14" fill="#2D343E"/>
+<g><circle cx="90" cy="40" r="13" fill="#F5C518"/><text x="90" y="45" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">1</text></g><g><circle cx="325" cy="40" r="13" fill="#F5C518"/><text x="325" y="45" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">2</text></g><g><circle cx="560" cy="190" r="13" fill="#F5C518"/><text x="560" y="195" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">3</text></g><g><circle cx="700" cy="40" r="13" fill="#F5C518"/><text x="700" y="45" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">4</text></g><g><circle cx="830" cy="40" r="13" fill="#F5C518"/><text x="830" y="45" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" font-weight="800" fill="#040E1A">5</text></g>
+</svg><figcaption>FCU (simplified)</figcaption></figure>
+    <dl class="legend"><div><dt>1</dt><dd><b>Speed / Mach</b>The target speed. The SPD/MACH button next to it switches between knots and Mach.</dd></div><div><dt>2</dt><dd><b>Heading / Track</b>The target heading. The HDG V/S button switches heading and vertical speed to track and flight path angle (TRK FPA). The LOC button is only used to capture the ILS localizer.</dd></div><div><dt>3</dt><dd><b>Autopilot buttons</b>AP1 and AP2 engage and disengage the autopilots, A/THR the autothrust. APPR arms the approach mode; EXPED speeds up a climb or descent.</dd></div><div><dt>4</dt><dd><b>Altitude</b>The target altitude. The aircraft will never go past it; it's the limit of any climb or descent.</dd></div><div><dt>5</dt><dd><b>Vertical speed</b>You select how many feet per minute you want to climb or descend.</dd></div></dl>
+    <p><strong>The most important rule: push or pull.</strong> The FCU knobs turn, and they can also be pushed and pulled. <strong>Pull</strong> a knob and the aircraft follows the value you've chosen; this is called <strong>selected mode</strong>, and the value shows in cyan on the PFD. <strong>Push</strong> it and you hand control to the computer; this is called <strong>managed mode</strong>. The aircraft follows the flight plan and speed profile in the MCDU; the window shows dashes and a dot (---•), and the targets on the PFD turn magenta.</p>
+    <div class="tip"><b>Cenk's tip</b>When you're confused, look at the FMA on the PFD, not the FCU. Even if you can't remember whether you pushed or pulled, the FMA tells you the truth: green HDG means you're on a selected heading, green NAV means you're following the flight plan.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">✓</span>Test yourself</h2>
+    <p>Click a question to see the answer.</p>
+    <div class="quiz">
+      <details><summary>The target speed on the PFD is magenta. Who's controlling the speed?</summary><p>The computer (FMGC). Magenta means a managed target. If you had selected the speed yourself, it would be cyan.</p></details>
+      <details><summary>The vertical mode column of the FMA shows a cyan "ALT". What does that mean?</summary><p>ALT mode is armed but not yet active. When the aircraft reaches the target altitude set on the FCU, it will level off and ALT will turn green.</p></details>
+      <details><summary>You've set the ND range to 80 NM. How many NM does the inner dashed ring show?</summary><p>40 NM. The ring always shows half the selected range.</p></details>
+      <details><summary>There are cyan lines under an amber message on the ECAM. What should you do?</summary><p>The cyan lines are actions to carry out. Work through them in order; each line drops off the list as you complete it.</p></details>
+      <details><summary>You pulled the HDG knob on the FCU. What does the aircraft do?</summary><p>It switches to selected mode and turns to the heading in the window. The lateral mode on the FMA changes from NAV to HDG. To go back to the flight plan, you push the knob.</p></details>
+    </div>
+    <p style="margin-top:1.5rem">If you got them all, you've mastered the cockpit. In the next lesson we'll put together our first flight plan in SimBrief. ✈️</p>
+  </section>
+
+  <nav class="lesson-next" aria-label="Lesson navigation">
+    <a href="../ders-1/"><small>← Previous lesson</small><b>Lesson 1: Installing and setting up MSFS</b></a>     <a class="right" href="../ders-3/"><small>Next lesson →</small><b>Lesson 3: Planning a flight</b></a>
+  </nav>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk</span>     <span>The wings are virtual, the thrill is real.</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+const mb=document.getElementById("menuBtn"), mn=document.getElementById("menu");
+mb.addEventListener("click",()=>{const o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);});
+</script>
+<script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+{
+  "ranks": [
+    {
+      "id": "cadet",
+      "en": "Cadet",
+      "tr": "Öğrenci Pilot",
+      "stripes": 0,
+      "xp": 0,
+      "unlock_tr": "Sıradan görev kartları"
+    },
+    {
+      "id": "second_officer",
+      "en": "Second Officer",
+      "tr": "İkinci Pilot",
+      "stripes": 1,
+      "xp": 2500,
+      "unlock_tr": "-"
+    },
+    {
+      "id": "first_officer",
+      "en": "First Officer",
+      "tr": "Yardımcı Pilot",
+      "stripes": 2,
+      "xp": 6000,
+      "unlock_tr": "Nadir görev kartları"
+    },
+    {
+      "id": "senior_fo",
+      "en": "Senior First Officer",
+      "tr": "Kıdemli Yardımcı Pilot",
+      "stripes": 3,
+      "xp": 14000,
+      "unlock_tr": "-"
+    },
+    {
+      "id": "captain",
+      "en": "Captain",
+      "tr": "Kaptan",
+      "stripes": 4,
+      "xp": 30000,
+      "unlock_tr": "Efsane görev kartları"
+    },
+    {
+      "id": "senior_captain",
+      "en": "Senior Captain",
+      "tr": "Kıdemli Kaptan",
+      "stripes": 4,
+      "xp": 60000,
+      "extra": "yıldız",
+      "unlock_tr": "Pilot kartında altın çerçeve"
+    },
+    {
+      "id": "training_captain",
+      "en": "Training Captain",
+      "tr": "Eğitmen Kaptan",
+      "stripes": 4,
+      "xp": 100000,
+      "extra": "kanat",
+      "unlock_tr": "Hall of Fame'de özel işaret"
+    },
+    {
+      "id": "chief_pilot",
+      "en": "Chief Pilot",
+      "tr": "Baş Pilot",
+      "stripes": 4,
+      "xp": 160000,
+      "extra": "defne yaprağı",
+      "unlock_tr": "Pilot kartında Chief Pilot tasarımı"
+    }
+  ],
+  "xp_rules_tr": [
+    "Tamamlanan uçuş: 100 XP + blok saat başına 25 XP",
+    "Uçuş puanı çarpanı: genel puan / 100 (ör. 85 puan = x0,85)",
+    "Başarılı acil durum yönetimi: +300",
+    "Yeni ülke damgası: +25",
+    "Emniyet ihlali olan uçuşta XP yarıya iner"
+  ],
+  "tiers": {
+    "bronze": "Bronz",
+    "silver": "Gümüş",
+    "gold": "Altın",
+    "legend": "Efsane",
+    "fun": "Eğlence"
+  },
+  "badges": [
+    {
+      "id": "butter",
+      "cat": "İniş",
+      "tier": "bronze",
+      "en": "Butter",
+      "tr": "Tereyağı",
+      "rule_tr": "Dikey hız 60 fpm altında iniş",
+      "rule_en": "Land at under 60 fpm vertical speed"
+    },
+    {
+      "id": "greaser_streak",
+      "cat": "İniş",
+      "tier": "silver",
+      "en": "Greaser Streak",
+      "tr": "Yumuşak Seri",
+      "rule_tr": "Üst üste 5 uçuşta 150 fpm altında iniş",
+      "rule_en": "Land under 150 fpm on 5 flights in a row"
+    },
+    {
+      "id": "standing_ovation",
+      "cat": "İniş",
+      "tier": "bronze",
+      "en": "Standing Ovation",
+      "tr": "Ayakta Alkış",
+      "rule_tr": "İnişte yolcuların alkışlaması",
+      "rule_en": "Get a round of applause from passengers on landing"
+    },
+    {
+      "id": "crosswind_king",
+      "cat": "İniş",
+      "tier": "silver",
+      "en": "Crosswind King",
+      "tr": "Yan Rüzgâr Ustası",
+      "rule_tr": "20 kt üzeri yan rüzgârda 200 fpm altında iniş",
+      "rule_en": "Land under 200 fpm in a crosswind above 20 kt"
+    },
+    {
+      "id": "happy_cabin",
+      "cat": "Yolcu",
+      "tier": "silver",
+      "en": "Happy Cabin",
+      "tr": "Mutlu Kabin",
+      "rule_tr": "Yolcu memnuniyeti %95 ve üzeri",
+      "rule_en": "Passenger satisfaction of 95% or higher"
+    },
+    {
+      "id": "silver_tongue",
+      "cat": "Yolcu",
+      "tier": "silver",
+      "en": "Silver Tongue",
+      "tr": "Tatlı Dil",
+      "rule_tr": "10 Special anonsun hepsinden olumlu tepki",
+      "rule_en": "Positive reactions to all 10 Special announcements"
+    },
+    {
+      "id": "night_owl",
+      "cat": "Yolcu",
+      "tier": "bronze",
+      "en": "Night Owl",
+      "tr": "Gece Kuşu",
+      "rule_tr": "Kabin karartılmış gece uçuşunda yolcu uyandırmadan iniş",
+      "rule_en": "Land a night flight with the cabin dimmed without waking the passengers"
+    },
+    {
+      "id": "birthday",
+      "cat": "Yolcu",
+      "tier": "bronze",
+      "en": "Happy Birthday",
+      "tr": "İyi ki Doğdun",
+      "rule_tr": "Doğum günü çağrısında Special anons yapmak",
+      "rule_en": "Make a Special announcement for a birthday request"
+    },
+    {
+      "id": "proposal",
+      "cat": "Yolcu",
+      "tier": "silver",
+      "en": "She Said Yes",
+      "tr": "Evet Dedi",
+      "rule_tr": "Evlilik teklifine izin verip anonsla desteklemek",
+      "rule_en": "Allow a marriage proposal and support it with an announcement"
+    },
+    {
+      "id": "full_service",
+      "cat": "Yolcu",
+      "tier": "bronze",
+      "en": "Full Service",
+      "tr": "Eksiksiz Servis",
+      "rule_tr": "Tüm yolculara servis iniş hazırlığından önce tamamlandı",
+      "rule_en": "Finish serving all passengers before landing preparation"
+    },
+    {
+      "id": "on_time",
+      "cat": "Operasyon",
+      "tier": "bronze",
+      "en": "On Time",
+      "tr": "Dakik",
+      "rule_tr": "Kapılar STD'de ya da önce kapandı",
+      "rule_en": "Doors closed at or before STD"
+    },
+    {
+      "id": "on_time_10",
+      "cat": "Operasyon",
+      "tier": "gold",
+      "en": "Swiss Watch",
+      "tr": "İsviçre Saati",
+      "rule_tr": "Üst üste 10 dakik kalkış",
+      "rule_en": "10 on-time departures in a row"
+    },
+    {
+      "id": "clean_sheet",
+      "cat": "Operasyon",
+      "tier": "silver",
+      "en": "Clean Sheet",
+      "tr": "Temiz Sayfa",
+      "rule_tr": "Hiç ceza almadan uçuş",
+      "rule_en": "A flight without any penalties"
+    },
+    {
+      "id": "by_the_book",
+      "cat": "Operasyon",
+      "tier": "gold",
+      "en": "By the Book",
+      "tr": "Kitabına Uygun",
+      "rule_tr": "Üst üste 10 cezasız uçuş",
+      "rule_en": "10 penalty-free flights in a row"
+    },
+    {
+      "id": "cross_check_master",
+      "cat": "Operasyon",
+      "tier": "silver",
+      "en": "Cross-Check Master",
+      "tr": "Cross-Check Ustası",
+      "rule_tr": "25 uçuşta kapı ve slide hatası yok",
+      "rule_en": "No door or slide errors on 25 flights"
+    },
+    {
+      "id": "fuel_watcher",
+      "cat": "Operasyon",
+      "tier": "bronze",
+      "en": "Fuel Watcher",
+      "tr": "Yakıt Takipçisi",
+      "rule_tr": "20 fuel check'in hepsini zamanında onaylamak",
+      "rule_en": "Confirm all 20 fuel checks on time"
+    },
+    {
+      "id": "turnaround_day",
+      "cat": "Operasyon",
+      "tier": "silver",
+      "en": "Full Duty Day",
+      "tr": "Dolu Gün",
+      "rule_tr": "Aynı ekiple 4 bacak (görev limitinde)",
+      "rule_en": "Fly 4 legs with the same crew (within duty limits)"
+    },
+    {
+      "id": "real_ops",
+      "cat": "Operasyon",
+      "tier": "gold",
+      "en": "Real Ops",
+      "tr": "Gerçek Operasyon",
+      "rule_tr": "10 uçuşu 'Gerçekçi' süre ayarlarıyla tamamlamak",
+      "rule_en": "Complete 10 flights with 'Realistic' timing settings"
+    },
+    {
+      "id": "doctor_on_board",
+      "cat": "Acil durum",
+      "tier": "silver",
+      "en": "Doctor on Board",
+      "tr": "Uçakta Doktor Var",
+      "rule_tr": "Tıbbi acil durumu süresinde tamamlamak",
+      "rule_en": "Handle a medical emergency in time"
+    },
+    {
+      "id": "born_on_board",
+      "cat": "Acil durum",
+      "tier": "legend",
+      "en": "Born on Board",
+      "tr": "Uçakta Doğdu",
+      "rule_tr": "Doğum vakasında bebeğin uçakta doğması",
+      "rule_en": "A baby is born on board during a delivery case"
+    },
+    {
+      "id": "engine_out",
+      "cat": "Acil durum",
+      "tier": "gold",
+      "en": "Engine Out",
+      "tr": "Tek Motor",
+      "rule_tr": "Doğru motoru 5 dk içinde kapatıp güvenli iniş",
+      "rule_en": "Shut down the correct engine within 5 minutes and land safely"
+    },
+    {
+      "id": "under_pressure",
+      "cat": "Acil durum",
+      "tier": "gold",
+      "en": "Under Pressure",
+      "tr": "Basınç Altında",
+      "rule_tr": "Basınç kaybında 3 dk içinde acil alçalma ve 10.000 ft",
+      "rule_en": "Emergency descent to 10,000 ft within 3 minutes after a pressurisation loss"
+    },
+    {
+      "id": "firefighter",
+      "cat": "Acil durum",
+      "tier": "gold",
+      "en": "Firefighter",
+      "tr": "İtfaiyeci",
+      "rule_tr": "Yangında 2 dk içinde divert ve süresinde iniş",
+      "rule_en": "Divert within 2 minutes of a fire and land in time"
+    },
+    {
+      "id": "safe_divert",
+      "cat": "Acil durum",
+      "tier": "bronze",
+      "en": "Safe Divert",
+      "tr": "Güvenli Divert",
+      "rule_tr": "İlk başarılı divert",
+      "rule_en": "Your first successful diversion"
+    },
+    {
+      "id": "keep_calm",
+      "cat": "Acil durum",
+      "tier": "silver",
+      "en": "Keep Calm",
+      "tr": "Sakin Ol",
+      "rule_tr": "Taşkın yolcu olayını kelepçe ve polise teslimle kapatmak",
+      "rule_en": "Resolve an unruly passenger incident with restraints and a police handover"
+    },
+    {
+      "id": "first_stamp",
+      "cat": "Pasaport",
+      "tier": "bronze",
+      "en": "First Stamp",
+      "tr": "İlk Damga",
+      "rule_tr": "İlk uçuş",
+      "rule_en": "Your first flight"
+    },
+    {
+      "id": "countries_10",
+      "cat": "Pasaport",
+      "tier": "bronze",
+      "en": "Traveller",
+      "tr": "Gezgin",
+      "rule_tr": "10 ülke",
+      "rule_en": "10 countries"
+    },
+    {
+      "id": "countries_25",
+      "cat": "Pasaport",
+      "tier": "silver",
+      "en": "Globetrotter",
+      "tr": "Dünya Gezgini",
+      "rule_tr": "25 ülke",
+      "rule_en": "25 countries"
+    },
+    {
+      "id": "countries_50",
+      "cat": "Pasaport",
+      "tier": "gold",
+      "en": "Ambassador",
+      "tr": "Büyükelçi",
+      "rule_tr": "50 ülke",
+      "rule_en": "50 countries"
+    },
+    {
+      "id": "continents_6",
+      "cat": "Pasaport",
+      "tier": "legend",
+      "en": "Six Continents",
+      "tr": "Altı Kıta",
+      "rule_tr": "6 kıtada iniş",
+      "rule_en": "Land on 6 continents"
+    },
+    {
+      "id": "long_haul",
+      "cat": "Pasaport",
+      "tier": "silver",
+      "en": "Long Haul",
+      "tr": "Uzun Yol",
+      "rule_tr": "8 saat üzeri uçuş",
+      "rule_en": "A flight longer than 8 hours"
+    },
+    {
+      "id": "ultra_long_haul",
+      "cat": "Pasaport",
+      "tier": "gold",
+      "en": "Ultra Long Haul",
+      "tr": "Çok Uzun Yol",
+      "rule_tr": "12 saat üzeri uçuş",
+      "rule_en": "A flight longer than 12 hours"
+    },
+    {
+      "id": "home_base",
+      "cat": "Pasaport",
+      "tier": "bronze",
+      "en": "Home Base",
+      "tr": "Ana Üs",
+      "rule_tr": "Aynı meydana 10 iniş",
+      "rule_en": "10 landings at the same airport"
+    },
+    {
+      "id": "hours_100",
+      "cat": "Pasaport",
+      "tier": "silver",
+      "en": "100 Hours",
+      "tr": "100 Saat",
+      "rule_tr": "Toplam 100 blok saat",
+      "rule_en": "100 total block hours"
+    },
+    {
+      "id": "hours_1000",
+      "cat": "Pasaport",
+      "tier": "legend",
+      "en": "1000 Hours",
+      "tr": "1000 Saat",
+      "rule_tr": "Toplam 1000 blok saat",
+      "rule_en": "1000 total block hours"
+    },
+    {
+      "id": "oops_slide",
+      "cat": "Eğlence",
+      "tier": "fun",
+      "en": "Oops!",
+      "tr": "Hoppala!",
+      "rule_tr": "Armed kapıyı açıp slide'ı patlatmak (utanç rozeti)",
+      "rule_en": "Open an armed door and blow the slide (badge of shame)"
+    },
+    {
+      "id": "ding_ding",
+      "cat": "Eğlence",
+      "tier": "fun",
+      "en": "Ding-Ding",
+      "tr": "Ding-Ding",
+      "rule_tr": "Kemer ışığını bir uçuşta 10 kez açıp kapatmak",
+      "rule_en": "Switch the seatbelt sign on and off 10 times in one flight"
+    },
+    {
+      "id": "comedian",
+      "cat": "Eğlence",
+      "tier": "fun",
+      "en": "Comedian",
+      "tr": "Komedyen",
+      "rule_tr": "Humor Mode'da 25 esprili anons",
+      "rule_en": "25 funny announcements in Humor Mode"
+    },
+    {
+      "id": "spilled_coffee",
+      "cat": "Eğlence",
+      "tier": "fun",
+      "en": "Spilled Coffee",
+      "tr": "Dökülen Kahve",
+      "rule_tr": "Türbülansta kemer ışığını geç yakmak",
+      "rule_en": "Turn on the seatbelt sign too late in turbulence"
+    }
+  ]
+}

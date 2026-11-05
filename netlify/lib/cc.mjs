@@ -1,0 +1,185 @@
+// CrossCheck canlı harita API — ortak kod.
+// Sözleşme: CROSS-CHECK ↔ virtualwingsbycenk.com BAĞLANTI SÖZLEŞMESİ (v1), bölüm 3.
+// Blobs store "crosscheck", anahtarlar: live/<pilotId>, pilot/<pilotId>, auth/<pilotId>.
+// E-posta, şifre, IP adresi, gerçek ad SAKLANMAZ.
+import { createHash, timingSafeEqual } from "node:crypto";
+
+export const STORE_NAME = "crosscheck";
+const LIVE_MAX_AGE = 180;     // sn: GET /live yalnızca son 3 dakikadaki kayıtları döner
+const MIN_INTERVAL = 20;      // sn: aynı pilotId'den daha sık konum gelirse 429
+const MAX_BODY = 4096;        // bayt
+const TS_SKEW = 600;          // sn: ts sunucu saatinden en fazla bu kadar sapabilir
+const PHASES = ["gate", "taxi", "climb", "cruise", "descent", "approach", "landed"];
+const PUBLIC_LIVE = ["pilotId", "name", "rank", "flight", "aircraft", "dep", "arr",
+  "lat", "lon", "altFt", "gsKt", "hdg", "phase", "ts"];
+const PUBLIC_PROFILE = ["pilotId", "name", "rank", "xp", "flights", "hours", "badges", "updated"];
+
+const ID_RE = /^[A-Z0-9]{8}$/;
+const SECRET_RE = /^[0-9a-fA-F]{32}$/;
+
+// ---------- yanıtlar ----------
+const JSON_H = { "Content-Type": "application/json; charset=utf-8" };
+export const json = (status, body, headers = {}) =>
+  new Response(JSON.stringify(body), { status, headers: { ...JSON_H, ...headers } });
+const ok = () => json(200, { ok: true }, { "Cache-Control": "no-store" });
+const err = (status, error) => json(status, { ok: false, error }, { "Cache-Control": "no-store" });
+export const bad = (m = "bad_request") => err(400, m);
+const forbidden = () => err(403, "forbidden");
+const tooMany = () => err(429, "too_many_requests");
+const notFound = () => err(404, "not_found");
+const notAllowed = (allow) => new Response(JSON.stringify({ ok: false, error: "method_not_allowed" }),
+  { status: 405, headers: { ...JSON_H, Allow: allow } });
+
+// ---------- doğrulama ----------
+const clean = (s) => String(s).replace(/[\u0000-\u001F\u007F<>]/g, "").trim();
+function str(v, max, { min = 0, re } = {}) {
+  if (typeof v !== "string") return undefined;
+  const s = clean(v);
+  if (s.length < min || s.length > max) return undefined;
+  if (re && !re.test(s)) return undefined;
+  return s;
+}
+function num(v, lo, hi, { int = false } = {}) {
+  if (typeof v !== "number" || !Number.isFinite(v) || v < lo || v > hi) return undefined;
+  if (int && !Number.isInteger(v)) return undefined;
+  return v;
+}
+const has = (o, keys) => keys.every((k) => o[k] !== undefined);
+
+async function readBody(req) {
+  const len = Number(req.headers.get("content-length") || 0);
+  if (len > MAX_BODY) return null;
+  const text = await req.text();
+  if (text.length > MAX_BODY) return null;
+  try {
+    const o = JSON.parse(text);
+    return o && typeof o === "object" && !Array.isArray(o) ? o : null;
+  } catch { return null; }
+}
+
+const sha256 = (s) => createHash("sha256").update(s, "utf8").digest("hex");
+
+// İlk istekte auth/<pilotId> = sha256(secret) yazılır; sonra tutmazsa false.
+async function checkAuth(store, pilotId, secret) {
+  const h = sha256(secret);
+  const saved = await store.get(`auth/${pilotId}`, { type: "text" });
+  if (saved == null) { await store.set(`auth/${pilotId}`, h); return true; }
+  const a = Buffer.from(saved), b = Buffer.from(h);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+function creds(o) {
+  const pilotId = typeof o.pilotId === "string" && ID_RE.test(o.pilotId) ? o.pilotId : undefined;
+  const secret = typeof o.secret === "string" && SECRET_RE.test(o.secret) ? o.secret : undefined;
+  return pilotId && secret ? { pilotId, secret } : null;
+}
+const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined).map((k) => [k, o[k]]));
+
+// ---------- POST /api/cc/position ----------
+export async function position(req, store, now = Date.now()) {
+  if (req.method !== "POST") return notAllowed("POST");
+  const o = await readBody(req);
+  if (!o || o.v !== 1) return bad();
+  const c = creds(o);
+  if (!c) return bad();
+  const t = Math.floor(now / 1000);
+  const rec = {
+    pilotId: c.pilotId,
+    name: str(o.name, 32, { min: 1 }),
+    rank: str(o.rank, 32, { min: 1 }),
+    flight: str(o.flight ?? "", 12),
+    aircraft: str(o.aircraft ?? "", 16),
+    dep: str(o.dep ?? "", 8, { re: /^[A-Za-z0-9]*$/ }),
+    arr: str(o.arr ?? "", 8, { re: /^[A-Za-z0-9]*$/ }),
+    lat: num(o.lat, -90, 90),
+    lon: num(o.lon, -180, 180),
+    altFt: num(o.altFt, -2000, 60000),
+    gsKt: num(o.gsKt, 0, 1200),
+    hdg: num(o.hdg, 0, 360),
+    phase: PHASES.includes(o.phase) ? o.phase : undefined,
+    ts: num(o.ts, t - TS_SKEW, t + TS_SKEW, { int: true }),
+  };
+  if (!has(rec, PUBLIC_LIVE)) return bad();
+  if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
+
+  const prev = await store.get(`live/${c.pilotId}`, { type: "json" });
+  if (prev && typeof prev._rx === "number" && now - prev._rx < MIN_INTERVAL * 1000) return tooMany();
+
+  rec.altFt = Math.round(rec.altFt); rec.gsKt = Math.round(rec.gsKt); rec.hdg = Math.round(rec.hdg) % 360;
+  await store.setJSON(`live/${c.pilotId}`, { ...rec, _rx: now });  // üzerine yazar; geçmiş yok
+  return ok();
+}
+
+// ---------- POST /api/cc/end ----------
+export async function end(req, store) {
+  if (req.method !== "POST") return notAllowed("POST");
+  const o = await readBody(req);
+  const c = o && creds(o);
+  if (!c) return bad();
+  if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
+  await store.delete(`live/${c.pilotId}`);
+  return ok();
+}
+
+// ---------- GET /api/cc/live ----------
+export async function live(req, store, now = Date.now()) {
+  if (req.method !== "GET" && req.method !== "HEAD") return notAllowed("GET");
+  const cutoff = Math.floor(now / 1000) - LIVE_MAX_AGE;
+  const { blobs } = await store.list({ prefix: "live/" });
+  const out = [], stale = [];
+  await Promise.all(blobs.map(async ({ key }) => {
+    const r = await store.get(key, { type: "json" }).catch(() => null);
+    if (!r || typeof r.ts !== "number" || r.ts < cutoff) stale.push(key);
+    else out.push(pick(r, PUBLIC_LIVE));      // secret ve _rx alanları çıkar
+  }));
+  await Promise.all(stale.map((k) => store.delete(k).catch(() => {})));
+  out.sort((a, b) => a.pilotId.localeCompare(b.pilotId));
+  // Kısa CDN önbelleği: aynı anda haritayı açan herkes için fonksiyon tekrar çalışmaz (kredi tasarrufu).
+  return json(200, out, {
+    "Cache-Control": "public, max-age=0, must-revalidate",
+    "Netlify-CDN-Cache-Control": "public, durable, s-maxage=15, stale-while-revalidate=15",
+    "Access-Control-Allow-Origin": "*",
+  });
+}
+
+// ---------- POST /api/cc/profile ----------
+export async function profile(req, store, now = Date.now()) {
+  if (req.method !== "POST") return notAllowed("POST");
+  const o = await readBody(req);
+  if (!o || o.v !== 1) return bad();
+  const c = creds(o);
+  if (!c) return bad();
+  const t = Math.floor(now / 1000);
+  const badges = Array.isArray(o.badges) && o.badges.length <= 100 &&
+    o.badges.every((b) => typeof b === "string" && /^[a-z0-9_]{1,32}$/.test(b))
+    ? [...new Set(o.badges)] : undefined;
+  const rec = {
+    pilotId: c.pilotId,
+    name: str(o.name, 32, { min: 1 }),
+    rank: str(o.rank, 32, { min: 1 }),
+    xp: num(o.xp, 0, 1e9, { int: true }),
+    flights: num(o.flights, 0, 1e7, { int: true }),
+    hours: num(o.hours, 0, 1e7),
+    badges,
+    updated: num(o.updated, 1e9, t + TS_SKEW, { int: true }),
+  };
+  if (!has(rec, PUBLIC_PROFILE)) return bad();
+  if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
+  rec.hours = Math.round(rec.hours * 10) / 10;
+  await store.setJSON(`pilot/${c.pilotId}`, rec);  // üzerine yazar; uçuş listesi yok
+  return ok();
+}
+
+// ---------- GET /api/cc/pilot?id= ----------
+export async function pilot(req, store) {
+  if (req.method !== "GET" && req.method !== "HEAD") return notAllowed("GET");
+  const id = new URL(req.url).searchParams.get("id") || "";
+  if (!ID_RE.test(id)) return bad();
+  const r = await store.get(`pilot/${id}`, { type: "json" });
+  if (!r) return notFound();
+  return json(200, pick(r, PUBLIC_PROFILE), {
+    "Cache-Control": "public, max-age=0, must-revalidate",
+    "Netlify-CDN-Cache-Control": "public, durable, s-maxage=60, stale-while-revalidate=60",
+    "Access-Control-Allow-Origin": "*",
+  });
+}

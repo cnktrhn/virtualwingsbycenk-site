@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lesson 6: Flying online: VATSIM and IVAO — Virtual Wings by Cenk</title>
+<meta name="description" content="Flying online on VATSIM and IVAO: accounts, pilot clients, flight plans, the controller chain, radio phraseology and sample exchanges. Virtual Wings by Cenk training series, Lesson 6.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="../../images/logo-emblem.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/style.css">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="alternate" hreflang="tr" href="https://virtualwingsbycenk.com/ders-6/">
+<link rel="alternate" hreflang="en" href="https://virtualwingsbycenk.com/en/ders-6/">
+<script>try{var p=localStorage.getItem("vw_lang");if(p&&p!=="en"&&(p==="tr"||p==="en"))location.replace("../../ders-6/"+location.hash)}catch(e){}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../../images/logo-emblem.png" alt="Virtual Wings by Cenk logo"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="../#hakkimda">About me</a>       <a href="../#partner">Partnership</a>       <a href="../#fenix">Fenix Simulations</a>       <a href="../#canli">Live stream</a>       <a href="../#ekipman">Gear</a>       <a href="../#egitim">Training</a>       <a href="../#videolar">Videos</a>       <a href="../#galeri">Gallery</a>       <a href="../#abone" class="nav-cta">Subscribe</a>       <a href="../#iletisim">Contact</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="../../ders-6/" hreflang="tr" lang="tr" data-lang="tr">TR</a><a href="./" hreflang="en" lang="en" class="on" aria-current="true" data-lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="../">Home</a> › <a href="../#egitim">Training</a> › Lesson 6</p>
+    <p class="lesson-kicker">Lesson 6</p>
+    <h1>Flying online: VATSIM and IVAO</h1>
+    <ul class="lesson-meta">
+      <li>Level: Advanced</li>
+      <li>Reading time: about 15 minutes</li>
+      <li>Radio with real controllers</li>
+    </ul>
+  </div>
+</section>
+
+<article class="wrap lesson-body">
+  <p class="intro">Up to now you've flown on your own. In this lesson we'll share the sky: VATSIM and IVAO are free networks where thousands of virtual pilots and volunteer air traffic controllers from all over the world fly at the same time. The controllers use real procedures and real radio phraseology. This is where simulation gets most exciting.</p>
+  <p class="note">In the sample exchanges, the departure procedure, taxi route and frequencies are shown in square brackets; when you fly, take the real values from the charts and ATC.</p>
+
+  <section>
+    <h2><span class="n">1</span>VATSIM or IVAO?</h2>
+    <p>Both are free, both are very good, and both have an active Turkish community. I fly on both. The most important question when choosing: which one has more controllers online when you fly, and which one do your friends fly on?</p>
+    <div class="compare">
+      <div class="cmp-card">
+        <h3>IVAO</h3>
+        <dl>
+          <div><dt>Member number</dt><dd>VID</dd></div>
+          <div><dt>Pilot client</dt><dd>Altitude</dd></div>
+          <div><dt>Live map</dt><dd>Webeye</dd></div>
+          <div><dt>Flight plan</dt><dd>IVAO website or SimBrief</dd></div>
+        </dl>
+        <a class="btn" href="https://ivao.aero/" target="_blank" rel="noopener">ivao.aero ↗</a>
+      </div>
+      <div class="cmp-card">
+        <h3>VATSIM</h3>
+        <dl>
+          <div><dt>Member number</dt><dd>CID</dd></div>
+          <div><dt>Pilot client</dt><dd>vPilot (for MSFS)</dd></div>
+          <div><dt>Live map</dt><dd>VATSpy, Vatsim Radar</dd></div>
+          <div><dt>Flight plan</dt><dd>VATSIM website or SimBrief</dd></div>
+        </dl>
+        <a class="btn" href="https://vatsim.net/" target="_blank" rel="noopener">vatsim.net ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Before you start</h2>
+    <p><strong>Create an account:</strong> Sign up for free on your chosen network's website. After registering you may be asked to complete a short introduction or training step; do it, it's genuinely useful.</p>
+    <p><strong>Install the pilot client:</strong> Altitude for IVAO, vPilot for VATSIM. The client connects to MSFS, sends your aircraft to the network, brings other aircraft into your sim and carries the radio audio. Set up a microphone and a push-to-talk key; using a button on your joystick is very handy.</p>
+    <p><strong>Prepare your sim:</strong> Turn off AI traffic in MSFS (Lesson 1). Other aircraft will now be real pilots.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Filing your flight plan</h2>
+    <p>When you fly online, ATC sees your plan, so you need to file it before connecting. The easiest way is to send the SimBrief plan you made in Lesson 3 straight to the network using SimBrief's prefile option.</p>
+    <p>In the plan remarks you state how you'll communicate: <strong>/V/</strong> voice, <strong>/R/</strong> listen by voice and reply by text, <strong>/T/</strong> text only. If you're not ready to talk yet, starting with /T/ is completely normal.</p>
+    <div class="tip"><b>Cenk's tip</b>On your first flights, write "NEW MEMBER" in the plan remarks. Controllers will see it and speak more slowly and helpfully. There's no shame in being new; we all pressed that transmit button for the first time once.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Who will you talk to?</h2>
+    <p>On one flight you talk to several controllers. Each is responsible for one phase of the flight and hands you over to the next.</p>
+    <figure class="diagram"><svg viewBox="0 0 960 400" role="img" aria-label="Controllers you talk to during the flight" xmlns="http://www.w3.org/2000/svg"><rect width="960" height="400" rx="12" fill="#0B1626"/><rect x="0" y="300" width="960" height="100" rx="12" fill="#101C2C"/><path d="M110 300 C 230 300, 300 70, 430 62 L 530 62 C 660 70, 730 300, 850 300" fill="none" stroke="#2C8BF0" stroke-width="3" stroke-dasharray="9 7"/><rect x="40" y="296" width="140" height="8" rx="3" fill="#3A4656"/><rect x="780" y="296" width="140" height="8" rx="3" fill="#3A4656"/><text x="110" y="335" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#FFFFFF">LTFM</text><text x="110" y="355" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Istanbul</text><text x="850" y="335" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#FFFFFF">LTAI</text><text x="850" y="355" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Antalya</text><rect x="10" y="224" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="62" y="247" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">DEL</text><text x="62" y="269" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Clearance</text><g><circle cx="16" cy="224" r="13" fill="#3FD0FF"/><text x="16" y="229" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">1</text></g><rect x="120" y="224" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="172" y="247" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">GND</text><text x="172" y="269" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Pushback, taxi</text><g><circle cx="126" cy="224" r="13" fill="#3FD0FF"/><text x="126" y="229" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">2</text></g><rect x="230" y="166" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="282" y="189" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">TWR</text><text x="282" y="211" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Takeoff</text><g><circle cx="236" cy="166" r="13" fill="#3FD0FF"/><text x="236" y="171" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">3</text></g><rect x="340" y="106" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="392" y="129" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">DEP</text><text x="392" y="151" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Climb</text><g><circle cx="346" cy="106" r="13" fill="#3FD0FF"/><text x="346" y="111" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">4</text></g><rect x="428" y="36" width="104" height="60" rx="8" fill="#0F223A" stroke="#F5C518" stroke-width="2"/><text x="480" y="59" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#F5C518">CTR</text><text x="480" y="81" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Cruise</text><g><circle cx="434" cy="36" r="13" fill="#F5C518"/><text x="434" y="41" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">5</text></g><rect x="516" y="106" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="568" y="129" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">APP</text><text x="568" y="151" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Descent, ILS</text><g><circle cx="522" cy="106" r="13" fill="#3FD0FF"/><text x="522" y="111" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">6</text></g><rect x="626" y="166" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="678" y="189" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">TWR</text><text x="678" y="211" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Landing</text><g><circle cx="632" cy="166" r="13" fill="#3FD0FF"/><text x="632" y="171" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">7</text></g><rect x="736" y="224" width="104" height="60" rx="8" fill="#0F223A" stroke="#3FD0FF" stroke-width="2"/><text x="788" y="247" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="800" fill="#3FD0FF">GND</text><text x="788" y="269" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">Taxi, parking</text><g><circle cx="742" cy="224" r="13" fill="#3FD0FF"/><text x="742" y="229" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" font-weight="800" fill="#040E1A">8</text></g><text x="480" y="385" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="13" fill="#9AA9BD">The boxes show who you talk to at each phase of the flight · not to scale</text></svg><figcaption>Controller chain on the LTFM–LTAI flight</figcaption></figure>
+    <p>On online networks, not every position is always staffed. The rule is simple: <strong>top-down coverage</strong>. For example, if Delivery is closed in Istanbul, you ask Ground for your clearance; if Ground is closed too, you ask Tower. If none of them is online and only Ankara Control is, you ask them for everything.</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 720 360" role="img" aria-label="Top-down coverage" xmlns="http://www.w3.org/2000/svg"><rect width="720" height="360" rx="12" fill="#0B1626"/><rect x="30" y="24" width="340" height="54" rx="8" fill="#1B3556" stroke="#F5C518" stroke-width="2"/><text x="200" y="58" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">CTR</text><text x="450" y="49" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Area control (Control)</text><text x="450" y="69" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">A large region, cruise</text><rect x="55" y="88" width="290" height="54" rx="8" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><text x="200" y="122" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">APP / DEP</text><text x="450" y="113" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Approach and departure</text><text x="450" y="133" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">Around the airport</text><rect x="80" y="152" width="240" height="54" rx="8" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><text x="200" y="186" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">TWR</text><text x="450" y="177" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Tower</text><text x="450" y="197" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">The runway and the air above it</text><rect x="105" y="216" width="190" height="54" rx="8" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><text x="200" y="250" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">GND</text><text x="450" y="241" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Ground</text><text x="450" y="261" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">Apron and taxiways</text><rect x="130" y="280" width="140" height="54" rx="8" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><text x="200" y="314" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">DEL</text><text x="450" y="305" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="700" fill="#FFFFFF">Clearance</text><text x="450" y="325" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">Flight clearance</text><path d="M410 40 V316" stroke="#F5C518" stroke-width="3"/><path d="M410 326 l-7 -12 h14z" fill="#F5C518"/><text x="360" y="352" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#F5C518">If the lower position is closed, the one above takes over its job</text></svg><figcaption>Top-down coverage</figcaption></figure>
+    <p>If there are no controllers at all, switch to the <strong>UNICOM</strong> frequency (122.800) and announce what you're doing with short text messages, so nearby pilots know where you are.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>Radio phraseology basics</h2>
+    <p>The language of aviation radio is English, and it has a short, clear pattern. On your first call you say four things: <strong>who you're calling</strong> (Istanbul Tower), <strong>who you are</strong> (VWC001), <strong>where you are</strong> (holding point runway 35L) and <strong>what you want</strong> (ready for departure).</p>
+    <p><strong>Readback:</strong> Always read back the clearances, altitudes, headings, speeds, runway, squawk code and frequencies the controller gives you, and add your callsign at the end. That way the controller confirms you've understood correctly.</p>
+    <p><strong>Letters and numbers:</strong> To avoid confusion, letters are spoken as code words. Numbers have three special pronunciations too: 3 "tree", 5 "fife", 9 "niner".</p>
+    <div class="alphabet">
+      <span><b>A</b>Alfa</span><span><b>B</b>Bravo</span><span><b>C</b>Charlie</span><span><b>D</b>Delta</span><span><b>E</b>Echo</span><span><b>F</b>Foxtrot</span><span><b>G</b>Golf</span><span><b>H</b>Hotel</span><span><b>I</b>India</span><span><b>J</b>Juliett</span><span><b>K</b>Kilo</span><span><b>L</b>Lima</span><span><b>M</b>Mike</span><span><b>N</b>November</span><span><b>O</b>Oscar</span><span><b>P</b>Papa</span><span><b>Q</b>Quebec</span><span><b>R</b>Romeo</span><span><b>S</b>Sierra</span><span><b>T</b>Tango</span><span><b>U</b>Uniform</span><span><b>V</b>Victor</span><span><b>W</b>Whiskey</span><span><b>X</b>X-ray</span><span><b>Y</b>Yankee</span><span><b>Z</b>Zulu</span>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>Sample flight: LTFM to LTAI</h2>
+    <p>This time we're flying online the flight we've been planning since Lesson 3. Below are the exchanges for the four most important moments. The gold bubbles are your words; the blue bubbles are the controller's.</p>
+
+    <h3 class="dlg-title">Getting your clearance · Istanbul Delivery</h3>
+    <div class="dialog">
+      <p class="pilot">Istanbul Delivery, VWC001, stand C12, information Alpha, request IFR clearance to Antalya.</p>
+      <p class="atc">VWC001, cleared to Antalya via [SID] departure, runway 35L, climb initially 6000 feet, squawk 4521.</p>
+      <p class="pilot">Cleared to Antalya, [SID] departure, runway 35L, climb 6000 feet, squawk 4521, VWC001.</p>
+      <p class="atc">VWC001, readback correct, contact Istanbul Ground [frequency].</p>
+    </div>
+
+    <h3 class="dlg-title">Takeoff · Istanbul Tower</h3>
+    <div class="dialog">
+      <p class="pilot">Istanbul Tower, VWC001, holding point runway 35L, ready for departure.</p>
+      <p class="atc">VWC001, wind 340 degrees 8 knots, runway 35L, cleared for takeoff.</p>
+      <p class="pilot">Runway 35L, cleared for takeoff, VWC001.</p>
+    </div>
+
+    <h3 class="dlg-title">Approach · Antalya Approach</h3>
+    <div class="dialog">
+      <p class="pilot">Antalya Approach, VWC001, descending flight level 80, information Bravo.</p>
+      <p class="atc">VWC001, descend 3000 feet, cleared ILS approach runway 36C, report established.</p>
+      <p class="pilot">Descend 3000 feet, cleared ILS approach runway 36C, wilco, VWC001.</p>
+    </div>
+
+    <h3 class="dlg-title">Landing · Antalya Tower</h3>
+    <div class="dialog">
+      <p class="pilot">Antalya Tower, VWC001, established ILS runway 36C.</p>
+      <p class="atc">VWC001, wind 010 degrees 6 knots, runway 36C, cleared to land.</p>
+      <p class="pilot">Runway 36C, cleared to land, VWC001.</p>
+    </div>
+    <p>When a controller hands you over to the next ("contact Ankara Control [frequency]"), read back the frequency too, switch to the new frequency and check in with your altitude.</p>
+    <div class="tip"><b>Cenk's tip</b>Before your first online flight, just listen for a few days. Opening a busy airport on a live air traffic listening site or on the network's live map and listening to the controllers gets the patterns into your ear very quickly.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span>Online etiquette</h2>
+    <div class="checklist lesson-check">
+      <div class="cl-head">A good online pilot</div>
+      <ul>
+        <li>Connects at the gate (on stand), never on the runway or in the air</li>
+        <li>Listens to the frequency for a few seconds before talking</li>
+        <li>Thinks about what to say, then speaks briefly and clearly</li>
+        <li>Says "say again" without hesitation when they don't understand</li>
+        <li>Sets the squawk code and frequencies correctly</li>
+        <li>Tells ATC if they have to leave before the flight is over</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">?</span>Test yourself</h2>
+    <p>Click a question to see the answer.</p>
+    <div class="quiz">
+      <details><summary>In Istanbul, Delivery and Ground are closed and Tower is open. Who do you ask for your clearance?</summary><p>Tower. Under the top-down coverage rule, if the lower positions are closed, the one above takes over their job.</p></details>
+      <details><summary>What do you do if there are no controllers at all?</summary><p>Switch to the UNICOM frequency (122.800) and announce what you're doing with short text messages.</p></details>
+      <details><summary>What does /T/ mean in the plan remarks?</summary><p>That you'll communicate by text only. /V/ means voice, /R/ means listening by voice and replying by text.</p></details>
+      <details><summary>The controller says "climb flight level 240". What should your reply be?</summary><p>"Climb flight level 240, VWC001." You always read back altitude instructions and add your callsign at the end.</p></details>
+      <details><summary>Where should you connect to the network?</summary><p>At the gate, on stand. Connecting on the runway or in the air endangers other traffic.</p></details>
+    </div>
+  </section>
+
+  <section class="finale">
+    <h2><span class="n">🎓</span>Congratulations, you've finished the series!</h2>
+    <p>From installation to the cockpit, from flight planning to takeoff, from an ILS landing to flying online: in six lessons you've learned a complete airline flight. Now it's time to practise. Hope to hear you on frequency one day!</p>
+    <p>To hear about new lessons and streams, <a href="../#abone">subscribe</a>; and come and watch my flights on the <a href="../#canli">live stream</a>. ✈️</p>
+  </section>
+
+  <nav class="lesson-next" aria-label="Lesson navigation">
+    <a href="../ders-5/"><small>← Previous lesson</small><b>Lesson 5: ILS approach and landing</b></a>     <a class="right" href="../#egitim"><small>Series complete</small><b>Back to all lessons</b></a>
+  </nav>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk</span>     <span>The wings are virtual, the thrill is real.</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+const mb=document.getElementById("menuBtn"), mn=document.getElementById("menu");
+mb.addEventListener("click",()=>{const o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);});
+</script>
+<script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
+</body>
+</html>

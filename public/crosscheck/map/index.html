@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Canlı harita — CrossCheck · Virtual Wings by Cenk</title>
+<meta name="description" content="CrossCheck canlı harita: CrossCheck kullanan pilotların uçuşları gerçek zamanlı haritada.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="/images/logo-emblem.png">
+<link rel="canonical" href="https://virtualwingsbycenk.com/crosscheck/map/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/crosscheck.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
+<script>
+(function(){var l;try{l=localStorage.getItem("vw_lang")}catch(e){}
+if(l!=="tr"&&l!=="en")l=/^tr/i.test(navigator.language||"")?"tr":"en";
+document.documentElement.lang=l;document.documentElement.dataset.l=l;
+window.CC_T={tr:"Canlı harita — CrossCheck · Virtual Wings by Cenk",en:"Live map — CrossCheck · Virtual Wings by Cenk"};
+window.CC_D={tr:"CrossCheck canlı harita: CrossCheck kullanan pilotların uçuşları gerçek zamanlı haritada.",en:"CrossCheck live map: flights of CrossCheck pilots on a real-time map."};
+document.title=CC_T[l];})();
+</script>
+</head>
+<body class="cc">
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/images/logo-emblem.png" alt="Virtual Wings by Cenk"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="/crosscheck/"><span data-l="tr">Ürün</span><span data-l="en" lang="en">Product</span></a>
+      <a href="/crosscheck/support/"><span data-l="tr">Destek</span><span data-l="en" lang="en">Support</span></a>
+      <a href="/crosscheck/faq/"><span data-l="tr">SSS</span><span data-l="en" lang="en">FAQ</span></a>
+      <a href="/crosscheck/changelog/"><span data-l="tr">Sürüm notları</span><span data-l="en" lang="en">Changelog</span></a>
+      <a href="/crosscheck/map/" aria-current="page" class="on"><span data-l="tr">Canlı harita</span><span data-l="en" lang="en">Live map</span></a>
+      <a href="/" class="cc-home"><span data-l="tr">Ana site ↗</span><span data-l="en" lang="en">Main site ↗</span></a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="#" data-lang="tr" lang="tr">TR</a><a href="#" data-lang="en" lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span data-l="tr">Menü</span><span data-l="en" lang="en">Menu</span></button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero cc-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="/">Virtual Wings</a> › <a href="/crosscheck/">CrossCheck</a> › <span data-l="tr">Canlı harita</span><span data-l="en" lang="en">Live map</span></p>
+    <p class="lesson-kicker"><span data-l="tr">Canlı · v1.1</span><span data-l="en" lang="en">Live · v1.1</span></p>
+    <h1><span data-l="tr">Canlı harita</span><span data-l="en" lang="en">Live map</span></h1>
+    
+  </div>
+</section>
+
+<div class="wrap cc-body">
+<section class="cc-sec cc-mapwrap">
+  <div class="cc-mapbar">
+    <span class="cc-live-dot" aria-hidden="true"></span>
+    <b id="ccCount">–</b>
+    <span class="cc-soft" id="ccUpd"></span>
+  </div>
+  <div id="ccmap" class="cc-map" role="region" aria-label="Canlı uçuş haritası"></div>
+  <p class="cc-map-msg" id="ccMsg" hidden></p>
+  <p class="cc-soft cc-map-note"><span data-l="tr">Haritada yalnızca CrossCheck'te "siteye bağlan" seçeneğini açan pilotlar görünür. Konumlar yaklaşık 30 saniyede bir yenilenir; 3 dakika veri gelmeyen uçuşlar haritadan düşer.</span><span data-l="en" lang="en">Only pilots who turn on "connect to site" in CrossCheck appear on the map. Positions refresh about every 30 seconds, and flights with no data for 3 minutes drop off the map.</span></p>
+</section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk · CrossCheck</span>
+    <span><span data-l="tr">İletişim</span><span data-l="en" lang="en">Contact</span>: <a href="mailto:info@virtualwingsbycenk.com">info@virtualwingsbycenk.com</a></span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent=new Date().getFullYear();
+(function(){
+var mb=document.getElementById("menuBtn"),mn=document.getElementById("menu");
+mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o)});
+var md=document.querySelector('meta[name="description"]');
+function setL(l){document.documentElement.lang=l;document.documentElement.dataset.l=l;document.title=CC_T[l];md.content=CC_D[l];
+document.querySelectorAll(".lang-switch a").forEach(function(a){var on=a.dataset.lang===l;a.classList.toggle("on",on);a.setAttribute("aria-pressed",on)});
+try{localStorage.setItem("vw_lang",l)}catch(e){}
+document.dispatchEvent(new CustomEvent("cc-lang",{detail:l}))}
+document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();setL(a.dataset.lang)})});
+setL(document.documentElement.dataset.l);
+})();
+</script>
+<script>
+window.ccMeta=(function(){var p=null;return function(){if(!p)p=fetch("/crosscheck/rozetler.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():{}}).catch(function(){return {}}).then(norm);return p}
+function arr(x){if(Array.isArray(x))return x;if(x&&typeof x==="object")return Object.keys(x).map(function(k){var v=x[k];v=(v&&typeof v==="object")?v:{name:String(v)};if(!v.id)v.id=k;return v});return []}
+function norm(j){j=j||{};var ranks={},badges=[];
+arr(j.ranks||j.rutbeler||j["rütbeler"]).forEach(function(r,i){if(r&&r.id)ranks[r.id]=Object.assign({order:i},r)});
+arr(j.badges||j.rozetler).forEach(function(b){if(b&&b.id)badges.push(b)});
+return {ranks:ranks,badges:badges}}})();
+window.ccText=function(o,l,base){if(!o)return "";base=base||"name";return o[base+"_"+l]||o[l]||o[base]||o.name||o.ad||o.title||""};
+</script>
+<script>
+window.addEventListener("load",function(){
+var T={tr:{n:function(k){return k===0?"Şu an uçuşta pilot yok":k+" pilot uçuşta"},upd:"Son güncelleme",err:"Harita verisi şu an alınamıyor, birazdan tekrar denenecek.",empty:"Şu an uçuşta CrossCheck pilotu yok. Biri kalkışa geçtiğinde burada görünecek.",
+  rank:"Rütbe",flight:"Uçuş",route:"Rota",alt:"İrtifa",gs:"Yer hızı",phase:"Safha",pilot:"Pilot sayfası →",
+  ph:{gate:"Kapıda",taxi:"Taksi",climb:"Tırmanış",cruise:"Seyir",descent:"Alçalış",approach:"Yaklaşma",landed:"İndi"},loc:"tr-TR"},
+ en:{n:function(k){return k===0?"No pilots flying right now":k===1?"1 pilot flying":k+" pilots flying"},upd:"Last update",err:"Can't load map data right now. Retrying shortly.",empty:"No CrossCheck pilots are flying right now. They'll appear here once someone takes off.",
+  rank:"Rank",flight:"Flight",route:"Route",alt:"Altitude",gs:"Ground speed",phase:"Phase",pilot:"Pilot page →",
+  ph:{gate:"At gate",taxi:"Taxiing",climb:"Climbing",cruise:"Cruising",descent:"Descending",approach:"Approach",landed:"Landed"},loc:"en-GB"}};
+var lang=function(){return document.documentElement.dataset.l==="en"?"en":"tr"};
+var meta={ranks:{},badges:[]};ccMeta().then(function(m){meta=m;renderAll()});
+var map=L.map("ccmap",{worldCopyJump:true,zoomControl:true}).setView([39.2,35],5);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:12,minZoom:2,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+var PLANE='<svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M16 1.5c1.2 0 2 1.3 2 3.2v7.6l11 6.4v3l-11-3.2v6.1l3.4 2.6V30L16 28.6 10.6 30v-2.8l3.4-2.6v-6.1L3 21.7v-3l11-6.4V4.7c0-1.9.8-3.2 2-3.2z"/></svg>';
+var markers={},data={},lastOk=0,fitted=false;
+function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
+function fmt(n){return Math.round(n).toLocaleString(T[lang()].loc)}
+function rankName(id){var r=meta.ranks[id];return r?ccText(r,lang()):id}
+function popup(p){var t=T[lang()],d=el("div","cc-pop");
+  var h=el("div","cc-pop-h");h.appendChild(el("b",null,p.name));h.appendChild(el("span","cc-pop-rank",rankName(p.rank)));d.appendChild(h);
+  var dl=el("dl");function row(k,v){if(v==null||v==="")return;var w=el("div");w.appendChild(el("dt",null,k));w.appendChild(el("dd",null,v));dl.appendChild(w)}
+  row(t.flight,[p.flight,p.aircraft].filter(Boolean).join(" · "));
+  row(t.route,(p.dep||"?")+" → "+(p.arr||"?"));
+  row(t.alt,fmt(p.altFt)+" ft");row(t.gs,fmt(p.gsKt)+" kt");row(t.phase,t.ph[p.phase]||p.phase);
+  d.appendChild(dl);var a=el("a","cc-pop-link",t.pilot);a.href="/crosscheck/pilot/?id="+encodeURIComponent(p.pilotId);d.appendChild(a);return d}
+function setRot(m,h){var e=m.getElement();if(e){var s=e.querySelector("svg");if(s)s.style.transform="rotate("+h+"deg)"}}
+function upsert(p){var m=markers[p.pilotId];var ll=[p.lat,p.lon];
+  if(!m){m=L.marker(ll,{icon:L.divIcon({className:"cc-ac ph-"+p.phase,html:PLANE,iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-12]}),title:p.name,keyboard:true,riseOnHover:true}).addTo(map);
+    m.bindPopup(function(){return popup(data[p.pilotId])},{maxWidth:260});markers[p.pilotId]=m}
+  else{m.setLatLng(ll);var e=m.getElement();if(e)e.className=e.className.replace(/ph-\w+/,"ph-"+p.phase);if(m.isPopupOpen())m.setPopupContent(popup(p))}
+  setRot(m,p.hdg)}
+function status(){var t=T[lang()],k=Object.keys(data).length;document.getElementById("ccCount").textContent=t.n(k);
+  document.getElementById("ccUpd").textContent=lastOk?t.upd+": "+new Date(lastOk).toLocaleTimeString(t.loc,{hour:"2-digit",minute:"2-digit",second:"2-digit"}):"";
+  var msg=document.getElementById("ccMsg");if(msg.dataset.k==="err"){msg.textContent=t.err;msg.hidden=false}else if(lastOk&&k===0){msg.textContent=t.empty;msg.hidden=false}else msg.hidden=true}
+function renderAll(){Object.keys(markers).forEach(function(id){var m=markers[id];if(m.isPopupOpen())m.setPopupContent(popup(data[id]))});status()}
+var busy=false;
+function load(){if(busy||document.hidden)return;busy=true;
+  fetch("/api/cc/live",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(list){
+    var seen={};(Array.isArray(list)?list:[]).forEach(function(p){if(!p||typeof p.lat!=="number"||typeof p.lon!=="number")return;seen[p.pilotId]=1;data[p.pilotId]=p;upsert(p)});
+    Object.keys(markers).forEach(function(id){if(!seen[id]){map.removeLayer(markers[id]);delete markers[id];delete data[id]}});
+    if(!fitted&&list.length){fitted=true;if(list.length>1)map.fitBounds(list.map(function(p){return [p.lat,p.lon]}),{padding:[40,40],maxZoom:7});else map.setView([list[0].lat,list[0].lon],6)}
+    lastOk=Date.now();document.getElementById("ccMsg").dataset.k="";status()})
+  .catch(function(){document.getElementById("ccMsg").dataset.k="err";status()}).finally(function(){busy=false})}
+load();setInterval(load,30000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden&&Date.now()-lastOk>25000)load()});
+document.addEventListener("cc-lang",renderAll);
+});
+</script>
+</body>
+</html>

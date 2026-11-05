@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ders 3: Uçuş planı hazırlamak — Virtual Wings by Cenk</title>
+<meta name="description" content="SimBrief ile uçuş planı hazırlamak: rota, yakıt ve ağırlık hesabı, OFP okumak ve planı Fenix A320'ye aktarmak. Virtual Wings by Cenk eğitim serisi, Ders 3.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="../images/logo-emblem.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+
+
+
+
+
+
+
+
+
+
+<link rel="alternate" hreflang="tr" href="https://virtualwingsbycenk.com/ders-3/">
+<link rel="alternate" hreflang="en" href="https://virtualwingsbycenk.com/en/ders-3/">
+<script>try{var p=localStorage.getItem("vw_lang");if(p&&p!=="tr"&&(p==="tr"||p==="en"))location.replace("../en/ders-3/"+location.hash)}catch(e){}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../"><img src="../images/logo-emblem.png" alt="Virtual Wings by Cenk logosu"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="../#hakkimda">Ben kimim</a>
+      <a href="../#partner">Partnership</a>
+      <a href="../#fenix">Fenix Simulations</a>
+      <a href="../#canli">Canlı yayın</a>
+      <a href="../#ekipman">Ekipmanlar</a>
+      <a href="../#egitim">Eğitim</a>
+      <a href="../#videolar">Videolar</a>
+      <a href="../#galeri">Galeri</a>
+      <a href="../#abone" class="nav-cta">Abone ol</a>
+      <a href="../#iletisim">İletişim</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="./" hreflang="tr" lang="tr" class="on" aria-current="true" data-lang="tr">TR</a><a href="../en/ders-3/" hreflang="en" lang="en" data-lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menü</button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="../">Ana sayfa</a> › <a href="../#egitim">Eğitim</a> › Ders 3</p>
+    <p class="lesson-kicker">Ders 3</p>
+    <h1>Uçuş planı hazırlamak</h1>
+    <ul class="lesson-meta">
+      <li>Seviye: Orta</li>
+      <li>Okuma süresi: yaklaşık 12 dakika</li>
+      <li>SimBrief · Fenix A320</li>
+    </ul>
+  </div>
+</section>
+
+<article class="wrap lesson-body">
+  <p class="intro">Gerçek bir uçuş, motorlar çalışmadan çok önce masada başlar. Pilotlar kalkıştan önce rotayı, yakıtı ve ağırlıkları içeren bir uçuş planı (OFP) alır ve onu dikkatle inceler. Simde bunu bizim için yapan en iyi araç SimBrief. Bu derste İstanbul'dan (LTFM) Antalya'ya (LTAI) bir A320 uçuşu planlayacağız.</p>
+  <p class="note">Şemalar ve örnek değerler öğretmek için hazırlanmıştır. Gerçek değerler uçağın profiline, yük durumuna ve o günkü rüzgâra göre değişir.</p>
+
+  <section>
+    <h2><span class="n">1</span>SimBrief nedir?</h2>
+    <p>SimBrief, gerçek havayollarının kullandığı uçuş planlarına çok benzeyen planlar hazırlayan ücretsiz bir web sitesidir. Navigraph hesabınla giriş yaparsın. Navigraph aboneliğin yoksa da kullanabilirsin; tek fark, navigasyon verisinin biraz daha eski bir sürüm olmasıdır. Önemli olan, SimBrief'teki verinin simdeki uçağının navigasyon verisiyle uyumlu olmasıdır.</p>
+    <figure class="diagram"><svg viewBox="0 0 660 300" role="img" aria-label="SimBrief planlama akışı" xmlns="http://www.w3.org/2000/svg"><rect width="660" height="300" rx="12" fill="#0B1626"/><rect x="16" y="36" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="86.0" cy="36" r="15" fill="#2C8BF0"/><text x="86.0" y="42" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">1</text><text x="86.0" y="86" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Giriş</text><text x="86.0" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Navigraph hesabı</text><path d="M159 84.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M175 84.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="178" y="36" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="248.0" cy="36" r="15" fill="#2C8BF0"/><text x="248.0" y="42" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">2</text><text x="248.0" y="86" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Uçuş</text><text x="248.0" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Kalkış, varış, saat</text><path d="M321 84.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M337 84.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="340" y="36" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="410.0" cy="36" r="15" fill="#2C8BF0"/><text x="410.0" y="42" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">3</text><text x="410.0" y="86" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Uçak</text><text x="410.0" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Tip ve profil</text><path d="M483 84.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M499 84.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="502" y="36" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="572.0" cy="36" r="15" fill="#2C8BF0"/><text x="572.0" y="42" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">4</text><text x="572.0" y="86" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Rota</text><text x="572.0" y="110" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Otomatik ya da elle</text><rect x="16" y="176" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="86.0" cy="176" r="15" fill="#2C8BF0"/><text x="86.0" y="182" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">5</text><text x="86.0" y="226" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Yük, yakıt</text><text x="86.0" y="250" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Yolcu, kargo, politika</text><path d="M159 224.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M175 224.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="178" y="176" width="140" height="96" rx="10" fill="#0F223A" stroke="#2C8BF0" stroke-width="2"/><circle cx="248.0" cy="176" r="15" fill="#2C8BF0"/><text x="248.0" y="182" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">6</text><text x="248.0" y="226" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">OFP</text><text x="248.0" y="250" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Planı oluştur</text><path d="M321 224.0 h13" stroke="#9AA9BD" stroke-width="2"/><path d="M337 224.0 l-7 -5 v10z" fill="#9AA9BD"/><rect x="340" y="176" width="140" height="96" rx="10" fill="#0F223A" stroke="#F5C518" stroke-width="2"/><circle cx="410.0" cy="176" r="15" fill="#F5C518"/><text x="410.0" y="182" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="17" font-weight="800" fill="#040E1A">7</text><text x="410.0" y="226" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#FFFFFF">Fenix</text><text x="410.0" y="250" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">MCDU'ya aktar</text><path d="M572.0 136 v18 H86.0 v14" fill="none" stroke="#9AA9BD" stroke-width="2" stroke-dasharray="5 5"/><path d="M86.0 162 l-5 -8 h10z" fill="#9AA9BD"/></svg><figcaption>SimBrief ile planlama akışı</figcaption></figure>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Uçuş bilgileri ve uçak</h2>
+    <p>SimBrief'te yeni bir uçuş planı başlattığında önce temel bilgileri girersin: uçuş numarası (örneğin VWC001), kalkış ve varış meydanlarının ICAO kodları (<strong>LTFM</strong> ve <strong>LTAI</strong>) ve kalkış saati.</p>
+    <p>Ardından uçak tipini seç: A319, A320 ya da A321. SimBrief'te kendi uçak profilini kaydedebilirsin; tescil, motor tipi ve ağırlık limitleri bu profilde saklanır. Fenix'te uçtuğun uçağın motor tipine ve ağırlıklarına uygun bir profil oluşturursan planın çok daha gerçekçi olur ve her uçuşta tekrar ayarlaman gerekmez.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Rota</h2>
+    <p>Rotayı elle yazabilirsin, ama başlangıçta SimBrief'in rota bulucusunu kullanmanı öneririm; o meydanlar arasında gerçekte kullanılan rotaları önerir. Seyir irtifasını ve yedek meydanı da otomatik bırakabilirsin. SimBrief, rüzgârlara ve uçağın ağırlığına göre en uygun irtifayı hesaplar.</p>
+    <p>Bir not: SimBrief'in rotası genellikle kalkış (SID) ve varış (STAR) prosedürlerini içermez. Bunları uçuş öncesinde MCDU'da, o anki pist ve ATC talimatına göre seçeceğiz.</p>
+    <p><strong>Cost Index (CI)</strong> da burada belirlenir. Bu sayı, zamanı mı yoksa yakıtı mı daha değerli bulduğunu söyler. Düşük CI daha yavaş ama daha az yakıtla, yüksek CI daha hızlı ama daha çok yakıtla uçmak demektir.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Yakıt: Blok yakıt nelerden oluşur?</h2>
+    <p>Bu dersin en önemli kısmı burası. Tanklara koyduğun toplam yakıta <strong>blok yakıt</strong> denir ve her kaleminin bir görevi vardır.</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 700 460" role="img" aria-label="Blok yakıt bileşenleri" xmlns="http://www.w3.org/2000/svg"><rect width="700" height="460" rx="12" fill="#0B1626"/><rect x="70" y="387.2" width="150" height="12.8" fill="#6C7B90" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="393.6" x2="260" y2="393.6" stroke="#6C7B90" stroke-width="2"/><text x="268" y="399.6" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Taksi <tspan fill="#9AA9BD" font-weight="500" font-size="16">Taxi</tspan></text><text x="660" y="399.6" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#6C7B90">200 kg</text><rect x="70" y="208.5" width="150" height="178.7" fill="#3BE07A" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="297.9" x2="260" y2="297.9" stroke="#3BE07A" stroke-width="2"/><text x="268" y="303.9" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Yolculuk <tspan fill="#9AA9BD" font-weight="500" font-size="16">Trip</tspan></text><text x="660" y="303.9" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3BE07A">2.800 kg</text><rect x="70" y="199.6" width="150" height="8.9" fill="#3FD0FF" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="204.0" x2="260" y2="204.0" stroke="#3FD0FF" stroke-width="2"/><text x="268" y="210.0" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Ek pay (%5) <tspan fill="#9AA9BD" font-weight="500" font-size="16">Contingency</tspan></text><text x="660" y="210.0" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#3FD0FF">140 kg</text><rect x="70" y="110.2" width="150" height="89.4" fill="#2C8BF0" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="154.9" x2="260" y2="154.9" stroke="#2C8BF0" stroke-width="2"/><text x="268" y="160.9" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Yedek meydan <tspan fill="#9AA9BD" font-weight="500" font-size="16">Alternate</tspan></text><text x="660" y="160.9" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#2C8BF0">1.400 kg</text><rect x="70" y="40.0" width="150" height="70.2" fill="#FFAA2B" stroke="#0B1626" stroke-width="2"/><line x1="226" y1="75.1" x2="260" y2="75.1" stroke="#FFAA2B" stroke-width="2"/><text x="268" y="81.1" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFFFFF">Son rezerv (30 dk) <tspan fill="#9AA9BD" font-weight="500" font-size="16">Final reserve</tspan></text><text x="660" y="81.1" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="20" font-weight="700" fill="#FFAA2B">1.100 kg</text><text x="145.0" y="28" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="16" fill="#9AA9BD" letter-spacing="2">BLOK YAKIT</text><line x1="60" y1="414" x2="660" y2="414" stroke="#3A4B63"/><text x="70" y="444" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="22" font-weight="800" fill="#F5C518">Toplam blok yakıt</text><text x="660" y="444" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#F5C518">5.640 kg</text></svg><figcaption>LTFM–LTAI A320 uçuşu için örnek blok yakıt</figcaption></figure>
+    <dl class="legend">
+      <div><dt style="background:#6C7B90">T</dt><dd><b>Taksi (Taxi)</b>Kalkış öncesi yerde harcanacak yakıt. İstanbul gibi büyük meydanlarda uzun taksi süreleri olabilir.</dd></div>
+      <div><dt style="background:#3BE07A">Y</dt><dd><b>Yolculuk (Trip)</b>Kalkıştan varış meydanına inişe kadar harcanacak yakıt. Planın kalbi budur.</dd></div>
+      <div><dt style="background:#3FD0FF">E</dt><dd><b>Ek pay (Contingency)</b>Beklenmedik durumlar için, genellikle yolculuk yakıtının %5'i kadar. Rüzgâr tahminden farklı çıkabilir ya da ATC seni uzun yoldan götürebilir.</dd></div>
+      <div><dt style="background:#2C8BF0">A</dt><dd><b>Yedek meydan (Alternate)</b>Varış meydanına inemezsen yedek meydana (örnekte Dalaman, LTBS) gitmek için gereken yakıt.</dd></div>
+      <div><dt style="background:#FFAA2B">R</dt><dd><b>Son rezerv (Final reserve)</b>Yedek meydanda 30 dakika daha havada kalabilmeni sağlayan yakıt. Normal bir uçuşta buna dokunulmaz; inişte bu yakıtın altına düşüleceği anlaşılırsa pilot yakıt acil durumu (MAYDAY FUEL) ilan eder.</dd></div>
+      <div><dt style="background:#FF5CF0">+</dt><dd><b>İlave (Extra)</b>Kaptanın kararıyla eklenen yakıt; kötü hava ya da yoğun trafik bekleniyorsa eklenir. Örnekte sıfır.</dd></div>
+    </dl>
+    <div class="tip"><b>Cenk'in ipucu</b>"Ne kadar fazla yakıt o kadar güvenli" diye düşünme. Fazla yakıt fazla ağırlık demektir; uçak daha çok yakar ve iniş ağırlığı limitine takılabilirsin. Yakıtı planın söylediği kadar al, ilaveyi bir gerekçeyle ekle.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">5</span>Ağırlıklar ve limitler</h2>
+    <p>Yolcular, bagajlar ve kargo uçağın ağırlığını belirler. SimBrief'e yolcu sayısını ve kargoyu girdiğinde üç önemli ağırlığı hesaplar. Her birinin, uçağın yapısal dayanımından gelen bir üst limiti vardır.</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 700 330" role="img" aria-label="Ağırlıklar ve limitler" xmlns="http://www.w3.org/2000/svg"><rect width="700" height="330" rx="12" fill="#0B1626"/><line x1="200" y1="40" x2="200" y2="275" stroke="#1E2C40"/><text x="200" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">40 t</text><line x1="315" y1="40" x2="315" y2="275" stroke="#1E2C40"/><text x="315" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">50 t</text><line x1="430" y1="40" x2="430" y2="275" stroke="#1E2C40"/><text x="430" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">60 t</text><line x1="545" y1="40" x2="545" y2="275" stroke="#1E2C40"/><text x="545" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">70 t</text><line x1="660" y1="40" x2="660" y2="275" stroke="#1E2C40"/><text x="660" y="300" text-anchor="middle" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="15" fill="#9AA9BD">80 t</text><text x="24" y="84" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">ZFW</text><text x="24" y="104" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Sıfır yakıt ağırlığı</text><rect x="200" y="64" width="236" height="34" rx="4" fill="#3BE07A"/><text x="428" y="88" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="800" fill="#040E1A">60.500</text><line x1="459" y1="56" x2="459" y2="106" stroke="#FF4040" stroke-width="3"/><text x="453" y="61" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" font-weight="700" fill="#FF4040">MAX 62.500</text><text x="24" y="156" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">TOW</text><text x="24" y="176" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">Kalkış ağırlığı</text><rect x="200" y="136" width="298" height="34" rx="4" fill="#3BE07A"/><text x="490" y="160" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="800" fill="#040E1A">65.940</text><line x1="637" y1="128" x2="637" y2="178" stroke="#FF4040" stroke-width="3"/><text x="631" y="133" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" font-weight="700" fill="#FF4040">MAX 78.000</text><text x="24" y="228" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="24" font-weight="800" fill="#FFFFFF">LW</text><text x="24" y="248" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" fill="#9AA9BD">İniş ağırlığı</text><rect x="200" y="208" width="266" height="34" rx="4" fill="#3BE07A"/><text x="458" y="232" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="18" font-weight="800" fill="#040E1A">63.140</text><line x1="499" y1="200" x2="499" y2="250" stroke="#FF4040" stroke-width="3"/><text x="493" y="205" text-anchor="end" font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif" font-size="14" font-weight="700" fill="#FF4040">MAX 66.000</text></svg><figcaption>Örnek ağırlıklar ve limitleri (yeşil: planlanan, kırmızı: maksimum)</figcaption></figure>
+    <dl class="legend"><div><dt>Z</dt><dd><b>ZFW (sıfır yakıt ağırlığı)</b>Uçak, yolcular, bagaj ve kargo; yakıt hariç. Limiti aşarsan yakıt eksiltmek işe yaramaz, yük azaltman gerekir.</dd></div><div><dt>T</dt><dd><b>TOW (kalkış ağırlığı)</b>ZFW artı kalkış anındaki yakıt (blok yakıt eksi taksi yakıtı). Örnekte 60.500 + 5.440 = 65.940 kg.</dd></div><div><dt>L</dt><dd><b>LW (iniş ağırlığı)</b>Kalkış ağırlığı eksi yolculuk yakıtı. Örnekte 65.940 − 2.800 = 63.140 kg.</dd></div></dl>
+  </section>
+
+  <section>
+    <h2><span class="n">6</span>OFP'yi oluştur ve oku</h2>
+    <p>Her şey hazırsa planı oluştur. SimBrief sana OFP (operasyonel uçuş planı) adında uzun bir doküman verir. İçinde rota, her noktadaki rüzgâr ve sıcaklık, yakıt hesabı, ağırlıklar, meydanların hava durumu ve NOTAM'lar bulunur. Gözünü korkutmasın; başlangıçta şu üç bölüme bakman yeterli:</p>
+    <figure class="diagram narrow"><svg viewBox="0 0 700 300" role="img" aria-label="Örnek uçuş planı özeti" xmlns="http://www.w3.org/2000/svg"><rect width="700" height="300" rx="12" fill="#F4F1E6"/>
+<g font-family="Consolas,Courier New,monospace" font-size="16" fill="#1A1A1A">
+<text x="24" y="38" font-weight="700" font-size="18">VWC001 · LTFM-LTAI · A320</text><text x="600" y="38" text-anchor="end">ALTN LTBS</text>
+<line x1="24" y1="50" x2="676" y2="50" stroke="#1A1A1A"/>
+<text x="24" y="80">CRZ FL 360</text><text x="190" y="80">CI 30</text><text x="320" y="80">EET 01:05</text>
+<text x="24" y="106">ROUTE  SimBrief'in önerdiği rota</text>
+<line x1="24" y1="120" x2="676" y2="120" stroke="#1A1A1A" stroke-dasharray="4 4"/>
+<text x="24" y="150">TRIP 2800</text><text x="190" y="150">CONT 140</text><text x="340" y="150">ALTN 1400</text>
+<text x="24" y="176">FINRES 1100</text><text x="190" y="176">EXTRA 0</text><text x="340" y="176">TAXI 200</text>
+<text x="24" y="202" font-weight="700">BLOCK 5640</text>
+<line x1="24" y1="216" x2="676" y2="216" stroke="#1A1A1A" stroke-dasharray="4 4"/>
+<text x="24" y="246">ZFW 60500/62500</text><text x="220" y="246">TOW 65940/78000</text><text x="420" y="246">LW 63140/66000</text>
+<text x="24" y="272">PAX 150</text><text x="220" y="272">CARGO 2100</text><text x="420" y="272">UNITS KG</text>
+</g>
+<g font-family="Barlow Condensed,Arial Narrow,Arial,sans-serif"><circle cx="650" cy="80" r="14" fill="#F5C518"/><text x="650" y="86" text-anchor="middle" font-size="16" font-weight="800" fill="#040E1A">1</text>
+<circle cx="650" cy="164" r="14" fill="#F5C518"/><text x="650" y="170" text-anchor="middle" font-size="16" font-weight="800" fill="#040E1A">2</text>
+<circle cx="650" cy="250" r="14" fill="#F5C518"/><text x="650" y="256" text-anchor="middle" font-size="16" font-weight="800" fill="#040E1A">3</text></g>
+</svg><figcaption>OFP'nin ilk bakılacak bölümleri (sadeleştirilmiş özet)</figcaption></figure>
+    <dl class="legend"><div><dt>1</dt><dd><b>Uçuş özeti</b>Seyir irtifası, Cost Index ve tahmini uçuş süresi (EET). Rota da burada yazılıdır.</dd></div><div><dt>2</dt><dd><b>Yakıt planı</b>Yukarıda anlattığımız kalemler ve en önemlisi BLOCK, yani tanklara koyacağın toplam yakıt.</dd></div><div><dt>3</dt><dd><b>Ağırlıklar</b>Planlanan ağırlıklar ve limitleri yan yana yazar. Her planlanan değer limitinin altında olmalı.</dd></div></dl>
+    <div class="tip"><b>Cenk'in ipucu</b>Planı uçuştan hemen önce oluştur. SimBrief o anki rüzgârları ve hava durumunu kullanır. Simde canlı hava durumu açıksa planın ile gökyüzü birbirini tutar; yakıt hesabın da doğru çıkar.</div>
+  </section>
+
+  <section>
+    <h2><span class="n">7</span>Planı Fenix'e aktarmak</h2>
+    <p>Fenix'in SimBrief entegrasyonu sayesinde planı elle yazmana gerek yok. Fenix'in kokpitteki tabletinde (EFB) ayarlar kısmına SimBrief kullanıcı bilgini bir kez girersin. Sonrasında:</p>
+    <p><strong>Rota:</strong> MCDU'da INIT sayfasına gir ve <strong>INIT REQUEST</strong> tuşuna bas. Kalkış, varış ve rota otomatik olarak gelir. Sonra F-PLN sayfasını mutlaka kontrol et; rotada süreksizlik (DISCONTINUITY) olup olmadığına bak.</p>
+    <p><strong>Yakıt ve yük:</strong> EFB'deki yükleme sayfasından SimBrief planındaki yakıtı ve yükü uçağa yükleyebilirsin. Yükleme bittiğinde EFB'deki değerlerin OFP ile aynı olduğunu kontrol et.</p>
+    <p class="note" style="margin:0">Fenix'in sürümüne göre menü adları biraz farklı olabilir. SID, STAR ve MCDU'nun geri kalanını Ders 4'te cold &amp; dark kokpitten başlayarak adım adım yapacağız.</p>
+  </section>
+
+  <section>
+    <h2><span class="n">✓</span>Planlama kontrol listesi</h2>
+    <div class="checklist lesson-check">
+      <div class="cl-head">Uçuş öncesi planlama</div>
+      <ul>
+        <li>Kalkış, varış ve yedek meydan doğru</li>
+        <li>Uçak profili Fenix'teki uçağınla aynı</li>
+        <li>Blok yakıt hesaplandı ve mantıklı görünüyor</li>
+        <li>ZFW, TOW ve LW limitlerin altında</li>
+        <li>Meydanların hava durumu kontrol edildi</li>
+        <li>Rota MCDU'ya aktarıldı, süreksizlik yok</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">?</span>Kendini test et</h2>
+    <p>Cevabı görmek için soruya tıkla.</p>
+    <div class="quiz">
+      <details><summary>Blok yakıt hangi kalemlerden oluşur?</summary><p>Taksi, yolculuk (trip), ek pay (contingency), yedek meydan (alternate), son rezerv (final reserve) ve varsa ilave (extra) yakıt.</p></details>
+      <details><summary>ZFW 63.000 kg çıktı, limit 62.500 kg. Daha az yakıt alarak sorunu çözebilir misin?</summary><p>Hayır. ZFW yakıtı içermez, bu yüzden yakıt azaltmak hiçbir şeyi değiştirmez. Kargoyu ya da yükü azaltman gerekir.</p></details>
+      <details><summary>Son rezerv yakıtı ne zaman kullanılır?</summary><p>Normalde hiç kullanılmaz. Her koşulda tanklarda kalması gereken en son güvenlik payıdır. İnişte bu yakıtın altına düşüleceği anlaşılırsa pilot yakıt acil durumu ilan eder.</p></details>
+      <details><summary>Cost Index'i yükseltirsen ne olur?</summary><p>Uçak daha hızlı uçar ve daha erken varır, ama daha fazla yakıt harcar.</p></details>
+      <details><summary>ZFW 60.500 kg, blok yakıt 5.640 kg, taksi yakıtı 200 kg. Kalkış ağırlığın kaç kg?</summary><p>60.500 + (5.640 − 200) = 65.940 kg. Taksi yakıtı kalkıştan önce harcandığı için kalkış ağırlığına dahil edilmez.</p></details>
+    </div>
+    <p style="margin-top:1.5rem">Planın hazır! Bir sonraki derste Fenix'i cold &amp; dark kokpitten hazırlayıp bu planla kalkışa geçeceğiz. ✈️</p>
+  </section>
+
+  <nav class="lesson-next" aria-label="Ders gezintisi">
+    <a href="../ders-2/"><small>← Önceki ders</small><b>Ders 2: Airbus kokpitini tanımak</b></a>
+    <a class="right" href="../ders-4/"><small>Sıradaki ders →</small><b>Ders 4: Cold &amp; Dark kokpitten kalkış</b></a>
+  </nav>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk</span>
+    <span>Kanatlar sanal, heyecan gerçek.</span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent = new Date().getFullYear();
+const mb=document.getElementById("menuBtn"), mn=document.getElementById("menu");
+mb.addEventListener("click",()=>{const o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o);});
+</script>
+<script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
+</body>
+</html>

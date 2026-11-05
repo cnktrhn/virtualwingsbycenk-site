@@ -1,0 +1,14 @@
+# Virtual Wings by Cenk — Netlify ayarları
+[build]
+  publish = "public"
+  command = "echo 'statik site, derleme yok'"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/crosscheck/version.json"
+  [headers.values]
+    Cache-Control = "no-cache"
+    Content-Type = "application/json; charset=utf-8"
