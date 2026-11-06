@@ -215,3 +215,24 @@ html[data-l="tr"] [data-l="en"],html[data-l="en"] [data-l="tr"]{display:none!imp
 .hof-t td.rk{color:var(--silver)}
 .cc-map .leaflet-tooltip.cc-apt{background:#F5C518;color:#0B1F3F;border:0;border-radius:4px;padding:2px 6px;font:700 12px/1.2 var(--display);letter-spacing:.06em;box-shadow:0 1px 4px rgba(0,0,0,.35)}
 .cc-map .leaflet-tooltip.cc-apt::before{display:none}
+
+/* Harita bilgi paneli (popup yerine) */
+.cc-mapbox{position:relative}
+.cc-panel{position:absolute;z-index:500;top:12px;right:12px;width:270px;max-height:calc(100% - 24px);overflow:auto;background:rgba(15,34,58,.96);border:1px solid var(--line);border-radius:12px;padding:.8rem .95rem;box-shadow:0 8px 28px rgba(0,0,0,.45);color:var(--text);font-size:.85rem}
+.cc-panel[hidden]{display:none}
+.cc-panel .cc-pop-h b{font-size:1.15rem;padding-right:1.5rem}
+.cc-panel .cc-pop dl{font-size:.82rem;margin-bottom:.4rem}
+.cc-panel .cc-pop dl div{padding:.1rem 0}
+.cc-panel-x{position:absolute;top:.4rem;right:.5rem;width:1.8rem;height:1.8rem;border:0;border-radius:6px;background:transparent;color:var(--silver);font-size:1.3rem;line-height:1;cursor:pointer}
+.cc-panel-x:hover{background:rgba(255,255,255,.08);color:var(--text)}
+@media (max-width:640px){.cc-panel{top:auto;left:8px;right:8px;bottom:8px;width:auto;max-height:46%}}
+@media (max-width:640px){
+  .cc-map{height:74vh;min-height:480px}
+  .cc-panel{bottom:22px;max-height:40%;padding:.6rem .75rem;font-size:.8rem}
+  .cc-panel .cc-pop-h{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.25rem}
+  .cc-panel .cc-pop-h b{font-size:1.05rem;display:inline}
+  .cc-panel .cc-pop dl{display:grid;grid-template-columns:1fr 1fr;column-gap:.8rem}
+  .cc-panel .cc-pop dl div{flex-direction:column;gap:0}
+  .cc-panel .cc-pop dd{text-align:left}
+  .cc-panel .cc-pop dl div:nth-child(3){grid-column:1/-1}
+}

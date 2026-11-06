@@ -74,7 +74,7 @@ document.title=CC_T[l];})();
     <b id="ccCount">–</b>
     <span class="cc-soft" id="ccUpd"></span>
   </div>
-  <div id="ccmap" class="cc-map" role="region" aria-label="Canlı uçuş haritası"></div>
+  <div class="cc-mapbox"><div id="ccmap" class="cc-map" role="region" aria-label="Canlı uçuş haritası"></div><aside class="cc-panel" id="ccPanel" hidden aria-live="polite"></aside></div>
   <p class="cc-map-msg" id="ccMsg" hidden></p>
   <p class="cc-soft cc-map-note"><span data-l="tr">CrossCheck ile uçan her pilot haritada kendiliğinden görünür. Uçağa tıklayınca uçuş planı da haritada çizilir. Konumlar yaklaşık 30 saniyede bir yenilenir; uçuş bitince ya da 3 dakika veri gelmezse uçak haritadan düşer.</span><span data-l="en" lang="en">Every pilot flying with CrossCheck appears on the map automatically. Click an aircraft to draw its flight plan on the map. Positions refresh about every 30 seconds, and the aircraft drops off the map when the flight ends or after 3 minutes without data.</span></p>
 </section>
@@ -149,32 +149,40 @@ function drawRoute(id){clearRoute();var rt=routes[id],p=data[id];if(!rt||!rt.pts
     L.polyline(flown,{color:RC,weight:3.5,opacity:.4,interactive:false,lineCap:"round",lineJoin:"round"}).addTo(g);
     L.polyline(ahead,{color:RC,weight:3.5,opacity:1,interactive:false,lineCap:"round",lineJoin:"round"}).addTo(g)}
   else L.polyline(pts,{color:RC,weight:3.5,opacity:1,interactive:false}).addTo(g);
-  for(var i=1;i<pts.length-1;i++)L.circleMarker(pts[i],{radius:3,color:RC,weight:1.5,fillColor:"#FFFFFF",fillOpacity:1}).bindTooltip(pts[i][0].toFixed(2)+", "+pts[i][1].toFixed(2),{direction:"top",offset:[0,-4]}).addTo(g);
+  if(map.getZoom()>=8)for(var i=1;i<pts.length-1;i++)L.circleMarker(pts[i],{radius:3,color:RC,weight:1.5,fillColor:"#FFFFFF",fillOpacity:1}).bindTooltip(pts[i][0].toFixed(2)+", "+pts[i][1].toFixed(2),{direction:"top",offset:[0,-4]}).addTo(g);
   [[pts[0],rt.dep],[pts[pts.length-1],rt.arr]].forEach(function(a){L.circleMarker(a[0],{radius:6,color:CASE,weight:2,fillColor:RC,fillOpacity:1}).bindTooltip(a[1]||"",{permanent:true,direction:"right",offset:[8,0],className:"cc-apt"}).addTo(g)});
   routeLayer=g.addTo(map);var m=markers[id];if(m)m.setZIndexOffset(1000)}
-function showRoute(id){if(routes[id]){drawRoute(id);return}
+function showRoute(id){if(routes[id]){drawRoute(id);fitSel();return}
   fetch("/api/cc/route?id="+encodeURIComponent(id)).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(rt){
-    if(!rt)return;routes[id]=rt;var m=markers[id];if(sel===id){drawRoute(id);if(m&&m.isPopupOpen())m.setPopupContent(popup(data[id]))}})}
+    if(!rt)return;routes[id]=rt;if(sel===id){drawRoute(id);renderPanel();fitSel()}})}
 function setRot(m,h){var e=m.getElement();if(e){var s=e.querySelector("svg");if(s)s.style.transform="rotate("+h+"deg)"}}
 function upsert(p){var m=markers[p.pilotId];var ll=[p.lat,p.lon];
   if(!m){m=L.marker(ll,{icon:L.divIcon({className:"cc-ac ph-"+p.phase,html:PLANE,iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-12]}),title:p.name,keyboard:true,riseOnHover:true}).addTo(map);
-    m.bindPopup(function(){return popup(data[p.pilotId])},{maxWidth:280});markers[p.pilotId]=m;
-    m.on("popupopen",function(){sel=p.pilotId;showRoute(p.pilotId)})}
-  else{m.setLatLng(ll);var e=m.getElement();if(e)e.className=e.className.replace(/ph-\w+/,"ph-"+p.phase);if(m.isPopupOpen())m.setPopupContent(popup(p));if(sel===p.pilotId&&routes[p.pilotId])drawRoute(p.pilotId)}
+    markers[p.pilotId]=m;m.on("click",function(e){L.DomEvent.stopPropagation(e);select(p.pilotId)})}
+  else{m.setLatLng(ll);var e=m.getElement();if(e)e.className=e.className.replace(/ph-\w+/,"ph-"+p.phase);if(sel===p.pilotId){renderPanel();if(routes[p.pilotId])drawRoute(p.pilotId)}}
   setRot(m,p.hdg)}
 function status(){var t=T[lang()],k=Object.keys(data).length;document.getElementById("ccCount").textContent=t.n(k);
   document.getElementById("ccUpd").textContent=lastOk?t.upd+": "+new Date(lastOk).toLocaleTimeString(t.loc,{hour:"2-digit",minute:"2-digit",second:"2-digit"}):"";
   var msg=document.getElementById("ccMsg");if(msg.dataset.k==="err"){msg.textContent=t.err;msg.hidden=false}else if(lastOk&&k===0){msg.textContent=t.empty;msg.hidden=false}else msg.hidden=true}
-function renderAll(){Object.keys(markers).forEach(function(id){var m=markers[id];if(m.isPopupOpen())m.setPopupContent(popup(data[id]))});status()}
+var panel=document.getElementById("ccPanel");
+function renderPanel(){if(!sel||!data[sel]){panel.hidden=true;panel.textContent="";return}
+  panel.textContent="";var x=el("button","cc-panel-x","×");x.type="button";x.setAttribute("aria-label",lang()==="en"?"Close":"Kapat");x.addEventListener("click",deselect);
+  panel.appendChild(x);panel.appendChild(popup(data[sel]));panel.hidden=false}
+function select(id){sel=id;renderPanel();showRoute(id)}
+function deselect(){sel=null;clearRoute();renderPanel()}
+function fitSel(){if(!sel)return;var rt=routes[sel],p=data[sel],b=[];if(rt&&rt.pts)b=rt.pts.slice();if(p)b.push([p.lat,p.lon]);if(b.length<2)return;
+  var mob=map.getSize().x<640,ph=panel.hidden?0:panel.offsetHeight,pw=panel.hidden?0:panel.offsetWidth;
+  map.fitBounds(b,mob?{paddingTopLeft:[30,30],paddingBottomRight:[30,ph+30],maxZoom:9}:{paddingTopLeft:[40,40],paddingBottomRight:[pw+40,40],maxZoom:9})}
+function renderAll(){renderPanel();status()}
 var busy=false;
 function load(){if(busy||document.hidden)return;busy=true;
   fetch("/api/cc/live",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(list){
     var seen={};(Array.isArray(list)?list:[]).forEach(function(p){if(!p||typeof p.lat!=="number"||typeof p.lon!=="number")return;seen[p.pilotId]=1;data[p.pilotId]=p;upsert(p)});
-    Object.keys(markers).forEach(function(id){if(!seen[id]){if(sel===id){clearRoute();sel=null}map.removeLayer(markers[id]);delete markers[id];delete data[id];delete routes[id]}});
+    Object.keys(markers).forEach(function(id){if(!seen[id]){if(sel===id)deselect();map.removeLayer(markers[id]);delete markers[id];delete data[id];delete routes[id]}});
     if(!fitted&&list.length){fitted=true;if(list.length>1)map.fitBounds(list.map(function(p){return [p.lat,p.lon]}),{padding:[40,40],maxZoom:7});else map.setView([list[0].lat,list[0].lon],6)}
     lastOk=Date.now();document.getElementById("ccMsg").dataset.k="";status()})
   .catch(function(){document.getElementById("ccMsg").dataset.k="err";status()}).finally(function(){busy=false})}
-map.on("click",function(){sel=null;clearRoute()});
+map.on("click",deselect);map.on("zoomend",function(){if(sel&&routes[sel])drawRoute(sel)});
 load();setInterval(load,30000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden&&Date.now()-lastOk>25000)load()});
 document.addEventListener("cc-lang",renderAll);
