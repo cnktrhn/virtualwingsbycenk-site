@@ -507,3 +507,7 @@ html[lang="en"] .dialog .pilot::before{content:"PILOT"}
 .cc-home-list span{color:var(--text-soft)}
 .cc-ver.is-soon:hover{border-color:rgba(245,197,24,.45)}
 .btn.is-off{opacity:.55;cursor:not-allowed}
+.prog-vis.prog-cc{flex-direction:column;gap:.2rem;background:radial-gradient(ellipse 70% 90% at 50% 40%,#12365e 0%,#040e1a 75%)}
+.prog-cc span{font-family:var(--display);font-weight:800;font-size:1.7rem;letter-spacing:.02em;color:var(--text)}
+.prog-cc span em{font-style:normal;color:var(--gold)}
+.prog-cc small{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--silver)}
