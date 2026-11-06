@@ -61,7 +61,7 @@ document.title=CC_T[l];})();
   </div>
   <div id="ccmap" class="cc-map" role="region" aria-label="Canlı uçuş haritası"></div>
   <p class="cc-map-msg" id="ccMsg" hidden></p>
-  <p class="cc-soft cc-map-note"><span data-l="tr">Haritada yalnızca CrossCheck'te "siteye bağlan" seçeneğini açan pilotlar görünür. Konumlar yaklaşık 30 saniyede bir yenilenir; 3 dakika veri gelmeyen uçuşlar haritadan düşer.</span><span data-l="en" lang="en">Only pilots who turn on "connect to site" in CrossCheck appear on the map. Positions refresh about every 30 seconds, and flights with no data for 3 minutes drop off the map.</span></p>
+  <p class="cc-soft cc-map-note"><span data-l="tr">CrossCheck ile uçan her pilot haritada kendiliğinden görünür. Uçağa tıklayınca uçuş planı da haritada çizilir. Konumlar yaklaşık 30 saniyede bir yenilenir; uçuş bitince ya da 3 dakika veri gelmezse uçak haritadan düşer.</span><span data-l="en" lang="en">Every pilot flying with CrossCheck appears on the map automatically. Click an aircraft to draw its flight plan on the map. Positions refresh about every 30 seconds, and the aircraft drops off the map when the flight ends or after 3 minutes without data.</span></p>
 </section>
 </div>
 </main>
@@ -99,17 +99,17 @@ window.ccText=function(o,l,base){if(!o)return "";base=base||"name";return o[base
 <script>
 window.addEventListener("load",function(){
 var T={tr:{n:function(k){return k===0?"Şu an uçuşta pilot yok":k+" pilot uçuşta"},upd:"Son güncelleme",err:"Harita verisi şu an alınamıyor, birazdan tekrar denenecek.",empty:"Şu an uçuşta CrossCheck pilotu yok. Biri kalkışa geçtiğinde burada görünecek.",
-  rank:"Rütbe",flight:"Uçuş",route:"Rota",alt:"İrtifa",gs:"Yer hızı",phase:"Safha",pilot:"Pilot sayfası →",
+  rank:"Rütbe",flight:"Uçuş",route:"Kalkış → varış",plan:"Uçuş planı",alt:"İrtifa",gs:"Yer hızı",phase:"Safha",pilot:"Pilot sayfası →",
   ph:{gate:"Kapıda",taxi:"Taksi",climb:"Tırmanış",cruise:"Seyir",descent:"Alçalış",approach:"Yaklaşma",landed:"İndi"},loc:"tr-TR"},
  en:{n:function(k){return k===0?"No pilots flying right now":k===1?"1 pilot flying":k+" pilots flying"},upd:"Last update",err:"Can't load map data right now. Retrying shortly.",empty:"No CrossCheck pilots are flying right now. They'll appear here once someone takes off.",
-  rank:"Rank",flight:"Flight",route:"Route",alt:"Altitude",gs:"Ground speed",phase:"Phase",pilot:"Pilot page →",
+  rank:"Rank",flight:"Flight",route:"Departure → arrival",plan:"Flight plan",alt:"Altitude",gs:"Ground speed",phase:"Phase",pilot:"Pilot page →",
   ph:{gate:"At gate",taxi:"Taxiing",climb:"Climbing",cruise:"Cruising",descent:"Descending",approach:"Approach",landed:"Landed"},loc:"en-GB"}};
 var lang=function(){return document.documentElement.dataset.l==="en"?"en":"tr"};
 var meta={ranks:{},badges:[]};ccMeta().then(function(m){meta=m;renderAll()});
 var map=L.map("ccmap",{worldCopyJump:true,zoomControl:true}).setView([39.2,35],5);
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:12,minZoom:2,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 var PLANE='<svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M16 1.5c1.2 0 2 1.3 2 3.2v7.6l11 6.4v3l-11-3.2v6.1l3.4 2.6V30L16 28.6 10.6 30v-2.8l3.4-2.6v-6.1L3 21.7v-3l11-6.4V4.7c0-1.9.8-3.2 2-3.2z"/></svg>';
-var markers={},data={},lastOk=0,fitted=false;
+var markers={},data={},routes={},routeLayer=null,lastOk=0,fitted=false;
 function el(t,c,txt){var e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
 function fmt(n){return Math.round(n).toLocaleString(T[lang()].loc)}
 function rankName(id){var r=meta.ranks[id];return r?ccText(r,lang()):id}
@@ -118,12 +118,19 @@ function popup(p){var t=T[lang()],d=el("div","cc-pop");
   var dl=el("dl");function row(k,v){if(v==null||v==="")return;var w=el("div");w.appendChild(el("dt",null,k));w.appendChild(el("dd",null,v));dl.appendChild(w)}
   row(t.flight,[p.flight,p.aircraft].filter(Boolean).join(" · "));
   row(t.route,(p.dep||"?")+" → "+(p.arr||"?"));
+  var rt=routes[p.pilotId];if(rt&&rt.route)row(t.plan,rt.route.length>140?rt.route.slice(0,140)+"…":rt.route);
   row(t.alt,fmt(p.altFt)+" ft");row(t.gs,fmt(p.gsKt)+" kt");row(t.phase,t.ph[p.phase]||p.phase);
   d.appendChild(dl);var a=el("a","cc-pop-link",t.pilot);a.href="/crosscheck/pilot/?id="+encodeURIComponent(p.pilotId);d.appendChild(a);return d}
+function clearRoute(){if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}}
+function drawRoute(id){clearRoute();var rt=routes[id];if(rt&&rt.pts&&rt.pts.length>1)routeLayer=L.polyline(rt.pts,{color:"#F5C518",weight:2.5,opacity:.9,dashArray:"6 6",interactive:false}).addTo(map)}
+function showRoute(id){if(routes[id]){drawRoute(id);return}
+  fetch("/api/cc/route?id="+encodeURIComponent(id)).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(rt){
+    if(!rt)return;routes[id]=rt;var m=markers[id];if(m&&m.isPopupOpen()){drawRoute(id);m.setPopupContent(popup(data[id]))}})}
 function setRot(m,h){var e=m.getElement();if(e){var s=e.querySelector("svg");if(s)s.style.transform="rotate("+h+"deg)"}}
 function upsert(p){var m=markers[p.pilotId];var ll=[p.lat,p.lon];
   if(!m){m=L.marker(ll,{icon:L.divIcon({className:"cc-ac ph-"+p.phase,html:PLANE,iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-12]}),title:p.name,keyboard:true,riseOnHover:true}).addTo(map);
-    m.bindPopup(function(){return popup(data[p.pilotId])},{maxWidth:260});markers[p.pilotId]=m}
+    m.bindPopup(function(){return popup(data[p.pilotId])},{maxWidth:280});markers[p.pilotId]=m;
+    m.on("popupopen",function(){showRoute(p.pilotId)});m.on("popupclose",clearRoute)}
   else{m.setLatLng(ll);var e=m.getElement();if(e)e.className=e.className.replace(/ph-\w+/,"ph-"+p.phase);if(m.isPopupOpen())m.setPopupContent(popup(p))}
   setRot(m,p.hdg)}
 function status(){var t=T[lang()],k=Object.keys(data).length;document.getElementById("ccCount").textContent=t.n(k);
@@ -134,7 +141,7 @@ var busy=false;
 function load(){if(busy||document.hidden)return;busy=true;
   fetch("/api/cc/live",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(list){
     var seen={};(Array.isArray(list)?list:[]).forEach(function(p){if(!p||typeof p.lat!=="number"||typeof p.lon!=="number")return;seen[p.pilotId]=1;data[p.pilotId]=p;upsert(p)});
-    Object.keys(markers).forEach(function(id){if(!seen[id]){map.removeLayer(markers[id]);delete markers[id];delete data[id]}});
+    Object.keys(markers).forEach(function(id){if(!seen[id]){if(markers[id].isPopupOpen())clearRoute();map.removeLayer(markers[id]);delete markers[id];delete data[id];delete routes[id]}});
     if(!fitted&&list.length){fitted=true;if(list.length>1)map.fitBounds(list.map(function(p){return [p.lat,p.lon]}),{padding:[40,40],maxZoom:7});else map.setView([list[0].lat,list[0].lon],6)}
     lastOk=Date.now();document.getElementById("ccMsg").dataset.k="";status()})
   .catch(function(){document.getElementById("ccMsg").dataset.k="err";status()}).finally(function(){busy=false})}

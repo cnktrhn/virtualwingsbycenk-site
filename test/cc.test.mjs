@@ -101,3 +101,24 @@ test("yanlış metot 405", async () => {
   assert.equal((await cc.position(get("/api/cc/position"), s)).status, 405);
   assert.equal((await cc.live(post("/api/cc/live", {}), s)).status, 405);
 });
+
+test("v1.1-ek rota: kaydedilir, /live'da görünmez, /route'ta döner, aynı uçuşta korunur", async () => {
+  const s = memStore();
+  const pts = [[40.98, 28.82], [40.2, 30.5], [40.13, 33.0]];
+  assert.equal((await cc.position(post("/api/cc/position", pos({ route: "LTFM DCT ADORU UL333 LTAC", pts })), s, NOW)).status, 200);
+  const live = await (await cc.live(get("/api/cc/live"), s, NOW)).json();
+  assert.ok(!("route" in live[0]) && !("pts" in live[0]));
+  let r = await cc.route(get("/api/cc/route?id=K7Q2M9XA"), s, NOW);
+  assert.equal(r.status, 200);
+  assert.deepEqual(await r.json(), { pilotId: "K7Q2M9XA", dep: "LTFM", arr: "LTAC", route: "LTFM DCT ADORU UL333 LTAC", pts });
+  // plan olmadan yeni konum: plan korunur
+  await cc.position(post("/api/cc/position", pos({ ts: T + 30, lat: 40.5 })), s, NOW + 30000);
+  assert.equal((await (await cc.route(get("/api/cc/route?id=K7Q2M9XA"), s, NOW + 30000)).json()).pts.length, 3);
+  // farklı uçuş: eski plan düşer
+  await cc.position(post("/api/cc/position", pos({ ts: T + 60, flight: "VWG124", dep: "LTAC", arr: "LTFM" })), s, NOW + 60000);
+  assert.equal((await cc.route(get("/api/cc/route?id=K7Q2M9XA"), s, NOW + 60000)).status, 404);
+  // bozuk plan
+  assert.equal((await cc.position(post("/api/cc/position", pos({ ts: T + 90, pts: [[91, 0], [0, 0]] })), s, NOW + 90000)).status, 400);
+  assert.equal((await cc.position(post("/api/cc/position", pos({ ts: T + 90, pts: "x" })), s, NOW + 90000)).status, 400);
+  assert.equal((await cc.route(get("/api/cc/route?id=NOPE0000"), s, NOW)).status, 404);
+});
