@@ -137,16 +137,30 @@ function popup(p){var t=T[lang()],d=el("div","cc-pop");
   row(t.alt,fmt(p.altFt)+" ft");row(t.gs,fmt(p.gsKt)+" kt");row(t.phase,t.ph[p.phase]||p.phase);
   d.appendChild(dl);var a=el("a","cc-pop-link",t.pilot);a.href="/crosscheck/pilot/?id="+encodeURIComponent(p.pilotId);d.appendChild(a);return d}
 function clearRoute(){if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}}
-function drawRoute(id){clearRoute();var rt=routes[id];if(rt&&rt.pts&&rt.pts.length>1)routeLayer=L.polyline(rt.pts,{color:"#F5C518",weight:2.5,opacity:.9,dashArray:"6 6",interactive:false}).addTo(map)}
+var sel=null;var RC="#D81BCE",DARK_TILES=false,CASE=DARK_TILES?"#0B1626":"#FFFFFF";
+function nearestSplit(pts,lat,lon){var k=Math.cos(lat*Math.PI/180),best=1e18,bi=0,bp=pts[0];
+  for(var i=0;i<pts.length-1;i++){var ax=pts[i][1]*k,ay=pts[i][0],bx=pts[i+1][1]*k,by=pts[i+1][0],px=lon*k,py=lat,dx=bx-ax,dy=by-ay,L2=dx*dx+dy*dy,t=L2?((px-ax)*dx+(py-ay)*dy)/L2:0;
+    t=Math.max(0,Math.min(1,t));var qx=ax+t*dx,qy=ay+t*dy,d=(px-qx)*(px-qx)+(py-qy)*(py-qy);if(d<best){best=d;bi=i;bp=[qy,qx/k]}}
+  return {i:bi,p:bp}}
+function drawRoute(id){clearRoute();var rt=routes[id],p=data[id];if(!rt||!rt.pts||rt.pts.length<2)return;
+  var pts=rt.pts,g=L.layerGroup();
+  L.polyline(pts,{color:CASE,weight:7,opacity:.9,interactive:false,lineCap:"round",lineJoin:"round"}).addTo(g);
+  if(p){var sp=nearestSplit(pts,p.lat,p.lon),flown=pts.slice(0,sp.i+1).concat([sp.p]),ahead=[sp.p].concat(pts.slice(sp.i+1));
+    L.polyline(flown,{color:RC,weight:3.5,opacity:.4,interactive:false,lineCap:"round",lineJoin:"round"}).addTo(g);
+    L.polyline(ahead,{color:RC,weight:3.5,opacity:1,interactive:false,lineCap:"round",lineJoin:"round"}).addTo(g)}
+  else L.polyline(pts,{color:RC,weight:3.5,opacity:1,interactive:false}).addTo(g);
+  for(var i=1;i<pts.length-1;i++)L.circleMarker(pts[i],{radius:3,color:RC,weight:1.5,fillColor:"#FFFFFF",fillOpacity:1}).bindTooltip(pts[i][0].toFixed(2)+", "+pts[i][1].toFixed(2),{direction:"top",offset:[0,-4]}).addTo(g);
+  [[pts[0],rt.dep],[pts[pts.length-1],rt.arr]].forEach(function(a){L.circleMarker(a[0],{radius:6,color:CASE,weight:2,fillColor:RC,fillOpacity:1}).bindTooltip(a[1]||"",{permanent:true,direction:"right",offset:[8,0],className:"cc-apt"}).addTo(g)});
+  routeLayer=g.addTo(map);var m=markers[id];if(m)m.setZIndexOffset(1000)}
 function showRoute(id){if(routes[id]){drawRoute(id);return}
   fetch("/api/cc/route?id="+encodeURIComponent(id)).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(rt){
-    if(!rt)return;routes[id]=rt;var m=markers[id];if(m&&m.isPopupOpen()){drawRoute(id);m.setPopupContent(popup(data[id]))}})}
+    if(!rt)return;routes[id]=rt;var m=markers[id];if(sel===id){drawRoute(id);if(m&&m.isPopupOpen())m.setPopupContent(popup(data[id]))}})}
 function setRot(m,h){var e=m.getElement();if(e){var s=e.querySelector("svg");if(s)s.style.transform="rotate("+h+"deg)"}}
 function upsert(p){var m=markers[p.pilotId];var ll=[p.lat,p.lon];
   if(!m){m=L.marker(ll,{icon:L.divIcon({className:"cc-ac ph-"+p.phase,html:PLANE,iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-12]}),title:p.name,keyboard:true,riseOnHover:true}).addTo(map);
     m.bindPopup(function(){return popup(data[p.pilotId])},{maxWidth:280});markers[p.pilotId]=m;
-    m.on("popupopen",function(){showRoute(p.pilotId)});m.on("popupclose",clearRoute)}
-  else{m.setLatLng(ll);var e=m.getElement();if(e)e.className=e.className.replace(/ph-\w+/,"ph-"+p.phase);if(m.isPopupOpen())m.setPopupContent(popup(p))}
+    m.on("popupopen",function(){sel=p.pilotId;showRoute(p.pilotId)})}
+  else{m.setLatLng(ll);var e=m.getElement();if(e)e.className=e.className.replace(/ph-\w+/,"ph-"+p.phase);if(m.isPopupOpen())m.setPopupContent(popup(p));if(sel===p.pilotId&&routes[p.pilotId])drawRoute(p.pilotId)}
   setRot(m,p.hdg)}
 function status(){var t=T[lang()],k=Object.keys(data).length;document.getElementById("ccCount").textContent=t.n(k);
   document.getElementById("ccUpd").textContent=lastOk?t.upd+": "+new Date(lastOk).toLocaleTimeString(t.loc,{hour:"2-digit",minute:"2-digit",second:"2-digit"}):"";
@@ -156,10 +170,11 @@ var busy=false;
 function load(){if(busy||document.hidden)return;busy=true;
   fetch("/api/cc/live",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(list){
     var seen={};(Array.isArray(list)?list:[]).forEach(function(p){if(!p||typeof p.lat!=="number"||typeof p.lon!=="number")return;seen[p.pilotId]=1;data[p.pilotId]=p;upsert(p)});
-    Object.keys(markers).forEach(function(id){if(!seen[id]){if(markers[id].isPopupOpen())clearRoute();map.removeLayer(markers[id]);delete markers[id];delete data[id];delete routes[id]}});
+    Object.keys(markers).forEach(function(id){if(!seen[id]){if(sel===id){clearRoute();sel=null}map.removeLayer(markers[id]);delete markers[id];delete data[id];delete routes[id]}});
     if(!fitted&&list.length){fitted=true;if(list.length>1)map.fitBounds(list.map(function(p){return [p.lat,p.lon]}),{padding:[40,40],maxZoom:7});else map.setView([list[0].lat,list[0].lon],6)}
     lastOk=Date.now();document.getElementById("ccMsg").dataset.k="";status()})
   .catch(function(){document.getElementById("ccMsg").dataset.k="err";status()}).finally(function(){busy=false})}
+map.on("click",function(){sel=null;clearRoute()});
 load();setInterval(load,30000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden&&Date.now()-lastOk>25000)load()});
 document.addEventListener("cc-lang",renderAll);
