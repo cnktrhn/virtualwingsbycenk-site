@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pilot araçları: TOD, yan rüzgâr, yakıt, iniş puanı — Virtual Wings by Cenk</title>
+<meta name="description" content="MSFS ve sanal pilotlar için ücretsiz Türkçe hesaplayıcılar: alçalma noktası (TOD, 3:1 kuralı), yan rüzgâr bileşeni, A320 blok yakıt tahmini ve iniş puanı (fpm).">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="/images/logo-emblem.png">
+<link rel="canonical" href="https://virtualwingsbycenk.com/araclar/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Virtual Wings by Cenk">
+<meta property="og:title" content="Pilot araçları: TOD, yan rüzgâr, yakıt, iniş puanı">
+<meta property="og:description" content="MSFS ve sanal pilotlar için ücretsiz Türkçe hesaplayıcılar: alçalma noktası (TOD, 3:1 kuralı), yan rüzgâr bileşeni, A320 blok yakıt tahmini ve iniş puanı (fpm).">
+<meta property="og:url" content="https://virtualwingsbycenk.com/araclar/">
+<meta property="og:image" content="https://virtualwingsbycenk.com/images/og/araclar.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://virtualwingsbycenk.com/images/og/araclar.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/crosscheck.css">
+<link rel="stylesheet" href="/assets/pages.css">
+<script>
+(function(){var l;try{l=localStorage.getItem("vw_lang")}catch(e){}
+if(l!=="tr"&&l!=="en")l=/^tr/i.test(navigator.language||"")?"tr":"en";
+document.documentElement.lang=l;document.documentElement.dataset.l=l;
+window.CC_T={tr:"Pilot araçları: TOD, yan rüzgâr, yakıt, iniş puanı — Virtual Wings by Cenk",en:"Pilot tools: TOD, crosswind, fuel, landing rate — Virtual Wings by Cenk"};
+window.CC_D={tr:"MSFS ve sanal pilotlar için ücretsiz Türkçe hesaplayıcılar: alçalma noktası (TOD, 3:1 kuralı), yan rüzgâr bileşeni, A320 blok yakıt tahmini ve iniş puanı (fpm).",en:"Free calculators for MSFS and virtual pilots: top of descent (TOD, 3:1 rule), crosswind component, A320 block fuel estimate and landing rate (fpm)."};
+document.title=CC_T[l];})();
+</script>
+<script data-goatcounter="https://virtualwingsbycenk.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body class="cc vw">
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/images/logo-emblem.png" alt="Virtual Wings by Cenk"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="/"><span data-l="tr">Ana sayfa</span><span data-l="en" lang="en">Home</span></a>
+      <a href="/#egitim"><span data-l="tr">Eğitim</span><span data-l="en" lang="en">Lessons</span></a>
+      <a href="/araclar/" aria-current="page" class="on"><span data-l="tr">Pilot araçları</span><span data-l="en" lang="en">Pilot tools</span></a>
+      <a href="/rehber/"><span data-l="tr">Rehberler</span><span data-l="en" lang="en">Guides</span></a>
+      <a href="/crosscheck/"><span data-l="tr">CrossCheck</span><span data-l="en" lang="en">CrossCheck</span></a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="#" data-lang="tr" lang="tr">TR</a><a href="#" data-lang="en" lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span data-l="tr">Menü</span><span data-l="en" lang="en">Menu</span></button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero cc-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="/">Virtual Wings</a> › <span data-l="tr">Pilot araçları</span><span data-l="en" lang="en">Pilot tools</span></p>
+    <p class="lesson-kicker"><span data-l="tr">Ücretsiz · MSFS</span><span data-l="en" lang="en">Free · MSFS</span></p>
+    <h1><span data-l="tr">Pilot araçları</span><span data-l="en" lang="en">Pilot tools</span></h1>
+    <p class="cc-lead"><span data-l="tr">Her uçuştan önce işine yarayacak dört hesaplayıcı. Değerleri değiştir, sonuç anında güncellensin.</span><span data-l="en" lang="en">Four calculators you'll use before every flight. Change the values and the results update instantly.</span></p>
+  </div>
+</section>
+
+<div class="wrap cc-body">
+<nav class="t-jump" aria-label="Araçlar">
+  <a href="#tod"><span data-l="tr">Alçalma noktası (TOD)</span><span data-l="en" lang="en">Top of descent (TOD)</span></a>
+  <a href="#ruzgar"><span data-l="tr">Yan rüzgâr</span><span data-l="en" lang="en">Crosswind</span></a>
+  <a href="#yakit"><span data-l="tr">Yakıt tahmini</span><span data-l="en" lang="en">Fuel estimate</span></a>
+  <a href="#inis"><span data-l="tr">İniş puanı</span><span data-l="en" lang="en">Landing rate</span></a>
+</nav>
+
+<section class="cc-sec t-card" id="tod">
+  <h2><span class="n">1</span><span data-l="tr">Alçalma noktası (TOD) hesaplayıcı</span><span data-l="en" lang="en">Top of descent (TOD) calculator</span></h2>
+  <p><span data-l="tr">Pilotların kullandığı <b>3:1 kuralı</b>: her 1.000 ft irtifa kaybı için yaklaşık 3 NM mesafe gerekir. Alçalma hızı için de yer hızının 5 katı (fpm) yaklaşık 3 derecelik bir süzülüş verir.</span><span data-l="en" lang="en">The <b>3:1 rule</b> pilots use: you need about 3 NM for every 1,000 ft you lose. For the descent rate, five times your ground speed (fpm) gives roughly a 3-degree path.</span></p>
+  <div class="t-grid">
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Mevcut irtifa</span><span data-l="en" lang="en">Current altitude</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="tAlt" value="36000" step="500" min="0" max="60000"><i>ft</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Hedef irtifa</span><span data-l="en" lang="en">Target altitude</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="tTgt" value="3000" step="500" min="0" max="60000"><i>ft</i></span><small class="t-hint"><span data-l="tr">Genelde son yaklaşma fiksi ya da meydan + 1.500 ft</span><span data-l="en" lang="en">Usually the final approach fix, or field elevation + 1,500 ft</span></small></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Alçalmadaki yer hızı</span><span data-l="en" lang="en">Ground speed in descent</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="tGs" value="300" step="10" min="60" max="700"><i>kt</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Yavaşlama payı</span><span data-l="en" lang="en">Slow-down margin</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="tSlow" value="10" step="1" min="0" max="50"><i>NM</i></span><small class="t-hint"><span data-l="tr">Hız düşürmek ve konfigürasyon için ek mesafe</span><span data-l="en" lang="en">Extra distance to slow down and configure</span></small></label>
+  </div>
+  <div class="t-res">
+    <div class="t-out big"><span><span data-l="tr">Alçalmaya başla</span><span data-l="en" lang="en">Start descent</span></span><b id="tDist">–</b></div>
+    <div class="t-out"><span><span data-l="tr">Alçalma hızı</span><span data-l="en" lang="en">Descent rate</span></span><b id="tRate">–</b></div>
+    <div class="t-out"><span><span data-l="tr">Alçalma süresi</span><span data-l="en" lang="en">Descent time</span></span><b id="tTime">–</b></div>
+  </div>
+</section>
+
+<section class="cc-sec t-card" id="ruzgar">
+  <h2><span class="n">2</span><span data-l="tr">Yan rüzgâr ve baş rüzgâr bileşeni</span><span data-l="en" lang="en">Crosswind and headwind component</span></h2>
+  <p><span data-l="tr">Pist yönünü ve ATIS ya da METAR'daki rüzgârı gir. Pist numarası da yazabilirsin (ör. 35 → 350°).</span><span data-l="en" lang="en">Enter the runway heading and the wind from the ATIS or METAR. You can also type the runway number (e.g. 35 → 350°).</span></p>
+  <div class="t-grid">
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Pist yönü</span><span data-l="en" lang="en">Runway heading</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="wRwy" value="350" step="1" min="0" max="360"><i>°</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Rüzgâr yönü</span><span data-l="en" lang="en">Wind direction</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="wDir" value="20" step="10" min="0" max="360"><i>°</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Rüzgâr hızı</span><span data-l="en" lang="en">Wind speed</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="wSpd" value="15" step="1" min="0" max="120"><i>kt</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Hamle (varsa)</span><span data-l="en" lang="en">Gust (if any)</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="wGst" value="" step="1" min="0" max="150"><i>kt</i></span></label>
+  </div>
+  <div class="t-res">
+    <div class="t-out big"><span><span data-l="tr">Yan rüzgâr</span><span data-l="en" lang="en">Crosswind</span></span><b id="wX">–</b></div>
+    <div class="t-out"><span><span data-l="tr">Baş / kuyruk rüzgârı</span><span data-l="en" lang="en">Head / tailwind</span></span><b id="wH">–</b></div>
+    <div class="t-out"><span><span data-l="tr">Değerlendirme</span><span data-l="en" lang="en">Assessment</span></span><b id="wNote">–</b></div>
+  </div>
+  <div class="t-wind" aria-hidden="true"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" class="ring"/><rect x="92" y="30" width="16" height="140" rx="3" class="rwy" id="wRwyG"/><g id="wArrow"><line x1="100" y1="10" x2="100" y2="70" class="arr"/><path d="M92 58 L100 74 L108 58 Z" class="arrh"/></g></svg></div>
+</section>
+
+<section class="cc-sec t-card" id="yakit">
+  <h2><span class="n">3</span><span data-l="tr">Blok yakıt tahmini (A320)</span><span data-l="en" lang="en">Block fuel estimate (A320)</span></h2>
+  <p><span data-l="tr"><a href="/ders-3/">Ders 3</a>'teki blok yakıt kalemleriyle hızlı bir tahmin. Varsayılan değerler A320 için kabaca ortalamadır; gerçek uçuşlarda yakıtı <b>SimBrief</b> ile planla.</span><span data-l="en" lang="en">A quick estimate using the block fuel items from <a href="/en/ders-3/">Lesson 3</a>. The defaults are rough A320 averages; for real flights, plan your fuel with <b>SimBrief</b>.</span></p>
+  <div class="t-grid">
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Uçuş süresi</span><span data-l="en" lang="en">Flight time</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="fTrip" value="75" step="5" min="5" max="900"><i>dk</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Saatlik yakıt tüketimi</span><span data-l="en" lang="en">Fuel burn per hour</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="fBurn" value="2500" step="50" min="500" max="12000"><i>kg/sa</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Yedek meydana uçuş</span><span data-l="en" lang="en">Flight to alternate</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="fAlt" value="35" step="5" min="0" max="240"><i>dk</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Taksi yakıtı</span><span data-l="en" lang="en">Taxi fuel</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="fTaxi" value="200" step="50" min="0" max="2000"><i>kg</i></span></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Bekleme tüketimi (son rezerv)</span><span data-l="en" lang="en">Holding burn (final reserve)</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="fHold" value="2200" step="50" min="500" max="10000"><i>kg/sa</i></span><small class="t-hint"><span data-l="tr">Son rezerv = 30 dakika bekleme</span><span data-l="en" lang="en">Final reserve = 30 minutes of holding</span></small></label>
+    <label class="t-field"><span class="t-lab"><span data-l="tr">İlave</span><span data-l="en" lang="en">Extra</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="fExtra" value="0" step="100" min="0" max="20000"><i>kg</i></span></label>
+  </div>
+  <table class="t-fuel">
+    <tr><td><span data-l="tr">Taksi</span><span data-l="en" lang="en">Taxi</span></td><td id="fT">–</td></tr>
+    <tr><td><span data-l="tr">Yolculuk</span><span data-l="en" lang="en">Trip</span></td><td id="fY">–</td></tr>
+    <tr><td><span data-l="tr">Ek pay (%5)</span><span data-l="en" lang="en">Contingency (5%)</span></td><td id="fC">–</td></tr>
+    <tr><td><span data-l="tr">Yedek meydan</span><span data-l="en" lang="en">Alternate</span></td><td id="fA">–</td></tr>
+    <tr><td><span data-l="tr">Son rezerv (30 dk)</span><span data-l="en" lang="en">Final reserve (30 min)</span></td><td id="fR">–</td></tr>
+    <tr><td><span data-l="tr">İlave</span><span data-l="en" lang="en">Extra</span></td><td id="fE">–</td></tr>
+    <tr class="sum"><td><span data-l="tr">Blok yakıt</span><span data-l="en" lang="en">Block fuel</span></td><td id="fB">–</td></tr>
+  </table>
+</section>
+
+<section class="cc-sec t-card" id="inis">
+  <h2><span class="n">4</span><span data-l="tr">İniş puanı (fpm)</span><span data-l="en" lang="en">Landing rate (fpm)</span></h2>
+  <p><span data-l="tr">Teker koyduğun andaki dikey hızı gir. Puanlar CrossCheck rozetleriyle aynı ölçeği kullanır.</span><span data-l="en" lang="en">Enter your vertical speed at touchdown. The grades use the same scale as the CrossCheck badges.</span></p>
+  <div class="t-grid one">
+    <label class="t-field"><span class="t-lab"><span data-l="tr">Teker koyma dikey hızı</span><span data-l="en" lang="en">Touchdown vertical speed</span></span>
+        <span class="t-inp"><input type="number" inputmode="decimal" id="lRate" value="140" step="10" min="0" max="2000"><i>fpm</i></span></label>
+  </div>
+  <div class="t-land" id="lBox"><b id="lGrade">–</b><span id="lText"></span></div>
+  <ol class="t-scale">
+    <li class="g1"><b>&lt; 60</b><span data-l="tr">Tereyağı</span><span data-l="en" lang="en">Butter</span></li>
+    <li class="g2"><b>60–150</b><span data-l="tr">Çok yumuşak</span><span data-l="en" lang="en">Very smooth</span></li>
+    <li class="g3"><b>150–240</b><span data-l="tr">Normal</span><span data-l="en" lang="en">Normal</span></li>
+    <li class="g4"><b>240–360</b><span data-l="tr">Sert</span><span data-l="en" lang="en">Firm</span></li>
+    <li class="g5"><b>360–600</b><span data-l="tr">Çok sert</span><span data-l="en" lang="en">Hard</span></li>
+    <li class="g6"><b>&gt; 600</b><span data-l="tr">Ağır iniş</span><span data-l="en" lang="en">Heavy landing</span></li>
+  </ol>
+</section>
+
+<p class="cc-soft t-disc"><span data-l="tr">Bu araçlar simülasyon ve eğitim içindir; gerçek uçuşta kullanılmaz.</span><span data-l="en" lang="en">These tools are for simulation and training only, not for real-world flying.</span></p>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk</span>
+    <span><span data-l="tr">İletişim</span><span data-l="en" lang="en">Contact</span>: <a href="mailto:info@virtualwingsbycenk.com">info@virtualwingsbycenk.com</a></span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent=new Date().getFullYear();
+(function(){
+var mb=document.getElementById("menuBtn"),mn=document.getElementById("menu");
+mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o)});
+var md=document.querySelector('meta[name="description"]');
+function setL(l){document.documentElement.lang=l;document.documentElement.dataset.l=l;document.title=CC_T[l];md.content=CC_D[l];
+document.querySelectorAll(".lang-switch a").forEach(function(a){var on=a.dataset.lang===l;a.classList.toggle("on",on);a.setAttribute("aria-pressed",on)});
+try{localStorage.setItem("vw_lang",l)}catch(e){}
+document.dispatchEvent(new CustomEvent("cc-lang",{detail:l}))}
+document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();setL(a.dataset.lang)})});
+setL(document.documentElement.dataset.l);
+})();
+</script>
+<script>
+(function(){
+var T={tr:{nm:"NM",min:"dk",left:"soldan",right:"sağdan",head:"baş rüzgârı",tail:"kuyruk rüzgârı",calm:"Sakin",
+  ok:"Rahat",mid:"Dikkat: belirgin yan rüzgâr",hi:"Zorlu: A320'nin gösterilmiş 38 kt sınırına yakın",over:"A320'nin gösterilmiş 38 kt sınırının üstünde",tw:"Kuyruk rüzgârı 10 kt'yi aşıyor: pist değiştirmeyi düşün",
+  g:["Tereyağı","Çok yumuşak","Normal","Sert","Çok sert","Ağır iniş"],
+  d:["Yolcular inişi fark etmedi bile. CrossCheck'te Tereyağı rozeti bu aralıkta.","Çok güzel bir iniş. 150 fpm altını 5 uçuş üst üste tutarsan Yumuşak Seri rozeti senin.","Havayolu standardında, güvenli bir iniş.","Biraz sert. Flare'i biraz daha erken ve yumuşak başlat.","Yolcular hissetti. Yaklaşma hızını ve flare zamanlamasını gözden geçir.","Gerçekte bakım kontrolü gerektirecek bir iniş. Bir sonraki yaklaşmayı daha stabil yap."],loc:"tr-TR"},
+ en:{nm:"NM",min:"min",left:"from the left",right:"from the right",head:"headwind",tail:"tailwind",calm:"Calm",
+  ok:"Comfortable",mid:"Caution: noticeable crosswind",hi:"Demanding: close to the A320's demonstrated 38 kt",over:"Above the A320's demonstrated 38 kt",tw:"Tailwind above 10 kt: consider a different runway",
+  g:["Butter","Very smooth","Normal","Firm","Hard","Heavy landing"],
+  d:["The passengers didn't even notice. This is the CrossCheck Butter badge range.","A lovely landing. Stay under 150 fpm for 5 flights in a row for the Greaser Streak badge.","A safe, airline-standard landing.","A little firm. Start the flare slightly earlier and smoother.","The passengers felt that one. Review your approach speed and flare timing.","In real life this would need a maintenance check. Make the next approach more stable."],loc:"en-GB"}};
+var lang=function(){return document.documentElement.dataset.l==="en"?"en":"tr"};
+function v(id){var x=parseFloat(document.getElementById(id).value);return isFinite(x)?x:NaN}
+function set(id,t){document.getElementById(id).textContent=t}
+function n(x,d){return Number(x).toLocaleString(T[lang()].loc,{maximumFractionDigits:d||0})}
+function tod(){var a=v("tAlt"),b=v("tTgt"),g=v("tGs"),s=v("tSlow")||0,t=T[lang()];
+  if(!(a>b)||!(g>0)){set("tDist","–");set("tRate","–");set("tTime","–");return}
+  var d=(a-b)/1000*3+s;set("tDist",n(d)+" "+t.nm+(lang()==="en"?" out":" kala"));set("tRate",n(Math.round(g*5/50)*50)+" fpm");set("tTime",n((a-b)/(g*5),0)+" "+t.min)}
+function norm(h){return((h%360)+360)%360}
+function wind(){var r=v("wRwy"),d=v("wDir"),s=v("wSpd"),gu=v("wGst"),t=T[lang()];
+  if(r>0&&r<=36)r=r*10;if(!(r>=0)||!(d>=0)||!(s>=0)){set("wX","–");set("wH","–");set("wNote","–");return}
+  var ang=(norm(d-r))*Math.PI/180,sp=gu>s?gu:s,x=sp*Math.sin(ang),h=s*Math.cos(ang);
+  if(s===0){set("wX","0 kt");set("wH",t.calm);set("wNote",t.ok)}
+  else{set("wX",n(Math.abs(x))+" kt "+(Math.abs(x)<0.5?"":(x>0?t.right:t.left)));
+   set("wH",n(Math.abs(h))+" kt "+(h>=0?t.head:t.tail));
+   var ax=Math.abs(x);set("wNote",h<-10?t.tw:ax>38?t.over:ax>=30?t.hi:ax>=15?t.mid:t.ok)}
+  document.getElementById("wRwyG").setAttribute("transform","rotate("+r+" 100 100)");
+  document.getElementById("wArrow").setAttribute("transform","rotate("+d+" 100 100)")}
+function fuel(){var tr=v("fTrip"),b=v("fBurn"),al=v("fAlt")||0,tx=v("fTaxi")||0,ho=v("fHold"),ex=v("fExtra")||0;
+  if(!(tr>0)||!(b>0)||!(ho>0)){["fT","fY","fC","fA","fR","fE","fB"].forEach(function(i){set(i,"–")});return}
+  var r50=function(x){return Math.round(x/10)*10};
+  var trip=r50(b*tr/60),con=r50(trip*0.05),alt=r50(b*al/60),res=r50(ho*0.5),blk=tx+trip+con+alt+res+ex;
+  set("fT",n(tx)+" kg");set("fY",n(trip)+" kg");set("fC",n(con)+" kg");set("fA",n(alt)+" kg");set("fR",n(res)+" kg");set("fE",n(ex)+" kg");set("fB",n(blk)+" kg")}
+function land(){var r=Math.abs(v("lRate")),t=T[lang()],box=document.getElementById("lBox");
+  if(!isFinite(r)){set("lGrade","–");set("lText","");return}
+  var i=r<60?0:r<150?1:r<240?2:r<360?3:r<=600?4:5;set("lGrade",t.g[i]);set("lText",t.d[i]);box.className="t-land g"+(i+1)}
+function all(){tod();wind();fuel();land()}
+document.querySelectorAll(".t-card input").forEach(function(e){e.addEventListener("input",all)});
+document.addEventListener("cc-lang",all);all();
+})();
+</script>
+</body>
+</html>

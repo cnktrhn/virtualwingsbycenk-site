@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="tr" data-l="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MSFS 2020 ve 2024'e eklenti nasıl kurulur? (Community klasörü) — Virtual Wings by Cenk</title>
+<meta name="description" content="MSFS 2020 ve 2024'te Community klasörünü bulma, kaplama, meydan ve uçak eklentilerini doğru kurma ve sık yapılan hatalar. Adım adım Türkçe rehber.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="/images/logo-emblem.png">
+<link rel="canonical" href="https://virtualwingsbycenk.com/rehber/msfs-eklenti-kurulumu/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Virtual Wings by Cenk">
+<meta property="og:title" content="MSFS 2020 ve 2024'e eklenti nasıl kurulur? (Community klasörü)">
+<meta property="og:description" content="MSFS 2020 ve 2024'te Community klasörünü bulma, kaplama, meydan ve uçak eklentilerini doğru kurma ve sık yapılan hatalar. Adım adım Türkçe rehber.">
+<meta property="og:url" content="https://virtualwingsbycenk.com/rehber/msfs-eklenti-kurulumu/">
+<meta property="og:image" content="https://virtualwingsbycenk.com/images/og/rehber-eklenti.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://virtualwingsbycenk.com/images/og/rehber-eklenti.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/crosscheck.css">
+<link rel="stylesheet" href="/assets/pages.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "MSFS 2020 ve 2024'e eklenti nasıl kurulur? (Community klasörü)", "description": "MSFS 2020 ve 2024'te Community klasörünü bulma, kaplama, meydan ve uçak eklentilerini doğru kurma ve sık yapılan hatalar. Adım adım Türkçe rehber.", "inLanguage": "tr", "author": {"@type": "Person", "name": "Cenk"}, "publisher": {"@type": "Organization", "name": "Virtual Wings by Cenk"}, "mainEntityOfPage": "https://virtualwingsbycenk.com/rehber/msfs-eklenti-kurulumu/"}</script>
+<script>document.documentElement.dataset.l="tr";</script>
+<script data-goatcounter="https://virtualwingsbycenk.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</head>
+<body class="cc vw">
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/images/logo-emblem.png" alt="Virtual Wings by Cenk"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="/">Ana sayfa</a>
+      <a href="/#egitim">Eğitim</a>
+      <a href="/araclar/">Pilot araçları</a>
+      <a href="/rehber/" aria-current="page" class="on">Rehberler</a>
+      <a href="/crosscheck/">CrossCheck</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="#" class="on" lang="tr" aria-pressed="true">TR</a><a href="/en/" lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menü</button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero cc-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="/">Virtual Wings</a> › <a href="/rehber/">Rehberler</a></p>
+    <p class="lesson-kicker">Rehber · MSFS</p>
+    <h1>MSFS'e eklenti nasıl kurulur?</h1>
+    <p class="cc-lead">Community klasörünü bulmaktan iç içe klasör hatasına kadar, kaplama, meydan ve uçak eklentilerini doğru kurmanın adım adım yolu.</p>
+  </div>
+</section>
+
+<div class="wrap cc-body">
+<article class="g-art">
+<p>Kaplamalar, meydanlar, uçaklar ve araçlar: MSFS'i asıl zenginleştiren şey eklentiler. Neredeyse hepsi aynı yere kurulur: <b>Community</b> klasörüne. Bu rehberde klasörü nasıl bulacağını, eklentiyi doğru şekilde nasıl kopyalayacağını ve en sık yapılan hataları anlatıyorum. Anlattıklarım hem MSFS 2020 hem MSFS 2024 için geçerli.</p>
+
+<h2>1. Community klasörünü bul</h2>
+<p>Klasörün yeri, simi nereden aldığına (Microsoft Store/Xbox ya da Steam) ve kurulumda seçtiğin konuma göre değişir. En kesin yol <code>UserCfg.opt</code> dosyasına bakmaktır. Aşağıdaki yolu kopyalayıp Dosya Gezgini'nin adres çubuğuna yapıştır, dosyayı Not Defteri ile aç. En alttaki <code>InstalledPackagesPath</code> satırı paket klasörünü gösterir; Community klasörü onun içindedir.</p>
+<dl class="g-dl">
+  <dt>2020 · Store</dt><dd><code>%LOCALAPPDATA%\Packages\Microsoft.FlightSimulator_8wekyb3d8bbwe\LocalCache\UserCfg.opt</code></dd>
+  <dt>2020 · Steam</dt><dd><code>%APPDATA%\Microsoft Flight Simulator\UserCfg.opt</code></dd>
+  <dt>2024 · Store</dt><dd><code>%LOCALAPPDATA%\Packages\Microsoft.Limitless_8wekyb3d8bbwe\LocalCache\UserCfg.opt</code></dd>
+  <dt>2024 · Steam</dt><dd><code>%APPDATA%\Microsoft Flight Simulator 2024\UserCfg.opt</code></dd>
+</dl>
+<div class="tip"><b>Cenk'in ipucu</b>Community klasörüne masaüstünde bir kısayol oluştur. Eklenti kurarken her seferinde bu yolları aramakla uğraşmazsın.</div>
+
+<h2>2. Eklentiyi indir ve zip'ten çıkar</h2>
+<p>Ücretsiz eklentilerin büyük kısmı <a href="https://flightsim.to/" target="_blank" rel="noopener">Flightsim.to</a>'da, ücretli olanlar SimMarket gibi mağazalarda ya da geliştiricinin kendi sitesinde. İndirdiğin dosya genelde bir <code>.zip</code>'tir. Önce bilgisayarında bir yere çıkar, sonra içinden doğru klasörü Community'ye kopyala.</p>
+
+<h2>3. Doğru klasörü kopyala</h2>
+<p>En önemli kural şu: Community klasörünün içindeki her eklenti klasöründe <code>layout.json</code> ve <code>manifest.json</code> dosyaları <b>doğrudan</b> görünmeli.</p>
+<dl class="g-dl">
+  <dt>Doğru</dt><dd><code>Community\eklenti-adi\layout.json</code></dd>
+  <dt>Yanlış</dt><dd><code>Community\eklenti-adi\eklenti-adi\layout.json</code> (iç içe klasör: sim eklentiyi görmez)</dd>
+</dl>
+<p>Zip'ten çıkan klasörün içinde yine aynı isimde bir klasör varsa, içteki klasörü kopyala.</p>
+
+<h2>4. Simi yeniden başlat</h2>
+<p>Sim, Community klasörünü sadece açılışta okur. Eklentiyi kopyaladıktan sonra MSFS'i tamamen kapatıp yeniden aç. Kaplamalar uçak seçim ekranında, meydanlar dünya haritasında, araçlar ise genelde üstteki araç çubuğunda görünür.</p>
+
+<h2>Bazı eklentiler farklı kurulur</h2>
+<ul>
+  <li><b>Kendi kurulum programı olanlar:</b> Fenix, GSX, Active Sky gibi büyük eklentiler kendi kurulum programıyla ya da uygulamasıyla gelir ve dosyaları kendileri yerleştirir. Bunları elle Community'ye kopyalamaya çalışma.</li>
+  <li><b>Uçağa özel kaplamalar:</b> Bazı uçaklar kaplamaları kendi yöneticisiyle kurar. Kaplamanın açıklamasında kurulum yöntemi yazar; mutlaka oku.</li>
+  <li><b>Marketplace:</b> Sim içindeki Marketplace'ten aldığın içerikler otomatik kurulur ve Community klasörüne düşmez.</li>
+</ul>
+
+<h2>Sık yapılan hatalar</h2>
+<ul>
+  <li><b>Eklenti görünmüyor:</b> Büyük ihtimalle iç içe klasör ya da yanlış Community klasörü. Yukarıdaki iki kontrolü yap.</li>
+  <li><b>Sim açılırken takılıyor ya da çöküyor:</b> Son kurduğun eklentiyi Community'den çıkarıp dene. Sorun bir eklentideyse böyle bulursun. Çok eklentin varsa yarısını geçici bir klasöre taşıyarak hızlıca daraltabilirsin.</li>
+  <li><b>İki eklenti çakışıyor:</b> Aynı meydanın iki farklı sürümü ya da aynı uçağın iki kaplama paketi sorun çıkarabilir. Birini kaldır.</li>
+  <li><b>Güncelleme sonrası sorun:</b> Eklentiyi güncellerken eski klasörü silip yenisini kopyala; üzerine yazmak bazen eski dosyaları bırakır.</li>
+</ul>
+<p>Kurulum sonrası ilk uçuşa hazırlanmak için <a href="/ders-1/">Ders 1: MSFS kurulumu ve ayarlar</a>'a göz at.</p>
+<div class="g-next"><a class="btn" href="/rehber/">← Tüm rehberler</a><a class="btn" href="/#egitim">Eğitim serisi</a><a class="btn" href="/araclar/">Pilot araçları</a></div></article>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk</span>
+    <span>İletişim: <a href="mailto:info@virtualwingsbycenk.com">info@virtualwingsbycenk.com</a></span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent=new Date().getFullYear();
+(function(){
+var mb=document.getElementById("menuBtn"),mn=document.getElementById("menu");
+mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o)});
+})();
+</script>
+</body>
+</html>

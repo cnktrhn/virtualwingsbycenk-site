@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hall of Fame — CrossCheck · Virtual Wings by Cenk</title>
+<meta name="description" content="CrossCheck Hall of Fame: XP, uçuş sayısı, uçuş saati ve rozetlere göre en iyi CrossCheck pilotları.">
+<meta name="theme-color" content="#040E1A">
+<link rel="icon" href="/images/logo-emblem.png">
+<link rel="canonical" href="https://virtualwingsbycenk.com/crosscheck/hall-of-fame/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/crosscheck.css">
+<script>
+(function(){var l;try{l=localStorage.getItem("vw_lang")}catch(e){}
+if(l!=="tr"&&l!=="en")l=/^tr/i.test(navigator.language||"")?"tr":"en";
+document.documentElement.lang=l;document.documentElement.dataset.l=l;
+window.CC_T={tr:"Hall of Fame — CrossCheck · Virtual Wings by Cenk",en:"Hall of Fame — CrossCheck · Virtual Wings by Cenk"};
+window.CC_D={tr:"CrossCheck Hall of Fame: XP, uçuş sayısı, uçuş saati ve rozetlere göre en iyi CrossCheck pilotları.",en:"CrossCheck Hall of Fame: the top CrossCheck pilots by XP, flights, flight hours and badges."};
+document.title=CC_T[l];})();
+</script>
+<!--seo-->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Virtual Wings by Cenk">
+<meta property="og:title" content="Hall of Fame">
+<meta property="og:description" content="CrossCheck Hall of Fame: XP, uçuş sayısı, uçuş saati ve rozetlere göre en iyi CrossCheck pilotları.">
+<meta property="og:url" content="https://virtualwingsbycenk.com/crosscheck/hall-of-fame/">
+<meta property="og:image" content="https://virtualwingsbycenk.com/images/og/hof.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://virtualwingsbycenk.com/images/og/hof.jpg">
+<script data-goatcounter="https://virtualwingsbycenk.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!--/seo-->
+</head>
+<body class="cc">
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/images/logo-emblem.png" alt="Virtual Wings by Cenk"><span>Virtual Wings</span></a>
+    <nav class="menu" id="menu">
+      <a href="/crosscheck/"><span data-l="tr">Ürün</span><span data-l="en" lang="en">Product</span></a>
+      <a href="/crosscheck/support/"><span data-l="tr">Destek</span><span data-l="en" lang="en">Support</span></a>
+      <a href="/crosscheck/faq/"><span data-l="tr">SSS</span><span data-l="en" lang="en">FAQ</span></a>
+      <a href="/crosscheck/changelog/"><span data-l="tr">Sürüm notları</span><span data-l="en" lang="en">Changelog</span></a>
+      <a href="/crosscheck/map/"><span data-l="tr">Canlı harita</span><span data-l="en" lang="en">Live map</span></a>
+      <a href="/crosscheck/hall-of-fame/" aria-current="page" class="on"><span data-l="tr">Hall of Fame</span><span data-l="en" lang="en">Hall of Fame</span></a>
+      <a href="/" class="cc-home"><span data-l="tr">Ana site ↗</span><span data-l="en" lang="en">Main site ↗</span></a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Dil / Language"><a href="#" data-lang="tr" lang="tr">TR</a><a href="#" data-lang="en" lang="en">EN</a></div>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu"><span data-l="tr">Menü</span><span data-l="en" lang="en">Menu</span></button>
+  </div>
+</header>
+
+<main>
+<section class="lesson-hero cc-hero">
+  <div class="wrap">
+    <p class="crumbs"><a href="/">Virtual Wings</a> › <a href="/crosscheck/">CrossCheck</a> › <span data-l="tr">Hall of Fame</span><span data-l="en" lang="en">Hall of Fame</span></p>
+    <p class="lesson-kicker">CrossCheck</p>
+    <h1>Hall of Fame</h1>
+    <p class="cc-lead"><span data-l="tr">En çok XP toplayan CrossCheck pilotları. Sıralama her uçuşun sonunda güncellenir.</span><span data-l="en" lang="en">The CrossCheck pilots with the most XP. The ranking updates at the end of every flight.</span></p>
+  </div>
+</section>
+
+<div class="wrap cc-body">
+<section class="cc-sec" id="hofBox" aria-live="polite"><p class="cc-soft">…</p></section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="yr"></span> Virtual Wings by Cenk · CrossCheck</span>
+    <span><span data-l="tr">İletişim</span><span data-l="en" lang="en">Contact</span>: <a href="mailto:info@virtualwingsbycenk.com">info@virtualwingsbycenk.com</a></span>
+  </div>
+</footer>
+
+<script>
+document.getElementById("yr").textContent=new Date().getFullYear();
+(function(){
+var mb=document.getElementById("menuBtn"),mn=document.getElementById("menu");
+mb.addEventListener("click",function(){var o=mn.classList.toggle("open");mb.setAttribute("aria-expanded",o)});
+var md=document.querySelector('meta[name="description"]');
+function setL(l){document.documentElement.lang=l;document.documentElement.dataset.l=l;document.title=CC_T[l];md.content=CC_D[l];
+document.querySelectorAll(".lang-switch a").forEach(function(a){var on=a.dataset.lang===l;a.classList.toggle("on",on);a.setAttribute("aria-pressed",on)});
+try{localStorage.setItem("vw_lang",l)}catch(e){}
+document.dispatchEvent(new CustomEvent("cc-lang",{detail:l}))}
+document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();setL(a.dataset.lang)})});
+setL(document.documentElement.dataset.l);
+})();
+</script>
+<script>
+window.ccMeta=(function(){var p=null;return function(){if(!p)p=fetch("/crosscheck/rozetler.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():{}}).catch(function(){return {}}).then(norm);return p}
+function arr(x){if(Array.isArray(x))return x;if(x&&typeof x==="object")return Object.keys(x).map(function(k){var v=x[k];v=(v&&typeof v==="object")?v:{name:String(v)};if(!v.id)v.id=k;return v});return []}
+function norm(j){j=j||{};var ranks={},badges=[];
+arr(j.ranks||j.rutbeler||j["rütbeler"]).forEach(function(r,i){if(r&&r.id)ranks[r.id]=Object.assign({order:i},r)});
+arr(j.badges||j.rozetler).forEach(function(b){if(b&&b.id)badges.push(b)});
+return {ranks:ranks,badges:badges}}})();
+window.ccText=function(o,l,base){if(!o)return "";base=base||"name";return o[base+"_"+l]||o[l]||o[base]||o.name||o.ad||o.title||""};
+</script>
+<script>
+(function(){
+var T={tr:{loading:"Sıralama yükleniyor…",empty:"Henüz sıralamada pilot yok. CrossCheck çıktığında her uçuşun sonunda pilotlar buraya eklenecek. İlk sırayı kapmak için hazır ol!",err:"Sıralama şu an alınamıyor. Biraz sonra tekrar dene.",
+  rank:"Rütbe",xp:"XP",fl:"Uçuş",hr:"Saat",bd:"Rozet",pilot:"Pilot",total:function(n){return n+" pilot sıralamada · ilk 50 gösteriliyor"},mark:"Eğitmen Kaptan ve üstü: Hall of Fame işareti",loc:"tr-TR"},
+ en:{loading:"Loading the ranking…",empty:"No pilots in the ranking yet. Once CrossCheck is released, pilots are added here at the end of every flight. Get ready to grab first place!",err:"Can't load the ranking right now. Please try again shortly.",
+  rank:"Rank",xp:"XP",fl:"Flights",hr:"Hours",bd:"Badges",pilot:"Pilot",total:function(n){return n+" pilots ranked · top 50 shown"},mark:"Training Captain and above: Hall of Fame mark",loc:"en-GB"}};
+var lang=function(){return document.documentElement.dataset.l==="en"?"en":"tr"};
+var box=document.getElementById("hofBox"),state={k:"loading"},meta={ranks:{}},order={};
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function rn(id){var r=meta.ranks[id];return r?(r[lang()]||r.tr||id):id}
+function marked(id){var r=meta.ranks[id],tc=meta.ranks.training_captain;return r&&tc&&r.order>=tc.order}
+function render(){var t=T[lang()];box.textContent="";
+  if(state.k!=="ok"){box.appendChild(el("p","cc-pilot-msg",t[state.k]));if(state.k==="empty"){var a=el("a","btn primary",lang()==="en"?"About CrossCheck":"CrossCheck'i incele");a.href="/crosscheck/";box.appendChild(a)}return}
+  var list=state.d.pilots,pod=el("div","hof-pod");
+  list.slice(0,3).forEach(function(p,i){var c=el("a","hof-p p"+(i+1));c.href="/crosscheck/pilot/?id="+encodeURIComponent(p.pilotId);
+    c.appendChild(el("span","hof-n",String(i+1)));c.appendChild(el("b",null,p.name+(marked(p.rank)?" ★":"")));c.appendChild(el("small",null,rn(p.rank)));
+    c.appendChild(el("strong",null,p.xp.toLocaleString(t.loc)+" XP"));pod.appendChild(c)});
+  box.appendChild(pod);
+  var tb=el("table","hof-t"),th=el("thead"),tr=el("tr");["#",t.pilot,t.rank,t.xp,t.fl,t.hr,t.bd].forEach(function(h){tr.appendChild(el("th",null,h))});th.appendChild(tr);tb.appendChild(th);
+  var bd=el("tbody");list.forEach(function(p,i){var r=el("tr");r.appendChild(el("td","n",String(i+1)));
+    var td=el("td"),a=el("a",null,p.name+(marked(p.rank)?" ★":""));a.href="/crosscheck/pilot/?id="+encodeURIComponent(p.pilotId);td.appendChild(a);r.appendChild(td);
+    r.appendChild(el("td","rk",rn(p.rank)));r.appendChild(el("td","num",p.xp.toLocaleString(t.loc)));r.appendChild(el("td","num",p.flights.toLocaleString(t.loc)));
+    r.appendChild(el("td","num",p.hours.toLocaleString(t.loc,{maximumFractionDigits:1})));r.appendChild(el("td","num",String(p.badgeCount)));bd.appendChild(r)});
+  tb.appendChild(bd);var wrap=el("div","hof-scroll");wrap.appendChild(tb);box.appendChild(wrap);
+  box.appendChild(el("p","cc-soft",t.total(state.d.total)+" · ★ "+t.mark))}
+document.addEventListener("cc-lang",render);render();
+Promise.all([fetch("/api/cc/top").then(function(r){if(!r.ok)throw 0;return r.json()}),ccMeta()]).then(function(x){meta=x[1];state=x[0].pilots&&x[0].pilots.length?{k:"ok",d:x[0]}:{k:"empty"};render()}).catch(function(){state={k:"err"};render()});
+})();
+</script>
+</body>
+</html>

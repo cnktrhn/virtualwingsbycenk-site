@@ -222,3 +222,20 @@ export async function route(req, store, now = Date.now()) {
     "Access-Control-Allow-Origin": "*",
   });
 }
+
+// ---------- GET /api/cc/top  (Hall of Fame) ----------
+// pilot/<id> profillerinden XP'ye göre ilk 50. CDN'de 5 dk önbellek: çok ziyaret olsa da fonksiyon az çalışır.
+export async function top(req, store) {
+  if (req.method !== "GET" && req.method !== "HEAD") return notAllowed("GET");
+  const { blobs } = await store.list({ prefix: "pilot/" });
+  const all = (await Promise.all(blobs.map(({ key }) => store.get(key, { type: "json" }).catch(() => null))))
+    .filter((p) => p && typeof p.xp === "number")
+    .map((p) => ({ ...pick(p, PUBLIC_PROFILE), badgeCount: Array.isArray(p.badges) ? p.badges.length : 0 }));
+  all.sort((a, b) => b.xp - a.xp || b.hours - a.hours || a.pilotId.localeCompare(b.pilotId));
+  const out = all.slice(0, 50).map(({ badges, ...rest }) => rest);
+  return json(200, { total: all.length, pilots: out }, {
+    "Cache-Control": "public, max-age=0, must-revalidate",
+    "Netlify-CDN-Cache-Control": "public, durable, s-maxage=300, stale-while-revalidate=300",
+    "Access-Control-Allow-Origin": "*",
+  });
+}

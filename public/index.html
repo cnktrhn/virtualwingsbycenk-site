@@ -26,9 +26,30 @@
 
 
 
+
+
+
+
+
+
 <link rel="alternate" hreflang="tr" href="https://virtualwingsbycenk.com/">
 <link rel="alternate" hreflang="en" href="https://virtualwingsbycenk.com/en/">
 <script>try{var p=localStorage.getItem("vw_lang");if(p&&p!=="tr"&&(p==="tr"||p==="en"))location.replace("en/"+location.hash)}catch(e){}</script>
+<!--seo-->
+<link rel="canonical" href="https://virtualwingsbycenk.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Virtual Wings by Cenk">
+<meta property="og:title" content="Virtual Wings by Cenk — Kanatlar sanal, heyecan gerçek">
+<meta property="og:description" content="Microsoft Flight Simulator uçuşları, Fenix A319, A320 ve A321, canlı yayınlar, ekipmanlar ve eğitimler. Virtual Wings by Cenk.">
+<meta property="og:url" content="https://virtualwingsbycenk.com/">
+<meta property="og:image" content="https://virtualwingsbycenk.com/images/og/home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://virtualwingsbycenk.com/images/og/home.jpg">
+<script data-goatcounter="https://virtualwingsbycenk.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!--/seo-->
 </head>
 <body>
 
@@ -217,6 +238,15 @@
           <h3 id="statusTitle">Şu an yayında değilim</h3>
           <p id="statusText">Kanala abone olursan yayın başladığında bildirim alırsın.</p>
         </div>
+        <div class="wk" id="wk" hidden>
+          <p class="wk-k">Bu haftanın uçuşu</p>
+          <b class="wk-t" id="wkTitle" lang="en"></b>
+          <p class="wk-r" id="wkRoute" hidden></p>
+          <p class="wk-d" id="wkDate"></p>
+          <p class="wk-c" id="wkCount" hidden></p>
+          <p class="wk-n" id="wkNote"></p>
+          <a class="btn wk-ics" id="wkIcs" href="#" hidden>📅 Takvimime ekle</a>
+        </div>
         <h3 class="sched-title">Uçuş programı</h3>
         <ul class="schedule">
           <li><span>Her pazartesi</span><span class="ev"><b lang="en">THYVA &amp; IVAO Weekly Event</b><small>Planlı grup uçuşu</small></span></li>
@@ -310,6 +340,11 @@
       <li class="ready"><h3><a href="ders-5/">ILS yaklaşma ve iniş</a></h3><p>Otopilotla ve elle hassas yaklaşma.</p><span class="lvl">İleri</span><span class="go">Derse git →</span></li>
       <li class="ready"><h3><a href="ders-6/">Online uçuş: VATSIM / IVAO</a></h3><p>Gerçek kontrolörlerle telsiz konuşmaları.</p><span class="lvl">İleri</span><span class="go">Derse git →</span></li>
     </ol>
+    <div class="extras">
+      <a class="extra" href="/araclar/"><small>Ücretsiz araçlar</small><b>Pilot araçları</b><span>TOD, yan rüzgâr, yakıt tahmini ve iniş puanı hesaplayıcıları.</span></a>
+      <a class="extra" href="/rehber/"><small>Türkçe rehberler</small><b>Rehberler</b><span>Eklenti kurulumu, METAR okuma ve havacılık terimleri sözlüğü.</span></a>
+      <a class="extra" href="#abone"><small>Abone olana hediye</small><b>A320 checklist (PDF)</b><span>Türkçe açıklamalı normal checklist. Abone ol, indirme linki hemen gelsin.</span></a>
+    </div>
   </div>
 </section>
 
@@ -376,6 +411,8 @@
         <a class="btn primary" href="/crosscheck/">CrossCheck'i incele</a>
         <span class="btn is-off" aria-disabled="true">Yakında SimMarket'te</span>
       </div>
+      <a class="cc-livebox" href="/crosscheck/map/" id="ccLive"><span class="cc-live-dot" aria-hidden="true"></span><b id="ccLiveN">Canlı harita</b><span id="ccLiveT">CrossCheck pilotlarını gerçek zamanlı izle →</span></a>
+      <p class="cc-home-links"><a href="/crosscheck/hall-of-fame/">Hall of Fame →</a><a href="/araclar/">Pilot araçları →</a></p>
     </div>
     <ul class="cc-home-list">
       <li><b>Uçuş kaydı</b><span>Uçuş sayın ve uçuş saatlerin kendiliğinden tutulur.</span></li>
@@ -412,6 +449,7 @@
       <p class="kicker">Abone ol</p>
       <h2>Kokpitten haberler</h2>
       <p class="lead2">Yeni yayınlar, eğitimler, partner fırsatları ve indirim kodlarından ilk sen haberdar ol. E-posta adresini bırak, gelişmeleri sana gönderelim.</p>
+      <p class="sub-gift"><b>Abone olana hediye:</b> Türkçe açıklamalı A320 normal checklist (PDF). Kalkıştan park etmeye kadar her madde, yazdırıp kokpitinin yanına koyabileceğin iki sayfada.</p>
       <form name="abone" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="subForm">
         <input type="hidden" name="form-name" value="abone">
         <p class="hp"><label>Bunu doldurma: <input name="bot-field"></label></p>
@@ -639,7 +677,7 @@ subForm.addEventListener("submit", async e => {
   try{
     const r = await fetch("/", { method:"POST", headers:{ "Content-Type":"application/x-www-form-urlencoded" }, body:new URLSearchParams(new FormData(subForm)).toString() });
     if (!r.ok) throw new Error(r.status);
-    subForm.reset(); msg.classList.add("ok"); msg.textContent = "Teşekkürler! Aboneliğin alındı, kokpitten haberler yakında gelen kutunda.";
+    subForm.reset(); msg.classList.add("ok"); msg.innerHTML = 'Teşekkürler! Aboneliğin alındı. Hediyen hazır: <a href="/indir/a320-checklist-tr.pdf" download>Türkçe açıklamalı A320 checklist (PDF) indir ↓</a>';
   }catch(err){
     msg.classList.add("err"); msg.textContent = "Bir sorun oldu, lütfen biraz sonra tekrar dene.";
   }
@@ -659,6 +697,37 @@ fetch("/crosscheck/version.json",{cache:"no-store"}).then(function(r){return r.j
   var en=document.documentElement.lang==="en";
   document.querySelectorAll("[data-ccnote]").forEach(function(e){e.textContent=en?v.notes_en:v.notes_tr});
 }).catch(function(){});
+</script>
+<script>
+(function(){var en=document.documentElement.lang==="en";fetch("/api/cc/live").then(function(r){return r.ok?r.json():[]}).then(function(l){var n=Array.isArray(l)?l.length:0;if(!n)return;
+document.getElementById("ccLiveN").textContent=en?(n===1?"1 pilot flying now":n+" pilots flying now"):("Şu an "+n+" pilot uçuşta");
+document.getElementById("ccLiveT").textContent=en?"Open the live map →":"Canlı haritayı aç →";document.getElementById("ccLive").classList.add("is-live")}).catch(function(){})})();
+</script>
+<script>
+(function(){var en=document.documentElement.lang==="en",loc=en?"en-GB":"tr-TR";
+var L=en?{soon:"Time to be announced",left:"Starts in ",d:"d",h:"h",m:"min",now:"Happening now!",ics:"📅 Add to my calendar",tz:" (Turkey time)"}:{soon:"Saat yakında duyurulacak",left:"Başlamasına ",d:"g",h:"sa",m:"dk",now:"Şu an uçuştayız!",ics:"📅 Takvimime ekle",tz:" (TSİ)"};
+fetch("/haftalik.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(w){if(!w)return;
+var box=document.getElementById("wk");box.hidden=false;document.getElementById("wkTitle").textContent=w.baslik||"";
+if(w.rota){var r=document.getElementById("wkRoute");r.textContent=w.rota;r.hidden=false}
+document.getElementById("wkNote").textContent=(en?w.not_en:w.not_tr)||"";
+// Türkiye UTC+3 sabit
+var nowUtc=Date.now(),tr=new Date(nowUtc+3*36e5),dow=tr.getUTCDay(),gun=(w.gun==null?1:w.gun),add=(gun-dow+7)%7;
+var hm=/^(\d{1,2}):(\d{2})$/.exec(w.saat||""),dur=(w.sure_dk||120)*6e4;
+function startOf(a){return Date.UTC(tr.getUTCFullYear(),tr.getUTCMonth(),tr.getUTCDate()+a,hm?+hm[1]:0,hm?+hm[2]:0)-3*36e5}
+var start=startOf(add);if(hm&&start+dur<nowUtc)start=startOf(add+7);else if(!hm&&add===0&&false)start=startOf(7);
+var dEl=document.getElementById("wkDate"),dt=new Date(start);
+dEl.textContent=dt.toLocaleDateString(loc,{weekday:"long",day:"numeric",month:"long",timeZone:"Europe/Istanbul"})+(hm?" · "+w.saat+L.tz:" · "+L.soon);
+if(!hm)return;
+var c=document.getElementById("wkCount");c.hidden=false;
+function tick(){var ms=start-Date.now();if(ms<=0&&ms>-dur){c.textContent=L.now;c.classList.add("live");return}
+var d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);c.textContent=L.left+(d?d+" "+L.d+" ":"")+h+" "+L.h+" "+m+" "+L.m}
+tick();setInterval(tick,30000);
+var ics=document.getElementById("wkIcs");ics.hidden=false;ics.textContent=L.ics;
+function f(t){return new Date(t).toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"")}
+ics.addEventListener("click",function(e){e.preventDefault();
+var body=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Virtual Wings by Cenk//TR","BEGIN:VEVENT","UID:vw-weekly@virtualwingsbycenk.com","DTSTAMP:"+f(Date.now()),"DTSTART:"+f(start),"DTEND:"+f(start+dur),"RRULE:FREQ=WEEKLY","SUMMARY:"+(w.baslik||"Virtual Wings"),"DESCRIPTION:"+((en?w.not_en:w.not_tr)||"")+" https://virtualwingsbycenk.com/#canli","URL:https://virtualwingsbycenk.com/#canli","END:VEVENT","END:VCALENDAR"].join("\r\n");
+var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([body],{type:"text/calendar"}));a.download="virtual-wings-haftalik.ics";document.body.appendChild(a);a.click();a.remove()})
+}).catch(function(){})})();
 </script>
 <script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
 </body>

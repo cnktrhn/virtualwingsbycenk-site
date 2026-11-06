@@ -27,9 +27,30 @@
 
 
 
+
+
+
+
+
+
 <link rel="alternate" hreflang="tr" href="https://virtualwingsbycenk.com/">
 <link rel="alternate" hreflang="en" href="https://virtualwingsbycenk.com/en/">
 <script>try{var p=localStorage.getItem("vw_lang");if(p&&p!=="en"&&(p==="tr"||p==="en"))location.replace("../"+location.hash)}catch(e){}</script>
+<!--seo-->
+<link rel="canonical" href="https://virtualwingsbycenk.com/en/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Virtual Wings by Cenk">
+<meta property="og:title" content="Virtual Wings by Cenk — The wings are virtual, the thrill is real">
+<meta property="og:description" content="Microsoft Flight Simulator flights in the Fenix A319, A320 and A321, live streams, gear and training. Virtual Wings by Cenk.">
+<meta property="og:url" content="https://virtualwingsbycenk.com/en/">
+<meta property="og:image" content="https://virtualwingsbycenk.com/images/og/home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://virtualwingsbycenk.com/images/og/home.jpg">
+<script data-goatcounter="https://virtualwingsbycenk.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<!--/seo-->
 </head>
 <body>
 
@@ -215,6 +236,15 @@
           <h3 id="statusTitle">I'm not live right now</h3>
           <p id="statusText">Subscribe to the channel and you'll be notified when a stream starts.</p>
         </div>
+        <div class="wk" id="wk" hidden>
+          <p class="wk-k">This week's flight</p>
+          <b class="wk-t" id="wkTitle" lang="en"></b>
+          <p class="wk-r" id="wkRoute" hidden></p>
+          <p class="wk-d" id="wkDate"></p>
+          <p class="wk-c" id="wkCount" hidden></p>
+          <p class="wk-n" id="wkNote"></p>
+          <a class="btn wk-ics" id="wkIcs" href="#" hidden>📅 Add to my calendar</a>
+        </div>
         <h3 class="sched-title">Flight schedule</h3>
         <ul class="schedule">
           <li><span>Every Monday</span><span class="ev"><b lang="en">THYVA &amp; IVAO Weekly Event</b><small>Scheduled group flight</small></span></li>
@@ -308,6 +338,11 @@
       <li class="ready"><h3><a href="ders-5/">ILS approach and landing</a></h3><p>Precision approaches on autopilot and by hand.</p><span class="lvl">Advanced</span><span class="go">Go to lesson →</span></li>
       <li class="ready"><h3><a href="ders-6/">Flying online: VATSIM / IVAO</a></h3><p>Radio calls with real controllers.</p><span class="lvl">Advanced</span><span class="go">Go to lesson →</span></li>
     </ol>
+    <div class="extras">
+      <a class="extra" href="/araclar/"><small>Free tools</small><b>Pilot tools</b><span>Top of descent, crosswind, fuel estimate and landing rate calculators.</span></a>
+      <a class="extra" href="/rehber/"><small>Guides (Turkish)</small><b>Guides</b><span>Installing add-ons, reading a METAR and an aviation glossary, in Turkish.</span></a>
+      <a class="extra" href="#abone"><small>Free gift for subscribers</small><b>A320 checklist (PDF)</b><span>Normal checklist with Turkish notes. Subscribe and get the download link right away.</span></a>
+    </div>
   </div>
 </section>
 
@@ -374,6 +409,8 @@
         <a class="btn primary" href="/crosscheck/">Explore CrossCheck</a>
         <span class="btn is-off" aria-disabled="true">Coming soon to SimMarket</span>
       </div>
+      <a class="cc-livebox" href="/crosscheck/map/" id="ccLive"><span class="cc-live-dot" aria-hidden="true"></span><b id="ccLiveN">Live map</b><span id="ccLiveT">Watch CrossCheck pilots in real time →</span></a>
+      <p class="cc-home-links"><a href="/crosscheck/hall-of-fame/">Hall of Fame →</a><a href="/araclar/">Pilot tools →</a></p>
     </div>
     <ul class="cc-home-list">
       <li><b>Flight log</b><span>Your flight count and flight hours are tracked automatically.</span></li>
@@ -410,6 +447,7 @@
       <p class="kicker">Subscribe</p>
       <h2>News from the cockpit</h2>
       <p class="lead2">Be the first to hear about new streams, lessons, partner offers and discount codes. Leave your email and we'll keep you posted.</p>
+      <p class="sub-gift"><b>Free gift for subscribers:</b> an A320 normal checklist (PDF) with Turkish notes. Every item from before start to parking, on two pages you can print and keep next to your cockpit.</p>
       <form name="abone" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="subForm">
         <input type="hidden" name="form-name" value="abone">
         <p class="hp"><label>Bunu doldurma: <input name="bot-field"></label></p>
@@ -634,7 +672,7 @@ subForm.addEventListener("submit", async e => {
   try{
     const r = await fetch("/", { method:"POST", headers:{ "Content-Type":"application/x-www-form-urlencoded" }, body:new URLSearchParams(new FormData(subForm)).toString() });
     if (!r.ok) throw new Error(r.status);
-    subForm.reset(); msg.classList.add("ok"); msg.textContent = "Thanks! You're subscribed; news from the cockpit will be in your inbox soon.";
+    subForm.reset(); msg.classList.add("ok"); msg.innerHTML = 'Thanks! You\'re subscribed. Your gift is ready: <a href="/indir/a320-checklist-tr.pdf" download>download the A320 checklist (PDF) ↓</a>';
   }catch(err){
     msg.classList.add("err"); msg.textContent = "Something went wrong. Please try again in a moment.";
   }
@@ -654,6 +692,37 @@ fetch("/crosscheck/version.json",{cache:"no-store"}).then(function(r){return r.j
   var en=document.documentElement.lang==="en";
   document.querySelectorAll("[data-ccnote]").forEach(function(e){e.textContent=en?v.notes_en:v.notes_tr});
 }).catch(function(){});
+</script>
+<script>
+(function(){var en=document.documentElement.lang==="en";fetch("/api/cc/live").then(function(r){return r.ok?r.json():[]}).then(function(l){var n=Array.isArray(l)?l.length:0;if(!n)return;
+document.getElementById("ccLiveN").textContent=en?(n===1?"1 pilot flying now":n+" pilots flying now"):("Şu an "+n+" pilot uçuşta");
+document.getElementById("ccLiveT").textContent=en?"Open the live map →":"Canlı haritayı aç →";document.getElementById("ccLive").classList.add("is-live")}).catch(function(){})})();
+</script>
+<script>
+(function(){var en=document.documentElement.lang==="en",loc=en?"en-GB":"tr-TR";
+var L=en?{soon:"Time to be announced",left:"Starts in ",d:"d",h:"h",m:"min",now:"Happening now!",ics:"📅 Add to my calendar",tz:" (Turkey time)"}:{soon:"Saat yakında duyurulacak",left:"Başlamasına ",d:"g",h:"sa",m:"dk",now:"Şu an uçuştayız!",ics:"📅 Takvimime ekle",tz:" (TSİ)"};
+fetch("/haftalik.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(w){if(!w)return;
+var box=document.getElementById("wk");box.hidden=false;document.getElementById("wkTitle").textContent=w.baslik||"";
+if(w.rota){var r=document.getElementById("wkRoute");r.textContent=w.rota;r.hidden=false}
+document.getElementById("wkNote").textContent=(en?w.not_en:w.not_tr)||"";
+// Türkiye UTC+3 sabit
+var nowUtc=Date.now(),tr=new Date(nowUtc+3*36e5),dow=tr.getUTCDay(),gun=(w.gun==null?1:w.gun),add=(gun-dow+7)%7;
+var hm=/^(\d{1,2}):(\d{2})$/.exec(w.saat||""),dur=(w.sure_dk||120)*6e4;
+function startOf(a){return Date.UTC(tr.getUTCFullYear(),tr.getUTCMonth(),tr.getUTCDate()+a,hm?+hm[1]:0,hm?+hm[2]:0)-3*36e5}
+var start=startOf(add);if(hm&&start+dur<nowUtc)start=startOf(add+7);else if(!hm&&add===0&&false)start=startOf(7);
+var dEl=document.getElementById("wkDate"),dt=new Date(start);
+dEl.textContent=dt.toLocaleDateString(loc,{weekday:"long",day:"numeric",month:"long",timeZone:"Europe/Istanbul"})+(hm?" · "+w.saat+L.tz:" · "+L.soon);
+if(!hm)return;
+var c=document.getElementById("wkCount");c.hidden=false;
+function tick(){var ms=start-Date.now();if(ms<=0&&ms>-dur){c.textContent=L.now;c.classList.add("live");return}
+var d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);c.textContent=L.left+(d?d+" "+L.d+" ":"")+h+" "+L.h+" "+m+" "+L.m}
+tick();setInterval(tick,30000);
+var ics=document.getElementById("wkIcs");ics.hidden=false;ics.textContent=L.ics;
+function f(t){return new Date(t).toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"")}
+ics.addEventListener("click",function(e){e.preventDefault();
+var body=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Virtual Wings by Cenk//TR","BEGIN:VEVENT","UID:vw-weekly@virtualwingsbycenk.com","DTSTAMP:"+f(Date.now()),"DTSTART:"+f(start),"DTEND:"+f(start+dur),"RRULE:FREQ=WEEKLY","SUMMARY:"+(w.baslik||"Virtual Wings"),"DESCRIPTION:"+((en?w.not_en:w.not_tr)||"")+" https://virtualwingsbycenk.com/#canli","URL:https://virtualwingsbycenk.com/#canli","END:VEVENT","END:VCALENDAR"].join("\r\n");
+var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([body],{type:"text/calendar"}));a.download="virtual-wings-haftalik.ics";document.body.appendChild(a);a.click();a.remove()})
+}).catch(function(){})})();
 </script>
 <script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
 </body>

@@ -192,3 +192,24 @@ html[data-l="tr"] [data-l="en"],html[data-l="en"] [data-l="tr"]{display:none!imp
 .cc-about-stats span{color:var(--silver);font-size:.95rem}
 @media (max-width:480px){.cc-about-stats li{padding:.8rem}.cc-about-stats span{font-size:.8rem}}
 .cc-update.is-soon:hover{border-color:rgba(245,197,24,.45)}
+
+/* Hall of Fame */
+.hof-pod{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:2rem;align-items:end}
+@media (max-width:640px){.hof-pod{grid-template-columns:1fr}}
+.hof-p{display:flex;flex-direction:column;gap:.2rem;padding:1.2rem;border:1px solid var(--line);border-radius:12px;background:var(--panel);text-decoration:none;color:var(--text)}
+.hof-p.p1{border-color:#F5C518;background:linear-gradient(180deg,rgba(245,197,24,.14),var(--panel));padding-top:2rem}
+.hof-p.p2{border-color:#C9D3E0}.hof-p.p3{border-color:#b8743a}
+.hof-n{font-family:var(--display);font-weight:800;font-size:2.4rem;line-height:1;color:var(--gold)}
+.hof-p.p2 .hof-n{color:#C9D3E0}.hof-p.p3 .hof-n{color:#d08b4f}
+.hof-p b{font-family:var(--display);font-size:1.4rem}
+.hof-p small{color:var(--text-soft)}
+.hof-p strong{font-family:var(--display);color:var(--gold)}
+.hof-scroll{overflow-x:auto}
+.hof-t{width:100%;border-collapse:collapse;min-width:560px}
+.hof-t th{text-align:left;font-family:var(--display);font-weight:600;color:var(--text-soft);padding:.6rem .5rem;border-bottom:1px solid var(--line)}
+.hof-t td{padding:.6rem .5rem;border-bottom:1px solid var(--line);color:#C9D3E0}
+.hof-t td.n{font-family:var(--display);font-weight:700;color:var(--gold)}
+.hof-t td.num,.hof-t th:nth-child(n+4){text-align:right}
+.hof-t a{color:var(--text);font-weight:600;text-decoration:none}
+.hof-t a:hover{color:var(--gold)}
+.hof-t td.rk{color:var(--silver)}

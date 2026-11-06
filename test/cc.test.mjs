@@ -122,3 +122,15 @@ test("v1.1-ek rota: kaydedilir, /live'da görünmez, /route'ta döner, aynı uç
   assert.equal((await cc.position(post("/api/cc/position", pos({ ts: T + 90, pts: "x" })), s, NOW + 90000)).status, 400);
   assert.equal((await cc.route(get("/api/cc/route?id=NOPE0000"), s, NOW)).status, 404);
 });
+
+test("top: XP'ye göre sıralı, secret ve rozet listesi yok, rozet sayısı var", async () => {
+  const s = memStore();
+  await cc.profile(post("/api/cc/profile", prof()), s, NOW);
+  await cc.profile(post("/api/cc/profile", prof({ pilotId: "AB12CD34", secret: "a".repeat(32), name: "Ayşe K.", xp: 50000, badges: ["butter"] })), s, NOW);
+  const r = await cc.top(get("/api/cc/top"), s);
+  const j = await r.json();
+  assert.equal(j.total, 2);
+  assert.deepEqual(j.pilots.map((p) => p.pilotId), ["AB12CD34", "K7Q2M9XA"]);
+  assert.equal(j.pilots[0].badgeCount, 1);
+  assert.ok(!("badges" in j.pilots[0]) && !("secret" in j.pilots[0]));
+});
