@@ -137,7 +137,7 @@ function popup(p){var t=T[lang()],d=el("div","cc-pop");
   row(t.alt,fmt(p.altFt)+" ft");row(t.gs,fmt(p.gsKt)+" kt");row(t.phase,t.ph[p.phase]||p.phase);
   d.appendChild(dl);var a=el("a","cc-pop-link",t.pilot);a.href="/crosscheck/pilot/?id="+encodeURIComponent(p.pilotId);d.appendChild(a);return d}
 function clearRoute(){if(routeLayer){map.removeLayer(routeLayer);routeLayer=null}}
-var sel=null;var RC="#D81BCE",DARK_TILES=false,CASE=DARK_TILES?"#0B1626":"#FFFFFF";
+var sel=null;var RC="#0B3D91",DARK_TILES=false,CASE=DARK_TILES?"#0B1626":"#FFFFFF";
 function nearestSplit(pts,lat,lon){var k=Math.cos(lat*Math.PI/180),best=1e18,bi=0,bp=pts[0];
   for(var i=0;i<pts.length-1;i++){var ax=pts[i][1]*k,ay=pts[i][0],bx=pts[i+1][1]*k,by=pts[i+1][0],px=lon*k,py=lat,dx=bx-ax,dy=by-ay,L2=dx*dx+dy*dy,t=L2?((px-ax)*dx+(py-ay)*dy)/L2:0;
     t=Math.max(0,Math.min(1,t));var qx=ax+t*dx,qy=ay+t*dy,d=(px-qx)*(px-qx)+(py-qy)*(py-qy);if(d<best){best=d;bi=i;bp=[qy,qx/k]}}
