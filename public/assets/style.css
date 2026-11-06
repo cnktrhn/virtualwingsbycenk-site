@@ -511,3 +511,5 @@ html[lang="en"] .dialog .pilot::before{content:"PILOT"}
 .prog-cc span{font-family:var(--display);font-weight:800;font-size:1.7rem;letter-spacing:.02em;color:var(--text)}
 .prog-cc span em{font-style:normal;color:var(--gold)}
 .prog-cc small{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--silver)}
+.prog-vis.prog-fenix{background:linear-gradient(135deg,#F36A26 0%,#EF4A5A 50%,#ED157A 100%)}
+.prog-fenix img{object-fit:contain;height:78%;width:auto;margin:auto;display:block;position:relative;top:11%}
