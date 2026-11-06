@@ -2,7 +2,7 @@
   "_not": "Bu haftanın uçuşu kartı. saat: \"21:00\" gibi Türkiye saati (boş bırakılırsa 'Saat yakında duyurulacak' yazar). rota ve not isteğe bağlı.",
   "baslik": "THYVA & IVAO Weekly Event",
   "gun": 1,
-  "saat": "",
+  "saat": "20:30",
   "sure_dk": 120,
   "rota": "",
   "not_tr": "Planlı grup uçuşu. Katılmak için IVAO hesabınla bağlan.",
