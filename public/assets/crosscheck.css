@@ -191,3 +191,4 @@ html[data-l="tr"] [data-l="en"],html[data-l="en"] [data-l="tr"]{display:none!imp
 .cc-about-stats b{display:block;font-family:var(--display);font-size:clamp(2.2rem,5vw,3.2rem);line-height:1;color:var(--gold)}
 .cc-about-stats span{color:var(--silver);font-size:.95rem}
 @media (max-width:480px){.cc-about-stats li{padding:.8rem}.cc-about-stats span{font-size:.8rem}}
+.cc-update.is-soon:hover{border-color:rgba(245,197,24,.45)}

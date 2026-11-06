@@ -505,3 +505,5 @@ html[lang="en"] .dialog .pilot::before{content:"PILOT"}
 .cc-home-list li{padding:1rem 0;border-bottom:1px solid var(--line)}
 .cc-home-list b{display:block;font-family:var(--display);font-size:1.3rem;color:var(--text)}
 .cc-home-list span{color:var(--text-soft)}
+.cc-ver.is-soon:hover{border-color:rgba(245,197,24,.45)}
+.btn.is-off{opacity:.55;cursor:not-allowed}
