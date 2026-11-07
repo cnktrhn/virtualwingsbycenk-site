@@ -541,3 +541,8 @@ html[lang="en"] .dialog .pilot::before{content:"PILOT"}
 .extra small{font-family:var(--display);font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 .extra b{font-family:var(--display);font-size:1.35rem}
 .extra span{color:var(--text-soft);font-size:.95rem}
+/* Galeri: kaplamalar */
+.gallery{grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr))}
+.gallery button{position:relative;aspect-ratio:16/9}
+.gal-cap{position:absolute;left:0;right:0;bottom:0;padding:1.6rem .9rem .7rem;text-align:left;font-size:.9rem;color:#fff;background:linear-gradient(transparent,rgba(4,14,26,.85));pointer-events:none}
+.lb-cap{margin:.6rem 0 0;text-align:center;color:var(--silver)}

@@ -33,6 +33,7 @@
 
 
 
+
 <link rel="alternate" hreflang="tr" href="https://virtualwingsbycenk.com/">
 <link rel="alternate" hreflang="en" href="https://virtualwingsbycenk.com/en/">
 <script>try{var p=localStorage.getItem("vw_lang");if(p&&p!=="en"&&(p==="tr"||p==="en"))location.replace("../"+location.hash)}catch(e){}</script>
@@ -435,7 +436,7 @@
 <section class="block alt" id="galeri">
   <div class="wrap">
     <h2>Gallery</h2>
-    <p class="sub">Screenshots from my flights. Click an image to enlarge it.</p>
+    <p class="sub">Shots of the liveries we designed for the Fenix A321. Click an image to enlarge it.</p>
     <div class="gallery" id="gallery"></div>
   </div>
 </section>
@@ -509,10 +510,9 @@ const AYARLAR = {
   oneCikan: [],
   // Galeri: resimleri "images" klasörüne koy ve adlarını buraya yaz (örn. "../images/galeri-5.jpg")
   galeri: [
-    "../images/galeri-1.jpg",
-    "../images/galeri-2.jpg",
-    "../images/galeri-3.jpg",
-    "../images/galeri-4.jpg"
+    { src: "../images/galeri-vw-1.jpg", tr: "Fenix A321 · Virtual Wings kaplaması (TC-VWG)", en: "Fenix A321 · Virtual Wings livery (TC-VWG)" },
+    { src: "../images/galeri-vw-2.jpg", tr: "Virtual Wings kaplaması, apronda", en: "The Virtual Wings livery on the apron" },
+    { src: "../images/galeri-mka-1.jpg", tr: "Fenix A321 · Cumhuriyet'in 103. yılı özel kaplaması (TC-MKA)", en: "Fenix A321 · Republic of Türkiye 103rd anniversary livery (TC-MKA)" }
   ]
 };
 /* ========================================================== */
@@ -652,8 +652,11 @@ function videolariGuncelle(otomatik){
 
 const g = $("#gallery");
 if (AYARLAR.galeri.length){
-  g.innerHTML = AYARLAR.galeri.map(src => `<button><img src="${src}" alt="Flight screenshot" loading="lazy"></button>`).join("");
-  g.querySelectorAll("button").forEach(b => b.addEventListener("click", () => ac(`<img src="${b.querySelector('img').src}" alt="">`)));
+  const galEn = document.documentElement.lang === "en", galAlt = "Flight screenshot";
+  g.innerHTML = AYARLAR.galeri.map(it => { const o = typeof it === "string" ? { src: it } : it, cap = (galEn ? o.en : o.tr) || "";
+    return `<button><img src="${o.src}" alt="${cap || galAlt}" loading="lazy">${cap ? `<span class="gal-cap">${cap}</span>` : ""}</button>`; }).join("");
+  g.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { const c = b.querySelector(".gal-cap");
+    ac(`<img src="${b.querySelector('img').src}" alt="">${c ? `<p class="lb-cap">${c.textContent}</p>` : ""}`); }));
 } else {
   g.innerHTML = Array.from({length:6}, () => `<button tabindex="-1"><div class="empty-tile">Screenshot</div></button>`).join("");
 }
