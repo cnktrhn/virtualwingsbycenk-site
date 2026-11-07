@@ -24,7 +24,7 @@ export const json = (status, body, headers = {}) =>
   new Response(JSON.stringify(body), { status, headers: { ...JSON_H, ...headers } });
 const ok = () => json(200, { ok: true }, { "Cache-Control": "no-store" });
 const err = (status, error) => json(status, { ok: false, error }, { "Cache-Control": "no-store" });
-export const bad = (m = "bad_request") => err(400, m);
+export const bad = (m = "bad_request", field) => json(400, field ? { ok: false, error: m, field } : { ok: false, error: m }, { "Cache-Control": "no-store" });
 const forbidden = () => err(403, "forbidden");
 const tooMany = () => err(429, "too_many_requests");
 const notFound = () => err(404, "not_found");
@@ -46,6 +46,7 @@ function num(v, lo, hi, { int = false } = {}) {
   return v;
 }
 const has = (o, keys) => keys.every((k) => o[k] !== undefined);
+const missing = (o, keys) => keys.find((k) => o[k] === undefined);
 
 async function readBody(req) {
   const len = Number(req.headers.get("content-length") || 0);
@@ -100,7 +101,7 @@ export async function position(req, store, now = Date.now()) {
     phase: PHASES.includes(o.phase) ? o.phase : undefined,
     ts: num(o.ts, t - TS_SKEW, t + TS_SKEW, { int: true }),
   };
-  if (!has(rec, PUBLIC_LIVE)) return bad();
+  if (!has(rec, PUBLIC_LIVE)) return bad("bad_request", missing(rec, PUBLIC_LIVE));
   // Ek (v1.1-ek): isteğe bağlı uçuş planı. Program uçuş başında ve plan değişince gönderir.
   let route, pts;
   if (o.route !== undefined) { route = str(o.route, 2000); if (route === undefined) return bad(); }
@@ -128,6 +129,11 @@ export async function position(req, store, now = Date.now()) {
   if (route) extra.route = route;
   if (pts && pts.length >= 2) extra.pts = pts;
   await store.setJSON(`live/${c.pilotId}`, { ...rec, ...extra, _rx: now });  // üzerine yazar; geçmiş yok
+  // Uçuşun ilk konumunda pilotun profili yoksa geçici bir profil aç: pilot sayfası ilk uçuştan itibaren açılır.
+  // Program uçuş sonunda /profile gönderdiğinde gerçek değerlerle üzerine yazılır.
+  if (!prev && !(await store.get(`pilot/${c.pilotId}`, { type: "text" }))) {
+    await store.setJSON(`pilot/${c.pilotId}`, { pilotId: c.pilotId, name: rec.name, rank: rec.rank, xp: 0, flights: 0, hours: 0, badges: [], updated: Math.floor(now / 1000), provisional: true });
+  }
   return ok();
 }
 
@@ -171,20 +177,21 @@ export async function profile(req, store, now = Date.now()) {
   const c = creds(o);
   if (!c) return bad();
   const t = Math.floor(now / 1000);
-  const badges = Array.isArray(o.badges) && o.badges.length <= 100 &&
-    o.badges.every((b) => typeof b === "string" && /^[a-z0-9_]{1,32}$/.test(b))
-    ? [...new Set(o.badges)] : undefined;
+  // Hoşgörülü okuma: rozet kimlikleri küçük harfe çevrilir, geçersiz olanlar atlanır; rozet yoksa boş liste.
+  const badges = o.badges === undefined || o.badges === null ? [] : Array.isArray(o.badges) && o.badges.length <= 200
+    ? [...new Set(o.badges.filter((b) => typeof b === "string").map((b) => b.trim().toLowerCase()).filter((b) => /^[a-z0-9_]{1,32}$/.test(b)))] : undefined;
+  const rnd = (v) => (typeof v === "number" && Number.isFinite(v) ? Math.round(v) : v);
   const rec = {
     pilotId: c.pilotId,
-    name: str(o.name, 32, { min: 1 }),
+    name: typeof o.name === "string" ? str(o.name.slice(0, 32), 32, { min: 1 }) : undefined,
     rank: str(o.rank, 32, { min: 1 }),
-    xp: num(o.xp, 0, 1e9, { int: true }),
-    flights: num(o.flights, 0, 1e7, { int: true }),
+    xp: num(rnd(o.xp), 0, 1e9, { int: true }),
+    flights: num(rnd(o.flights), 0, 1e7, { int: true }),
     hours: num(o.hours, 0, 1e7),
     badges,
-    updated: num(o.updated, 1e9, t + TS_SKEW, { int: true }),
+    updated: o.updated === undefined ? t : num(rnd(o.updated), 1e9, t + TS_SKEW, { int: true }),
   };
-  if (!has(rec, PUBLIC_PROFILE)) return bad();
+  if (!has(rec, PUBLIC_PROFILE)) return bad("bad_request", missing(rec, PUBLIC_PROFILE));
   if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
   rec.hours = Math.round(rec.hours * 10) / 10;
   await store.setJSON(`pilot/${c.pilotId}`, rec);  // üzerine yazar; uçuş listesi yok
@@ -198,7 +205,7 @@ export async function pilot(req, store) {
   if (!ID_RE.test(id)) return bad();
   const r = await store.get(`pilot/${id}`, { type: "json" });
   if (!r) return notFound();
-  return json(200, pick(r, PUBLIC_PROFILE), {
+  return json(200, r.provisional ? { ...pick(r, PUBLIC_PROFILE), provisional: true } : pick(r, PUBLIC_PROFILE), {
     "Cache-Control": "public, max-age=0, must-revalidate",
     "Netlify-CDN-Cache-Control": "public, durable, s-maxage=60, stale-while-revalidate=60",
     "Access-Control-Allow-Origin": "*",

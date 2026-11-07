@@ -108,12 +108,12 @@ window.ccText=function(o,l,base){if(!o)return "";base=base||"name";return o[base
 var T={tr:{loading:"Pilot bilgileri yükleniyor…",noid:"Bu sayfa bir pilot kimliğiyle açılmalı. Pilot sayfanın linkini CrossCheck programında ya da canlı haritada uçağına tıklayarak bulabilirsin.",
   nf:"Bu kimlikle bir pilot bulunamadı. Pilot henüz ilk uçuşunu tamamlamamış olabilir; profil her uçuşun sonunda güncellenir.",err:"Pilot bilgileri şu an alınamıyor. Biraz sonra tekrar dene.",
   xp:"XP",flights:"Uçuş",hours:"Uçuş saati",badges:"Rozetler",earned:function(a,b){return a+" / "+b+" rozet kazanıldı"},none:"Henüz rozet yok.",upd:"Son güncelleme",map:"Canlı haritaya git",id:"Pilot kimliği",
-  next:"Sonraki rütbe",top:"En yüksek rütbeye ulaştı",loc:"tr-TR",
+  next:"Sonraki rütbe",top:"En yüksek rütbeye ulaştı",prov:"Bu pilot ilk uçuşunda. XP, uçuş sayısı, saat ve rozetler uçuş tamamlanınca burada görünecek.",live:"Şu an uçuşta",livemap:"Haritada gör →",loc:"tr-TR",
   extra:{"yıldız":"Yıldız","kanat":"Kanat","defne yaprağı":"Defne yaprağı"},cat:{}},
  en:{loading:"Loading pilot…",noid:"This page needs a pilot ID. You can find your pilot page link in the CrossCheck program, or by clicking an aircraft on the live map.",
   nf:"No pilot was found with this ID. The pilot may not have completed a flight yet; the profile updates at the end of every flight.",err:"Can't load the pilot right now. Please try again shortly.",
   xp:"XP",flights:"Flights",hours:"Flight hours",badges:"Badges",earned:function(a,b){return a+" of "+b+" badges earned"},none:"No badges yet.",upd:"Last update",map:"Go to the live map",id:"Pilot ID",
-  next:"Next rank",top:"Highest rank reached",loc:"en-GB",
+  next:"Next rank",top:"Highest rank reached",prov:"This pilot is on their first flight. XP, flights, hours and badges will appear here once the flight is completed.",live:"Flying now",livemap:"See on the map →",loc:"en-GB",
   extra:{"yıldız":"Star","kanat":"Wings","defne yaprağı":"Laurel"},
   cat:{"İniş":"Landing","Yolcu":"Passengers","Operasyon":"Operations","Acil durum":"Emergencies","Pasaport":"Passport","Eğlence":"Fun"},
   tier:{bronze:"Bronze",silver:"Silver",gold:"Gold",legend:"Legend",fun:"Fun"}}};
@@ -152,6 +152,8 @@ function render(){var t=T[lang()];
       var bar=el("div","cc-bar");var fill=el("i");fill.style.width=(f*100).toFixed(1)+"%";bar.appendChild(fill);bar.setAttribute("role","progressbar");bar.setAttribute("aria-valuenow",Math.round(f*100));bar.setAttribute("aria-valuemin",0);bar.setAttribute("aria-valuemax",100);pr.appendChild(bar)}
     else pr.appendChild(el("div","cc-progress-l",t.top));
     card.appendChild(pr)}
+  if(state.live){var lv=el("a","cc-pilot-live");lv.href="/crosscheck/map/";lv.appendChild(el("span","cc-live-dot"));lv.appendChild(el("b",null,t.live+": "+[state.live.flight,(state.live.dep||"?")+" → "+(state.live.arr||"?")].filter(Boolean).join(" · ")));lv.appendChild(el("span",null,t.livemap));card.appendChild(lv)}
+  if(p.provisional)card.appendChild(el("p","cc-pilot-prov",t.prov));
   card.appendChild(el("p","cc-soft cc-pilot-ft",t.id+": "+p.pilotId+" · "+t.upd+": "+new Date(p.updated*1000).toLocaleDateString(t.loc,{day:"numeric",month:"long",year:"numeric"})));
   box.appendChild(card);
   var own={};(p.badges||[]).forEach(function(b){own[b]=1});
@@ -167,8 +169,12 @@ document.addEventListener("cc-lang",render);
 if(!/^[A-Z0-9]{8}$/.test(id)){state={k:"noid"};render();return}
 render();
 Promise.all([fetch("/api/cc/pilot?id="+id).then(function(r){if(r.status===404||r.status===400)return {nf:1};if(!r.ok)throw 0;return r.json()}),
-  ccMeta(),fetch("/crosscheck/rozetler.json",{cache:"no-cache"}).then(function(r){return r.json()}).catch(function(){return {}})])
- .then(function(x){meta=x[1];meta.raw=x[2]||{};state=x[0].nf?{k:"nf"}:{k:"ok",p:x[0]};render()})
+  ccMeta(),fetch("/crosscheck/rozetler.json",{cache:"no-cache"}).then(function(r){return r.json()}).catch(function(){return {}}),
+  fetch("/api/cc/live").then(function(r){return r.ok?r.json():[]}).catch(function(){return []})])
+ .then(function(x){meta=x[1];meta.raw=x[2]||{};var lv=(Array.isArray(x[3])?x[3]:[]).filter(function(q){return q.pilotId===id})[0]||null;
+   // Profil henüz yoksa ama pilot uçuyorsa canlı veriden geçici kart göster
+   if(x[0].nf&&lv)state={k:"ok",live:lv,p:{pilotId:id,name:lv.name,rank:lv.rank,xp:0,flights:0,hours:0,badges:[],updated:lv.ts,provisional:true}};
+   else state=x[0].nf?{k:"nf"}:{k:"ok",p:x[0],live:lv};render()})
  .catch(function(){state={k:"err"};render()});
 })();
 </script>

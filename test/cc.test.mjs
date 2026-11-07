@@ -92,8 +92,9 @@ test("profile + pilot: üzerine yazar, secret dönmez, 404", async () => {
   assert.deepEqual(p, { pilotId: "K7Q2M9XA", name: "Cenk T.", rank: "captain", xp: 13000, flights: 88, hours: 163.5, badges: ["butter", "night_owl"], updated: T });
   assert.equal((await cc.pilot(get("/api/cc/pilot?id=ZZZZZZZZ"), s)).status, 404);
   assert.equal((await cc.pilot(get("/api/cc/pilot?id=bad"), s)).status, 400);
-  assert.equal((await cc.profile(post("/api/cc/profile", prof({ badges: ["<script>"] })), s, NOW)).status, 400);
+  assert.equal((await cc.profile(post("/api/cc/profile", prof({ badges: ["<script>"] })), s, NOW)).status, 200);  // geçersiz rozet atlanır
   assert.equal((await cc.profile(post("/api/cc/profile", prof({ secret: "b".repeat(32) })), s, NOW)).status, 403);
+  assert.deepEqual((await (await cc.pilot(get("/api/cc/pilot?id=K7Q2M9XA"), s)).json()).badges, []);
 });
 
 test("yanlış metot 405", async () => {
@@ -133,4 +134,28 @@ test("top: XP'ye göre sıralı, secret ve rozet listesi yok, rozet sayısı var
   assert.deepEqual(j.pilots.map((p) => p.pilotId), ["AB12CD34", "K7Q2M9XA"]);
   assert.equal(j.pilots[0].badgeCount, 1);
   assert.ok(!("badges" in j.pilots[0]) && !("secret" in j.pilots[0]));
+});
+
+test("ilk konumda geçici profil açılır; profile gelince üzerine yazılır", async () => {
+  const s = memStore();
+  await cc.position(post("/api/cc/position", pos()), s, NOW);
+  let p = await (await cc.pilot(get("/api/cc/pilot?id=K7Q2M9XA"), s)).json();
+  assert.equal(p.name, "Cenk T."); assert.equal(p.xp, 0);
+  await cc.profile(post("/api/cc/profile", prof()), s, NOW);
+  p = await (await cc.pilot(get("/api/cc/pilot?id=K7Q2M9XA"), s)).json();
+  assert.equal(p.xp, 12450);
+  // ikinci konum geçici profili ezmez
+  await cc.position(post("/api/cc/position", pos({ ts: T + 30 })), s, NOW + 30000);
+  assert.equal((await (await cc.pilot(get("/api/cc/pilot?id=K7Q2M9XA"), s)).json()).xp, 12450);
+});
+
+test("profile hoşgörülü: ondalık XP yuvarlanır, büyük harfli rozet düzelir, eksik rozet boş liste, hata alanı söylenir", async () => {
+  const s = memStore();
+  assert.equal((await cc.profile(post("/api/cc/profile", prof({ xp: 12450.6, badges: ["Butter", "bad id!"] })), s, NOW)).status, 200);
+  const p = await (await cc.pilot(get("/api/cc/pilot?id=K7Q2M9XA"), s)).json();
+  assert.equal(p.xp, 12451); assert.deepEqual(p.badges, ["butter"]);
+  const o = prof(); delete o.badges; delete o.updated;
+  assert.equal((await cc.profile(post("/api/cc/profile", o), s, NOW)).status, 200);
+  const r = await cc.profile(post("/api/cc/profile", prof({ hours: "x" })), s, NOW);
+  assert.equal(r.status, 400); assert.equal((await r.json()).field, "hours");
 });
