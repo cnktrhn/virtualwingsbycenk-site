@@ -159,3 +159,16 @@ test("profile hoşgörülü: ondalık XP yuvarlanır, büyük harfli rozet düze
   const r = await cc.profile(post("/api/cc/profile", prof({ hours: "x" })), s, NOW);
   assert.equal(r.status, 400); assert.equal((await r.json()).field, "hours");
 });
+
+test("uçulan iz: aynı uçuşta birikir, /route'ta döner, /live'da görünmez, yeni uçuşta sıfırlanır", async () => {
+  const s = memStore();
+  await cc.position(post("/api/cc/position", pos({ lat: 40.0, lon: 32.0 })), s, NOW);
+  await cc.position(post("/api/cc/position", pos({ ts: T + 30, lat: 40.1, lon: 32.1 })), s, NOW + 30000);
+  await cc.position(post("/api/cc/position", pos({ ts: T + 60, lat: 40.2, lon: 32.2 })), s, NOW + 60000);
+  const r = await (await cc.route(get("/api/cc/route?id=K7Q2M9XA"), s, NOW + 60000)).json();
+  assert.deepEqual(r.track, [[40, 32], [40.1, 32.1], [40.2, 32.2]]);
+  const live = await (await cc.live(get("/api/cc/live"), s, NOW + 60000)).json();
+  assert.ok(!("track" in live[0]));
+  await cc.position(post("/api/cc/position", pos({ ts: T + 90, flight: "VWG999", lat: 41, lon: 29 })), s, NOW + 90000);
+  assert.equal((await cc.route(get("/api/cc/route?id=K7Q2M9XA"), s, NOW + 90000)).status, 404);
+});

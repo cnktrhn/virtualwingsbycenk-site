@@ -9,6 +9,7 @@ const LIVE_MAX_AGE = 180;     // sn: GET /live yalnızca son 3 dakikadaki kayıt
 const MIN_INTERVAL = 20;      // sn: aynı pilotId'den daha sık konum gelirse 429
 const MAX_BODY = 16384;       // bayt (rota noktaları için)
 const MAX_PTS = 400;          // rota noktası sınırı
+const MAX_TRACK = 600;        // uçuş içi iz noktası sınırı (dolunca seyreltilir)
 const TS_SKEW = 600;          // sn: ts sunucu saatinden en fazla bu kadar sapabilir
 const PHASES = ["gate", "taxi", "climb", "cruise", "descent", "approach", "landed"];
 const PUBLIC_LIVE = ["pilotId", "name", "rank", "flight", "aircraft", "dep", "arr",
@@ -128,6 +129,13 @@ export async function position(req, store, now = Date.now()) {
   const extra = {};
   if (route) extra.route = route;
   if (pts && pts.length >= 2) extra.pts = pts;
+  // Uçulan iz: aynı uçuş sürdükçe her konum eklenir; uçuş bitince (end ya da 3 dk veri yok) live kaydıyla birlikte silinir.
+  let track = same && Array.isArray(prev.track) ? prev.track.slice() : [];
+  const q = [Math.round(rec.lat * 1e4) / 1e4, Math.round(rec.lon * 1e4) / 1e4];
+  const last = track[track.length - 1];
+  if (!last || last[0] !== q[0] || last[1] !== q[1]) track.push(q);
+  if (track.length > MAX_TRACK) track = track.filter((_, i) => i % 2 === 0 || i === track.length - 1);
+  extra.track = track;
   await store.setJSON(`live/${c.pilotId}`, { ...rec, ...extra, _rx: now });  // üzerine yazar; geçmiş yok
   // Uçuşun ilk konumunda pilotun profili yoksa geçici bir profil aç: pilot sayfası ilk uçuştan itibaren açılır.
   // Program uçuş sonunda /profile gönderdiğinde gerçek değerlerle üzerine yazılır.
@@ -219,13 +227,15 @@ export async function route(req, store, now = Date.now()) {
   const id = new URL(req.url).searchParams.get("id") || "";
   if (!ID_RE.test(id)) return bad();
   const r = await store.get(`live/${id}`, { type: "json" });
-  if (!r || typeof r.ts !== "number" || r.ts < Math.floor(now / 1000) - LIVE_MAX_AGE || (!r.route && !r.pts)) return notFound();
+  const hasTrack = Array.isArray(r && r.track) && r.track.length >= 2;
+  if (!r || typeof r.ts !== "number" || r.ts < Math.floor(now / 1000) - LIVE_MAX_AGE || (!r.route && !r.pts && !hasTrack)) return notFound();
   const out = { pilotId: id, dep: r.dep, arr: r.arr };
   if (r.route) out.route = r.route;
   if (r.pts) out.pts = r.pts;
+  if (hasTrack) out.track = r.track;
   return json(200, out, {
     "Cache-Control": "public, max-age=0, must-revalidate",
-    "Netlify-CDN-Cache-Control": "public, durable, s-maxage=60, stale-while-revalidate=60",
+    "Netlify-CDN-Cache-Control": "public, durable, s-maxage=20, stale-while-revalidate=60",
     "Access-Control-Allow-Origin": "*",
   });
 }

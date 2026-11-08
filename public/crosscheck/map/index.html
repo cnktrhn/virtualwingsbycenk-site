@@ -76,7 +76,7 @@ document.title=CC_T[l];})();
   </div>
   <div class="cc-mapbox"><div id="ccmap" class="cc-map" role="region" aria-label="Canlı uçuş haritası"></div><aside class="cc-panel" id="ccPanel" hidden aria-live="polite"></aside></div>
   <p class="cc-map-msg" id="ccMsg" hidden></p>
-  <p class="cc-soft cc-map-note"><span data-l="tr">CrossCheck ile uçan her pilot haritada kendiliğinden görünür. Uçağa tıklayınca uçuş planı da haritada çizilir. Konumlar yaklaşık 30 saniyede bir yenilenir; uçuş bitince ya da 3 dakika veri gelmezse uçak haritadan düşer.</span><span data-l="en" lang="en">Every pilot flying with CrossCheck appears on the map automatically. Click an aircraft to draw its flight plan on the map. Positions refresh about every 30 seconds, and the aircraft drops off the map when the flight ends or after 3 minutes without data.</span></p>
+  <p class="cc-soft cc-map-note"><span data-l="tr">CrossCheck ile uçan her pilot haritada kendiliğinden görünür. Uçağa tıklayınca planlanan rota (koyu mavi) ve simülatörde gerçekten uçulan iz (turuncu) haritada çizilir. Konumlar yaklaşık 30 saniyede bir yenilenir; uçuş bitince ya da 3 dakika veri gelmezse uçak haritadan düşer.</span><span data-l="en" lang="en">Every pilot flying with CrossCheck appears on the map automatically. Click an aircraft to draw its planned route (dark blue) and the track actually flown in the sim (orange) on the map. Positions refresh about every 30 seconds, and the aircraft drops off the map when the flight ends or after 3 minutes without data.</span></p>
 </section>
 </div>
 </main>
@@ -142,16 +142,24 @@ function nearestSplit(pts,lat,lon){var k=Math.cos(lat*Math.PI/180),best=1e18,bi=
   for(var i=0;i<pts.length-1;i++){var ax=pts[i][1]*k,ay=pts[i][0],bx=pts[i+1][1]*k,by=pts[i+1][0],px=lon*k,py=lat,dx=bx-ax,dy=by-ay,L2=dx*dx+dy*dy,t=L2?((px-ax)*dx+(py-ay)*dy)/L2:0;
     t=Math.max(0,Math.min(1,t));var qx=ax+t*dx,qy=ay+t*dy,d=(px-qx)*(px-qx)+(py-qy)*(py-qy);if(d<best){best=d;bi=i;bp=[qy,qx/k]}}
   return {i:bi,p:bp}}
-function drawRoute(id){clearRoute();var rt=routes[id],p=data[id];if(!rt||!rt.pts||rt.pts.length<2)return;
-  var pts=rt.pts,g=L.layerGroup();
-  L.polyline(pts,{color:CASE,weight:7,opacity:.9,interactive:false,lineCap:"round",lineJoin:"round"}).addTo(g);
-  if(p){var sp=nearestSplit(pts,p.lat,p.lon),flown=pts.slice(0,sp.i+1).concat([sp.p]),ahead=[sp.p].concat(pts.slice(sp.i+1));
-    L.polyline(flown,{color:RC,weight:3.5,opacity:.4,interactive:false,lineCap:"round",lineJoin:"round"}).addTo(g);
-    L.polyline(ahead,{color:RC,weight:3.5,opacity:1,interactive:false,lineCap:"round",lineJoin:"round"}).addTo(g)}
-  else L.polyline(pts,{color:RC,weight:3.5,opacity:1,interactive:false}).addTo(g);
-  if(map.getZoom()>=8)for(var i=1;i<pts.length-1;i++)L.circleMarker(pts[i],{radius:3,color:RC,weight:1.5,fillColor:"#FFFFFF",fillOpacity:1}).bindTooltip(pts[i][0].toFixed(2)+", "+pts[i][1].toFixed(2),{direction:"top",offset:[0,-4]}).addTo(g);
-  [[pts[0],rt.dep],[pts[pts.length-1],rt.arr]].forEach(function(a){L.circleMarker(a[0],{radius:6,color:CASE,weight:2,fillColor:RC,fillOpacity:1}).bindTooltip(a[1]||"",{permanent:true,direction:"right",offset:[8,0],className:"cc-apt"}).addTo(g)});
+var TC="#FF7A00";
+function drawRoute(id){clearRoute();var rt=routes[id],p=data[id];if(!rt)return;
+  var pts=(rt.pts&&rt.pts.length>1)?rt.pts:null,trk=(rt.track&&rt.track.length>1)?rt.track.slice():null,g=L.layerGroup(),o={interactive:false,lineCap:"round",lineJoin:"round"};
+  if(trk&&p){var lt=trk[trk.length-1];if(lt[0]!==p.lat||lt[1]!==p.lon)trk.push([p.lat,p.lon])}
+  // Planlanan rota (koyu mavi): uçulan kısım soluk, kalan kısım tam renk
+  if(pts){L.polyline(pts,Object.assign({color:CASE,weight:7,opacity:.9},o)).addTo(g);
+    if(p){var sp=nearestSplit(pts,p.lat,p.lon),flown=pts.slice(0,sp.i+1).concat([sp.p]),ahead=[sp.p].concat(pts.slice(sp.i+1));
+      L.polyline(flown,Object.assign({color:RC,weight:3.5,opacity:.4},o)).addTo(g);
+      L.polyline(ahead,Object.assign({color:RC,weight:3.5,opacity:1},o)).addTo(g)}
+    else L.polyline(pts,Object.assign({color:RC,weight:3.5,opacity:1},o)).addTo(g);
+    if(map.getZoom()>=8)for(var i=1;i<pts.length-1;i++)L.circleMarker(pts[i],{radius:3,color:RC,weight:1.5,fillColor:"#FFFFFF",fillOpacity:1}).bindTooltip(pts[i][0].toFixed(2)+", "+pts[i][1].toFixed(2),{direction:"top",offset:[0,-4]}).addTo(g)}
+  // Simülatörde gerçekten uçulan iz (turuncu)
+  if(trk){L.polyline(trk,Object.assign({color:CASE,weight:6,opacity:.95},o)).addTo(g);L.polyline(trk,Object.assign({color:TC,weight:3,opacity:1},o)).addTo(g)}
+  var a0=pts?pts[0]:(trk?trk[0]:null),a1=pts?pts[pts.length-1]:null;
+  [[a0,rt.dep],[a1,rt.arr]].forEach(function(a){if(!a[0])return;L.circleMarker(a[0],{radius:6,color:CASE,weight:2,fillColor:RC,fillOpacity:1}).bindTooltip(a[1]||"",{permanent:true,direction:"right",offset:[8,0],className:"cc-apt"}).addTo(g)});
   routeLayer=g.addTo(map);var m=markers[id];if(m)m.setZIndexOffset(1000)}
+function refreshRoute(id){fetch("/api/cc/route?id="+encodeURIComponent(id)).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(rt){
+    if(!rt||sel!==id)return;routes[id]=rt;drawRoute(id);renderPanel()})}
 function showRoute(id){if(routes[id]){drawRoute(id);fitSel();return}
   fetch("/api/cc/route?id="+encodeURIComponent(id)).then(function(r){return r.ok?r.json():null}).catch(function(){return null}).then(function(rt){
     if(!rt)return;routes[id]=rt;if(sel===id){drawRoute(id);renderPanel();fitSel()}})}
@@ -167,7 +175,12 @@ function status(){var t=T[lang()],k=Object.keys(data).length;document.getElement
 var panel=document.getElementById("ccPanel");
 function renderPanel(){if(!sel||!data[sel]){panel.hidden=true;panel.textContent="";return}
   panel.textContent="";var x=el("button","cc-panel-x","×");x.type="button";x.setAttribute("aria-label",lang()==="en"?"Close":"Kapat");x.addEventListener("click",deselect);
-  panel.appendChild(x);panel.appendChild(popup(data[sel]));panel.hidden=false}
+  panel.appendChild(x);panel.appendChild(popup(data[sel]));
+  var rt=routes[sel];if(rt){var lg=el("div","cc-legend"),en=lang()==="en";
+    if(rt.pts&&rt.pts.length>1){var a=el("span","lg-plan");a.appendChild(el("i"));a.appendChild(document.createTextNode(en?"Planned route":"Planlanan rota"));lg.appendChild(a)}
+    if(rt.track&&rt.track.length>1){var b=el("span","lg-trk");b.appendChild(el("i"));b.appendChild(document.createTextNode(en?"Flown track":"Uçulan rota"));lg.appendChild(b)}
+    if(lg.childNodes.length)panel.appendChild(lg)}
+  panel.hidden=false}
 function select(id){sel=id;renderPanel();showRoute(id)}
 function deselect(){sel=null;clearRoute();renderPanel()}
 function fitSel(){if(!sel)return;var rt=routes[sel],p=data[sel],b=[];if(rt&&rt.pts)b=rt.pts.slice();if(p)b.push([p.lat,p.lon]);if(b.length<2)return;
@@ -180,7 +193,7 @@ function load(){if(busy||document.hidden)return;busy=true;
     var seen={};(Array.isArray(list)?list:[]).forEach(function(p){if(!p||typeof p.lat!=="number"||typeof p.lon!=="number")return;seen[p.pilotId]=1;data[p.pilotId]=p;upsert(p)});
     Object.keys(markers).forEach(function(id){if(!seen[id]){if(sel===id)deselect();map.removeLayer(markers[id]);delete markers[id];delete data[id];delete routes[id]}});
     if(!fitted&&list.length){fitted=true;if(list.length>1)map.fitBounds(list.map(function(p){return [p.lat,p.lon]}),{padding:[40,40],maxZoom:7});else map.setView([list[0].lat,list[0].lon],6)}
-    lastOk=Date.now();document.getElementById("ccMsg").dataset.k="";status()})
+    lastOk=Date.now();if(sel&&data[sel])refreshRoute(sel);document.getElementById("ccMsg").dataset.k="";status()})
   .catch(function(){document.getElementById("ccMsg").dataset.k="err";status()}).finally(function(){busy=false})}
 map.on("click",deselect);map.on("zoomend",function(){if(sel&&routes[sel])drawRoute(sel)});
 load();setInterval(load,30000);
