@@ -15,16 +15,45 @@ const json = (o, status = 200) => new Response(JSON.stringify(o), { status, head
 const hashKey = (key) => crypto.createHash("sha256").update(`${PEPPER}|${key}`).digest("hex");
 const b64url = (b) => Buffer.from(b).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 
+// Anahtar Netlify kutusuna yapıştırılırken satır sonları kaybolabiliyor (boşluk ya da "\n" yazısına dönüşüyor).
+// Burada PEM'i her durumda yeniden kuruyoruz; tek satırlık base64 gövde de kabul ediliyor.
+let _key = null;
+function privKey() {
+  if (_key) return _key;
+  const raw = String(process.env.CC_LICENSE_PRIVATE_KEY || "");
+  if (!raw.trim()) throw new Error("nokey");
+  const body = raw.replace(/\\n/g, "\n").replace(/-----(BEGIN|END)[^-]*-----/g, "").replace(/[^A-Za-z0-9+/=]/g, "");
+  const pem = "-----BEGIN PRIVATE KEY-----\n" + body.match(/.{1,64}/g).join("\n") + "\n-----END PRIVATE KEY-----\n";
+  _key = crypto.createPrivateKey(pem);
+  return _key;
+}
+
 function ticket(h, m) {
   const iat = Math.floor(Date.now() / 1000);
   const payload = Buffer.from(JSON.stringify({ kh: h.slice(0, 16), m, iat, exp: iat + TICKET_DAYS * 86400 }));
-  const sig = crypto.sign("sha256", payload, { key: process.env.CC_LICENSE_PRIVATE_KEY, dsaEncoding: "ieee-p1363" });
+  const sig = crypto.sign("sha256", payload, { key: privKey(), dsaEncoding: "ieee-p1363" });
   return b64url(payload) + "." + b64url(sig);
 }
 
 export default async (req) => {
+  try { return await handle(req); }
+  catch (e) {
+    const msg = String(e && e.message || e);
+    const code = msg === "nokey" ? "server_nokey" : /key|decoder|PEM|asn1/i.test(msg) ? "server_key" : /blob|store/i.test(msg) ? "server_store" : "server";
+    console.error("cc-license:", msg);
+    return json({ ok: false, error: code }, 500);
+  }
+};
+
+async function handle(req) {
   if (req.method !== "POST") return json({ ok: false, error: "method" }, 405);
   let b; try { b = await req.json(); } catch { return json({ ok: false, error: "bad" }, 400); }
+  if (b.op === "health") {
+    const r = { ok: true, key: false, store: false, admin: !!process.env.CC_ADMIN_TOKEN };
+    try { crypto.sign("sha256", Buffer.from("x"), { key: privKey(), dsaEncoding: "ieee-p1363" }); r.key = true; } catch (e) { r.keyErr = String(e.message).slice(0, 80); }
+    try { await getStore("cc-license").get("health-probe"); r.store = true; } catch (e) { r.storeErr = String(e.message).slice(0, 80); }
+    return json(r);
+  }
   const store = getStore("cc-license");
 
   // ---- yönetim (Cenk): list / revoke / unrevoke / reset
@@ -50,7 +79,7 @@ export default async (req) => {
     await store.setJSON(tk, t);
     const iat = Math.floor(Date.now() / 1000), exp = Math.floor(t.first / 1000) + 48 * 3600;
     const payload = Buffer.from(JSON.stringify({ kh: "trial", m: tm, iat, exp }));
-    const sig = crypto.sign("sha256", payload, { key: process.env.CC_LICENSE_PRIVATE_KEY, dsaEncoding: "ieee-p1363" });
+    const sig = crypto.sign("sha256", payload, { key: privKey(), dsaEncoding: "ieee-p1363" });
     return json({ ok: true, token: b64url(payload) + "." + b64url(sig) });
   }
 
@@ -75,6 +104,6 @@ export default async (req) => {
     return json({ ok: true, token: ticket(h, m), machines: rec.machines.length });
   }
   return json({ ok: false, error: "op" }, 400);
-};
+}
 
 export const config = { path: "/api/cc/license" };
