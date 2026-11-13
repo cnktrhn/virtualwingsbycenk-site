@@ -546,3 +546,18 @@ html[lang="en"] .dialog .pilot::before{content:"PILOT"}
 .gallery button{position:relative;aspect-ratio:16/9}
 .gal-cap{position:absolute;left:0;right:0;bottom:0;padding:1.6rem .9rem .7rem;text-align:left;font-size:.9rem;color:#fff;background:linear-gradient(transparent,rgba(4,14,26,.85));pointer-events:none}
 .lb-cap{margin:.6rem 0 0;text-align:center;color:var(--silver)}
+/* Discord */
+.menu a.nav-discord{color:#A9B4FF}
+.menu a.nav-discord:hover{color:#fff}
+footer .ft-discord{color:#A9B4FF;text-decoration:none;font-weight:600}
+footer .ft-discord:hover{color:#fff}
+footer .wrap{flex-wrap:wrap;gap:.5rem 1.5rem}
+.dc-box{margin-top:1.25rem;padding:1rem 1.15rem;border:1px solid rgba(88,101,242,.55);border-radius:12px;background:linear-gradient(135deg,rgba(88,101,242,.16),rgba(88,101,242,.04))}
+.dc-box b{display:block;font-family:var(--display);font-size:1.3rem;color:var(--text)}
+.dc-box p{margin:.3rem 0 .85rem;color:var(--silver);font-size:.95rem}
+.btn.dc-btn{background:#5865F2;border-color:#5865F2;color:#fff}
+.btn.dc-btn:hover{background:#4752C4;border-color:#4752C4;color:#fff}
+.dc-box.dc-wide{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem;padding:1.4rem 1.6rem}
+.dc-box.dc-wide > div{flex:1 1 22rem}
+.dc-box.dc-wide p{margin-bottom:0}
+@media (min-width:1381px) and (max-width:1600px){nav.menu{gap:.8rem}nav.menu a{font-size:.92rem}}
