@@ -410,14 +410,14 @@
       <p class="cc-kicker">New · Desktop app</p>
       <h2 lang="en">CrossCheck</h2>
       <p class="sub">A companion app I built for MSFS 2020 and 2024. It logs your flights and rewards them with ranks, XP and badges.</p>
-      <div class="cc-ver is-soon">
-        <span class="cc-ver-tag">23 November</span>
+      <div class="cc-ver">
+        <span class="cc-ver-tag">Out now</span>
         <b><span lang="en">CrossCheck</span> · €19.90</b>
-        <span class="cc-ver-note">Coming 23 November on simMarket · Launch price €19.90 · v1.1 free for all owners</span>
+        <span class="cc-ver-note">OUT NOW on simMarket · <span data-sale hidden>Launch sale -20% (€15.90) until 3 December · v1.1 free for all owners</span><span data-nosale>€19.90 · v1.1 free for all owners</span></span>
       </div>
       <div class="btns cc-home-btns">
-        <a class="btn primary" href="/crosscheck/">Explore CrossCheck</a>
-        <span class="btn is-off" aria-disabled="true">On simMarket 23 November</span>
+        <a class="btn primary" href="https://secure.simmarket.com/cross-check-by-virtual-wings.phtml" target="_blank" rel="noopener">Buy on simMarket</a>
+        <a class="btn" href="/crosscheck/">Explore CrossCheck</a>
       </div>
       <a class="cc-livebox" href="/crosscheck/map/" id="ccLive"><span class="cc-live-dot" aria-hidden="true"></span><b id="ccLiveN">Live map</b><span id="ccLiveT">Watch CrossCheck pilots in real time →</span></a>
       <div class="dc-box">
@@ -743,5 +743,6 @@ var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([body],{ty
 }).catch(function(){})})();
 </script>
 <script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
+<script src="/assets/sale.js" defer></script>
 </body>
 </html>

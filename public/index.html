@@ -412,14 +412,14 @@
       <p class="cc-kicker">Yeni · Masaüstü program</p>
       <h2 lang="en">CrossCheck</h2>
       <p class="sub">MSFS 2020 ve 2024 için geliştirdiğim yardımcı program. Uçuşlarını kaydeder; rütbe, XP ve rozetlerle ödüllendirir.</p>
-      <div class="cc-ver is-soon">
-        <span class="cc-ver-tag">23 Kasım</span>
+      <div class="cc-ver">
+        <span class="cc-ver-tag">Satışta</span>
         <b><span lang="en">CrossCheck</span> · 19,90 €</b>
-        <span class="cc-ver-note">23 Kasım'da SimMarket'te · Çıkış fiyatı 19,90 € · v1.1 tüm sahiplerine ücretsiz</span>
+        <span class="cc-ver-note">Şimdi SimMarket'te · <span data-sale hidden>Çıkış indirimi %20 (15,90 €) 3 Aralık'a kadar · v1.1 tüm sahiplerine ücretsiz</span><span data-nosale>19,90 € · v1.1 tüm sahiplerine ücretsiz</span></span>
       </div>
       <div class="btns cc-home-btns">
-        <a class="btn primary" href="/crosscheck/">CrossCheck'i incele</a>
-        <span class="btn is-off" aria-disabled="true">23 Kasım'da SimMarket'te</span>
+        <a class="btn primary" href="https://secure.simmarket.com/cross-check-by-virtual-wings.phtml" target="_blank" rel="noopener">SimMarket'te satın al</a>
+        <a class="btn" href="/crosscheck/">CrossCheck'i incele</a>
       </div>
       <a class="cc-livebox" href="/crosscheck/map/" id="ccLive"><span class="cc-live-dot" aria-hidden="true"></span><b id="ccLiveN">Canlı harita</b><span id="ccLiveT">CrossCheck pilotlarını gerçek zamanlı izle →</span></a>
       <div class="dc-box">
@@ -748,5 +748,6 @@ var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([body],{ty
 }).catch(function(){})})();
 </script>
 <script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
+<script src="/assets/sale.js" defer></script>
 </body>
 </html>

@@ -561,3 +561,4 @@ footer .wrap{flex-wrap:wrap;gap:.5rem 1.5rem}
 .dc-box.dc-wide > div{flex:1 1 22rem}
 .dc-box.dc-wide p{margin-bottom:0}
 @media (min-width:1381px) and (max-width:1600px){nav.menu{gap:.8rem}nav.menu a{font-size:.92rem}}
+[data-sale][hidden],[data-nosale][hidden]{display:none!important}

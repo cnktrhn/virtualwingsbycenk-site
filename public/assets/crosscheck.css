@@ -245,3 +245,7 @@ html[data-l="tr"] [data-l="en"],html[data-l="en"] [data-l="tr"]{display:none!imp
 .cc-legend i{display:inline-block;width:22px;height:4px;border-radius:2px;box-shadow:0 0 0 1.5px #fff}
 .cc-legend .lg-plan i{background:#0B3D91}
 .cc-legend .lg-trk i{background:#FF7A00}
+/* Çıkış indirimi */
+.cc-sale{display:inline-block;margin:.1rem 0 .6rem;padding:.35rem .75rem;border-radius:6px;background:rgba(245,197,24,.12);border:1px solid rgba(245,197,24,.45);color:var(--gold);font-weight:600}
+.cc-sale[hidden],[data-sale][hidden],[data-nosale][hidden]{display:none!important}
+a.cc-update{text-decoration:none;color:inherit}
