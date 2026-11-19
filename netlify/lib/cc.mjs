@@ -79,7 +79,7 @@ function creds(o) {
 const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined).map((k) => [k, o[k]]));
 
 // ---------- POST /api/cc/position ----------
-export async function position(req, store, now = Date.now()) {
+export async function position(req, store, now = Date.now(), fstore = null) {
   if (req.method !== "POST") return notAllowed("POST");
   const o = await readBody(req);
   if (!o || o.v !== 1) return bad();
@@ -124,18 +124,30 @@ export async function position(req, store, now = Date.now()) {
   rec.altFt = Math.round(rec.altFt); rec.gsKt = Math.round(rec.gsKt); rec.hdg = Math.round(rec.hdg) % 360;
   // Plan gönderilmediyse aynı uçuşun önceki planı korunur
   const same = prev && prev.flight === rec.flight && prev.dep === rec.dep && prev.arr === rec.arr;
+  // Son uçuşlar: önceki uçuş indiyse ve şimdi yeni bir uçuş (başka uçuş no ya da yeniden kalkış) başladıysa önceki uçuşu kaydet.
+  const airborne = AIR_PHASES.includes(rec.phase);
+  const cont = same && !(prev._land && airborne);
+  if (prev && !cont) await finalizeFlight(fstore, prev);
   if (route === undefined && same && typeof prev.route === "string") route = prev.route;
   if (pts === undefined && same && Array.isArray(prev.pts)) pts = prev.pts;
   const extra = {};
   if (route) extra.route = route;
   if (pts && pts.length >= 2) extra.pts = pts;
   // Uçulan iz: aynı uçuş sürdükçe her konum eklenir; uçuş bitince (end ya da 3 dk veri yok) live kaydıyla birlikte silinir.
-  let track = same && Array.isArray(prev.track) ? prev.track.slice() : [];
+  let track = cont && Array.isArray(prev.track) ? prev.track.slice() : [];
   const q = [Math.round(rec.lat * 1e4) / 1e4, Math.round(rec.lon * 1e4) / 1e4];
   const last = track[track.length - 1];
   if (!last || last[0] !== q[0] || last[1] !== q[1]) track.push(q);
   if (track.length > MAX_TRACK) track = track.filter((_, i) => i % 2 === 0 || i === track.length - 1);
   extra.track = track;
+  // Uçuş özeti için iç alanlar (dışarı verilmez): başlangıç, kalkış/iniş zamanı, kaydedildi mi
+  const m = cont ? prev : {};
+  extra._t0 = m._t0 ?? (cont ? prev.ts : rec.ts);
+  extra._air = !!m._air || airborne;
+  if (m._tOff || airborne) extra._tOff = m._tOff || rec.ts;
+  extra._land = !!m._land || (extra._air && rec.phase === "landed");
+  if (extra._land) extra._tOn = m._tOn || rec.ts;
+  if (m._rec) extra._rec = true;
   await store.setJSON(`live/${c.pilotId}`, { ...rec, ...extra, _rx: now });  // üzerine yazar; geçmiş yok
   // Uçuşun ilk konumunda pilotun profili yoksa geçici bir profil aç: pilot sayfası ilk uçuştan itibaren açılır.
   // Program uçuş sonunda /profile gönderdiğinde gerçek değerlerle üzerine yazılır.
@@ -145,26 +157,57 @@ export async function position(req, store, now = Date.now()) {
   return ok();
 }
 
+// Mevcut program sürümü için: uçuş özeti canlı harita verisinden çıkarılır (konum kayıtları + /end ya da /profile).
+// Yalnızca kalkıp inmiş (airborne → landed) ve 5–1200 dakika süren uçuşlar yazılır; yarım kalan uçuş yazılmaz.
+// Programın gönderemediği alanlar (iniş fpm'i, not, tescil, havayolu) boş kalır.
+const nmBetween = (a, b) => {
+  const R = Math.PI / 180, la1 = a[0] * R, la2 = b[0] * R, dla = la2 - la1, dlo = (b[1] - a[1]) * R;
+  return 2 * 3440.065 * Math.asin(Math.min(1, Math.sqrt(Math.sin(dla / 2) ** 2 + Math.cos(la1) * Math.cos(la2) * Math.sin(dlo / 2) ** 2)));
+};
+async function finalizeFlight(fstore, r) {
+  if (!fstore || !r || !r._air || !r._land || r._rec || typeof r._t0 !== "number") return false;
+  const blockMin = Math.round((r.ts - r._t0) / 60);
+  if (blockMin < 5 || blockMin > 1200) return false;
+  const line = Array.isArray(r.pts) && r.pts.length >= 2 ? r.pts : Array.isArray(r.track) && r.track.length >= 2 ? r.track : null;
+  const a = line ? line[0] : null, b = line ? line[line.length - 1] : null;
+  const end = Math.floor((typeof r._rx === "number" ? r._rx : r.ts * 1000) / 1000);
+  const rec = {
+    pilotId: r.pilotId, name: cut(r.name, 40), rank: cut(r.rank, 32),
+    flight: cut(r.flight, 12), airline: "", aircraft: cut(r.aircraft, 8), reg: "",
+    dep: icao(r.dep), arr: icao(r.arr),
+    depLat: a ? a[0] : null, depLon: a ? a[1] : null, arrLat: b ? b[0] : null, arrLon: b ? b[1] : null,
+    blockMin, airMin: r._tOff && r._tOn > r._tOff ? Math.round((r._tOn - r._tOff) / 60) : null,
+    distNm: a && b ? Math.round(nmBetween(a, b)) : null, fpm: null, score: null, grade: "",
+    ts: end, src: "auto", t0: r._t0,
+  };
+  const list = await fstore.get("recent", { type: "json" }).catch(() => null);
+  const old = Array.isArray(list) ? list : [];
+  if (old.some((f) => f && f.pilotId === rec.pilotId && f.t0 === rec.t0)) return false;   // aynı uçuş ikinci kez yazılmaz
+  await fstore.setJSON("recent", [rec, ...old].slice(0, RECENT_KEEP));
+  return true;
+}
+
 // ---------- POST /api/cc/end ----------
-export async function end(req, store) {
+export async function end(req, store, fstore = null, now = Date.now()) {
   if (req.method !== "POST") return notAllowed("POST");
   const o = await readBody(req);
   const c = o && creds(o);
   if (!c) return bad();
   if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
+  await finalizeFlight(fstore, await store.get(`live/${c.pilotId}`, { type: "json" }).catch(() => null));
   await store.delete(`live/${c.pilotId}`);
   return ok();
 }
 
 // ---------- GET /api/cc/live ----------
-export async function live(req, store, now = Date.now()) {
+export async function live(req, store, now = Date.now(), fstore = null) {
   if (req.method !== "GET" && req.method !== "HEAD") return notAllowed("GET");
   const cutoff = Math.floor(now / 1000) - LIVE_MAX_AGE;
   const { blobs } = await store.list({ prefix: "live/" });
   const out = [], stale = [];
   await Promise.all(blobs.map(async ({ key }) => {
     const r = await store.get(key, { type: "json" }).catch(() => null);
-    if (!r || typeof r.ts !== "number" || r.ts < cutoff) stale.push(key);
+    if (!r || typeof r.ts !== "number" || r.ts < cutoff) { stale.push(key); if (r) await finalizeFlight(fstore, r).catch(() => {}); }
     else out.push(pick(r, PUBLIC_LIVE));      // secret ve _rx alanları çıkar
   }));
   await Promise.all(stale.map((k) => store.delete(k).catch(() => {})));
@@ -178,7 +221,7 @@ export async function live(req, store, now = Date.now()) {
 }
 
 // ---------- POST /api/cc/profile ----------
-export async function profile(req, store, now = Date.now()) {
+export async function profile(req, store, now = Date.now(), fstore = null) {
   if (req.method !== "POST") return notAllowed("POST");
   const o = await readBody(req);
   if (!o || o.v !== 1) return bad();
@@ -203,6 +246,9 @@ export async function profile(req, store, now = Date.now()) {
   if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
   rec.hours = Math.round(rec.hours * 10) / 10;
   await store.setJSON(`pilot/${c.pilotId}`, rec);  // üzerine yazar; uçuş listesi yok
+  // Program profili uçuş bitince gönderir: canlı kayıt inişi gördüyse uçuş "son uçuşlar"a yazılır ve işaretlenir.
+  const lv = await store.get(`live/${c.pilotId}`, { type: "json" }).catch(() => null);
+  if (lv && (await finalizeFlight(fstore, lv))) await store.setJSON(`live/${c.pilotId}`, { ...lv, _rec: true });
   return ok();
 }
 
@@ -265,6 +311,7 @@ const FLIGHT_MAX_BODY = 4096;          // bayt
 const FLIGHT_INTERVAL = 600;           // sn: aynı pilotId'den 10 dakikada en fazla 1 kayıt
 const RECENT_KEEP = 50;
 const RECENT_MAX_AGE = 30 * 86400;     // sn: 30 günden eski uçuşlar listelenmez
+const AIR_PHASES = ["climb", "cruise", "descent", "approach"];
 const PUBLIC_FLIGHT = ["pilotId", "name", "rank", "flight", "airline", "aircraft", "reg", "dep", "arr",
   "depLat", "depLon", "arrLat", "arrLon", "blockMin", "distNm", "fpm", "grade", "ts"];
 
@@ -305,7 +352,8 @@ export async function flight(req, store, fstore, now = Date.now()) {
   if (last && now - last < FLIGHT_INTERVAL * 1000) return tooMany();
   await fstore.set(`rl/${c.pilotId}`, String(now));
   const list = await fstore.get("recent", { type: "json" }).catch(() => null);
-  const next = [rec, ...(Array.isArray(list) ? list : [])].slice(0, RECENT_KEEP);
+  const rest = (Array.isArray(list) ? list : []).filter((f) => !(f && f.src === "auto" && f.pilotId === rec.pilotId && rec.ts - f.ts < 3 * 3600));
+  const next = [rec, ...rest].slice(0, RECENT_KEEP);
   await fstore.setJSON("recent", next);
   return ok();
 }

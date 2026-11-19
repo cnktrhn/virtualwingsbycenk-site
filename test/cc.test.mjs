@@ -225,3 +225,67 @@ test("recent: en yeni 50 saklanır, n en fazla 20, 30 günden eskiler çıkar", 
   const old = await (await cc.recent(get("/api/cc/recent"), f, NOW + 31 * 86400000)).json();
   assert.equal(old.length, 0);
 });
+
+// ---------- Mevcut sürüm: son uçuşlar canlı harita verisinden ----------
+const ID2 = "Z9Y8X7W6";
+async function fly(s, f, phases, { t0 = NOW, step = 60000, flight = "VWG777", dep = "LTFM", arr = "LTAI" } = {}) {
+  let t = t0;
+  for (let i = 0; i < phases.length; i++) {
+    const r = await cc.position(post("/api/cc/position", pos({ pilotId: ID2, flight, dep, arr, phase: phases[i], ts: Math.floor(t / 1000),
+      lat: 41 - i * 0.4, lon: 28.7 + i * 0.2 })), s, t, f);
+    assert.equal(r.status, 200, phases[i]);
+    t += step;
+  }
+  return t;
+}
+const FULL = ["gate", "taxi", "climb", "cruise", "cruise", "descent", "approach", "landed", "taxi", "gate"];
+
+test("auto: kalkıp inen uçuş /end ile son uçuşlara yazılır", async () => {
+  const s = memStore(), f = memStore();
+  const t = await fly(s, f, FULL);
+  assert.equal((await cc.end(post("/api/cc/end", { pilotId: ID2, secret: SECRET }), s, f, t)).status, 200);
+  const [x, y] = await (await cc.recent(get("/api/cc/recent"), f, t)).json();
+  assert.equal(y, undefined);
+  assert.equal(x.flight, "VWG777"); assert.equal(x.dep, "LTFM"); assert.equal(x.blockMin, 9);
+  assert.equal(x.fpm, null); assert.equal(x.grade, ""); assert.ok(x.distNm > 100); assert.equal(typeof x.depLat, "number");
+  assert.ok(!f.m.get("recent").includes(SECRET));
+});
+
+test("auto: inmeyen (yarım kalan) uçuş yazılmaz; kısa uçuş yazılmaz", async () => {
+  const s = memStore(), f = memStore();
+  let t = await fly(s, f, ["gate", "taxi", "climb", "cruise", "cruise", "cruise"]);
+  await cc.end(post("/api/cc/end", { pilotId: ID2, secret: SECRET }), s, f, t);
+  t = await fly(s, f, ["taxi", "climb", "landed"], { t0: t + 60000, step: 30000 });
+  await cc.end(post("/api/cc/end", { pilotId: ID2, secret: SECRET }), s, f, t);
+  assert.equal(f.m.get("recent"), undefined);
+});
+
+test("auto: /profile uçuşu kaydeder, sonraki /end ve yeni uçuş tekrar yazmaz", async () => {
+  const s = memStore(), f = memStore();
+  let t = await fly(s, f, FULL);
+  assert.equal((await cc.profile(post("/api/cc/profile", prof({ pilotId: ID2, updated: Math.floor(t / 1000) })), s, t, f)).status, 200);
+  assert.equal(JSON.parse(f.m.get("recent")).length, 1);
+  await cc.end(post("/api/cc/end", { pilotId: ID2, secret: SECRET }), s, f, t + 1000);
+  assert.equal(JSON.parse(f.m.get("recent")).length, 1);
+});
+
+test("auto: /end gelmese de yeni uçuş başlayınca ya da kayıt bayatlayınca önceki uçuş yazılır", async () => {
+  const s = memStore(), f = memStore();
+  let t = await fly(s, f, FULL);
+  t = await fly(s, f, ["gate", "taxi"], { t0: t + 600000, flight: "VWG778", dep: "LTAI", arr: "LTFM" });
+  let list = JSON.parse(f.m.get("recent")); assert.equal(list.length, 1); assert.equal(list[0].flight, "VWG777");
+  // ikinci uçuş da tamamlanır, program /end göndermez; harita isteği bayat kaydı temizlerken yazar
+  t = await fly(s, f, ["climb", "cruise", "cruise", "descent", "approach", "landed", "gate"], { t0: t, flight: "VWG778", dep: "LTAI", arr: "LTFM" });
+  await cc.live(get("/api/cc/live"), s, t + 400000, f);
+  list = JSON.parse(f.m.get("recent")); assert.equal(list.length, 2); assert.equal(list[0].flight, "VWG778");
+  assert.equal(s.m.get("live/" + ID2), undefined);
+});
+
+test("auto: program özeti (/flight) gelirse otomatik kaydın yerine geçer", async () => {
+  const s = memStore(), f = memStore();
+  const t = await fly(s, f, FULL);
+  await cc.end(post("/api/cc/end", { pilotId: ID2, secret: SECRET }), s, f, t);
+  await cc.flight(post("/api/cc/flight", fl({ pilotId: ID2, flight: "VWG777" })), s, f, t + 5000);
+  const list = JSON.parse(f.m.get("recent"));
+  assert.equal(list.length, 1); assert.equal(list[0].fpm, 142);
+});
