@@ -422,6 +422,10 @@
         <a class="btn" href="/crosscheck/">CrossCheck'i incele</a>
       </div>
       <a class="cc-livebox" href="/crosscheck/map/" id="ccLive"><span class="cc-live-dot" aria-hidden="true"></span><b id="ccLiveN">Canlı harita</b><span id="ccLiveT">CrossCheck pilotlarını gerçek zamanlı izle →</span></a>
+      <div class="rf-box" id="ccRecent" data-n="5" hidden aria-live="polite">
+        <div class="rf-head"><b>Son uçuşlar</b><a href="/crosscheck/map/">Canlı haritayı aç →</a></div>
+        <ol class="rf-list"></ol>
+      </div>
       <div class="dc-box">
         <b>Ekibe Discord'da katılın</b>
         <p>Destek, duyurular, sürüm notları ve diğer kaptanların ekran görüntüleri. CROSS-CHECK desteği, fikirler ve çıkış duyuruları ilk burada.</p>
@@ -749,5 +753,6 @@ var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([body],{ty
 </script>
 <script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
 <script src="/assets/sale.js" defer></script>
+<script src="/assets/recent.js" defer></script>
 </body>
 </html>

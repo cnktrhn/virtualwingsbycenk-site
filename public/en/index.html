@@ -420,6 +420,10 @@
         <a class="btn" href="/crosscheck/">Explore CrossCheck</a>
       </div>
       <a class="cc-livebox" href="/crosscheck/map/" id="ccLive"><span class="cc-live-dot" aria-hidden="true"></span><b id="ccLiveN">Live map</b><span id="ccLiveT">Watch CrossCheck pilots in real time →</span></a>
+      <div class="rf-box" id="ccRecent" data-n="5" hidden aria-live="polite">
+        <div class="rf-head"><b>Latest flights</b><a href="/crosscheck/map/">Open the live map →</a></div>
+        <ol class="rf-list"></ol>
+      </div>
       <div class="dc-box">
         <b>Join the crew on Discord</b>
         <p>Support, news, changelogs and screenshots from other captains. CROSS-CHECK support, ideas and launch announcements happen here first.</p>
@@ -744,5 +748,6 @@ var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([body],{ty
 </script>
 <script>document.querySelectorAll(".lang-switch a").forEach(function(a){a.addEventListener("click",function(){try{localStorage.setItem("vw_lang",a.dataset.lang)}catch(e){}})});</script>
 <script src="/assets/sale.js" defer></script>
+<script src="/assets/recent.js" defer></script>
 </body>
 </html>

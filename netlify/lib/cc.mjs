@@ -49,11 +49,11 @@ function num(v, lo, hi, { int = false } = {}) {
 const has = (o, keys) => keys.every((k) => o[k] !== undefined);
 const missing = (o, keys) => keys.find((k) => o[k] === undefined);
 
-async function readBody(req) {
+async function readBody(req, max = MAX_BODY) {
   const len = Number(req.headers.get("content-length") || 0);
-  if (len > MAX_BODY) return null;
+  if (len > max) return null;
   const text = await req.text();
-  if (text.length > MAX_BODY) return null;
+  if (Buffer.byteLength(text, "utf8") > max) return null;
   try {
     const o = JSON.parse(text);
     return o && typeof o === "object" && !Array.isArray(o) ? o : null;
@@ -253,6 +253,76 @@ export async function top(req, store) {
   return json(200, { total: all.length, pilots: out }, {
     "Cache-Control": "public, max-age=0, must-revalidate",
     "Netlify-CDN-Cache-Control": "public, durable, s-maxage=300, stale-while-revalidate=300",
+    "Access-Control-Allow-Origin": "*",
+  });
+}
+
+// ---------- Son uçuşlar (canlı harita sözleşmesi v1 eki, program v1.0.5) ----------
+// POST /api/cc/flight: tamamlanan uçuşun özeti. Kimlik /position ile aynı (auth/<pilotId>, "crosscheck" deposu).
+// Kayıtlar ayrı depoda: "cc-flights", anahtar "recent" = en yeni 50 uçuş. Hız sınırı anahtarı: rl/<pilotId>.
+export const FLIGHTS_STORE = "cc-flights";
+const FLIGHT_MAX_BODY = 4096;          // bayt
+const FLIGHT_INTERVAL = 600;           // sn: aynı pilotId'den 10 dakikada en fazla 1 kayıt
+const RECENT_KEEP = 50;
+const RECENT_MAX_AGE = 30 * 86400;     // sn: 30 günden eski uçuşlar listelenmez
+const PUBLIC_FLIGHT = ["pilotId", "name", "rank", "flight", "airline", "aircraft", "reg", "dep", "arr",
+  "depLat", "depLon", "arrLat", "arrLon", "blockMin", "distNm", "fpm", "grade", "ts"];
+
+// Metin alanları: boş olabilir, uzunsa kırpılır (reddedilmez).
+const cut = (v, max) => (typeof v === "string" || typeof v === "number" ? clean(String(v)).slice(0, max) : "");
+const icao = (v) => (typeof v === "string" ? v.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4) : "");
+const coord = (v, lim) => (typeof v === "number" && Number.isFinite(v) && Math.abs(v) <= lim ? Math.round(v * 1e4) / 1e4 : null);
+
+export async function flight(req, store, fstore, now = Date.now()) {
+  if (req.method !== "POST") return notAllowed("POST");
+  const o = await readBody(req, FLIGHT_MAX_BODY);
+  if (!o || o.v !== 1) return bad();
+  const c = creds(o);
+  if (!c) return bad();
+  const nums = { blockMin: num(o.blockMin, 5, 1200), distNm: num(o.distNm, 0, 9000), score: num(o.score, 0, 100) };
+  const k = missing(nums, Object.keys(nums));
+  if (k) return bad("bad_request", k);
+  // İniş ölçülemediyse fpm null. Program alçalma hızını eksi işaretli gönderirse mutlak değeri alınır.
+  let fpm = null;
+  if (o.fpm !== null && o.fpm !== undefined) {
+    fpm = num(typeof o.fpm === "number" ? Math.abs(o.fpm) : o.fpm, 0, 3000);
+    if (fpm === undefined) return bad("bad_request", "fpm");
+  }
+  const air = num(o.airMin, 0, 1200);
+  const rec = {
+    pilotId: c.pilotId,
+    name: cut(o.name, 40), rank: cut(o.rank, 32),
+    flight: cut(o.flight, 12), airline: cut(o.airline, 40), aircraft: cut(o.aircraft, 8), reg: cut(o.reg, 10),
+    dep: icao(o.dep), arr: icao(o.arr),
+    depLat: coord(o.depLat, 90), depLon: coord(o.depLon, 180), arrLat: coord(o.arrLat, 90), arrLon: coord(o.arrLon, 180),
+    blockMin: Math.round(nums.blockMin), airMin: air === undefined ? null : Math.round(air),
+    distNm: Math.round(nums.distNm), fpm: fpm === null ? null : Math.round(fpm),
+    score: Math.round(nums.score), grade: cut(o.grade, 3),
+    ts: Math.floor(now / 1000),        // programın ts'i yerine sunucu saati
+  };
+  if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
+  const last = Number(await fstore.get(`rl/${c.pilotId}`, { type: "text" }));
+  if (last && now - last < FLIGHT_INTERVAL * 1000) return tooMany();
+  await fstore.set(`rl/${c.pilotId}`, String(now));
+  const list = await fstore.get("recent", { type: "json" }).catch(() => null);
+  const next = [rec, ...(Array.isArray(list) ? list : [])].slice(0, RECENT_KEEP);
+  await fstore.setJSON("recent", next);
+  return ok();
+}
+
+// ---------- GET /api/cc/recent?n=10 ----------
+// En fazla 20 uçuş, yeniden eskiye; 30 günden eskiler çıkar. secret hiç saklanmaz, pilotId döner.
+export async function recent(req, fstore, now = Date.now()) {
+  if (req.method !== "GET" && req.method !== "HEAD") return notAllowed("GET");
+  const q = Number(new URL(req.url).searchParams.get("n"));
+  const n = Number.isInteger(q) && q > 0 ? Math.min(q, 20) : 10;
+  const cutoff = Math.floor(now / 1000) - RECENT_MAX_AGE;
+  const list = await fstore.get("recent", { type: "json" }).catch(() => null);
+  const out = (Array.isArray(list) ? list : []).filter((f) => f && f.ts >= cutoff).sort((a, b) => b.ts - a.ts).slice(0, n)
+    .map((f) => Object.fromEntries(PUBLIC_FLIGHT.map((k) => [k, f[k] ?? null])));
+  return json(200, out, {
+    "Cache-Control": "public, max-age=60",
+    "Netlify-CDN-Cache-Control": "public, durable, s-maxage=60, stale-while-revalidate=60",
     "Access-Control-Allow-Origin": "*",
   });
 }

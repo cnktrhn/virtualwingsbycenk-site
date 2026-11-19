@@ -75,7 +75,14 @@ document.title=CC_T[l];})();
     <b id="ccCount">–</b>
     <span class="cc-soft" id="ccUpd"></span>
   </div>
+  <div class="cc-mapgrid" id="ccGrid">
   <div class="cc-mapbox"><div id="ccmap" class="cc-map" role="region" aria-label="Canlı uçuş haritası"></div><aside class="cc-panel" id="ccPanel" hidden aria-live="polite"></aside></div>
+  <aside class="rf-side" id="ccRecentMap" hidden>
+    <div class="rf-head"><b><span data-l="tr">Son uçuşlar</span><span data-l="en" lang="en">Latest flights</span></b></div>
+    <ol class="rf-list"></ol>
+    <p class="rf-hint"><span data-l="tr">Bir uçuşa tıkla: kalkış–varış hattı haritada soluk çizgiyle gösterilir.</span><span data-l="en" lang="en">Click a flight to show its departure–arrival line faintly on the map.</span></p>
+  </aside>
+  </div>
   <p class="cc-map-msg" id="ccMsg" hidden></p>
   <p class="cc-soft cc-map-note"><span data-l="tr">CrossCheck ile uçan her pilot haritada kendiliğinden görünür. Uçağa tıklayınca planlanan rota (koyu mavi) ve simülatörde gerçekten uçulan iz (turuncu) haritada çizilir. Konumlar yaklaşık 30 saniyede bir yenilenir; uçuş bitince ya da 3 dakika veri gelmezse uçak haritadan düşer.</span><span data-l="en" lang="en">Every pilot flying with CrossCheck appears on the map automatically. Click an aircraft to draw its planned route (dark blue) and the track actually flown in the sim (orange) on the map. Positions refresh about every 30 seconds, and the aircraft drops off the map when the flight ends or after 3 minutes without data.</span></p>
 </section>
@@ -113,12 +120,13 @@ arr(j.badges||j.rozetler).forEach(function(b){if(b&&b.id)badges.push(b)});
 return {ranks:ranks,badges:badges}}})();
 window.ccText=function(o,l,base){if(!o)return "";base=base||"name";return o[base+"_"+l]||o[l]||o[base]||o.name||o.ad||o.title||""};
 </script>
+<script src="/assets/recent.js"></script>
 <script>
 window.addEventListener("load",function(){
-var T={tr:{n:function(k){return k===0?"Şu an uçuşta pilot yok":k+" pilot uçuşta"},upd:"Son güncelleme",err:"Harita verisi şu an alınamıyor, birazdan tekrar denenecek.",empty:"Şu an uçuşta CrossCheck pilotu yok. Biri kalkışa geçtiğinde burada görünecek.",
+var T={tr:{n:function(k){return k===0?"Şu an uçuşta pilot yok":k+" pilot uçuşta"},upd:"Son güncelleme",err:"Harita verisi şu an alınamıyor, birazdan tekrar denenecek.",empty:"Şu an uçuşta CrossCheck pilotu yok. Biri kalkışa geçtiğinde burada görünecek.",ghost:" Haritadaki soluk çizgiler son tamamlanan uçuşlar.",
   rank:"Rütbe",flight:"Uçuş",route:"Kalkış → varış",plan:"Uçuş planı",alt:"İrtifa",gs:"Yer hızı",phase:"Safha",pilot:"Pilot sayfası →",
   ph:{gate:"Kapıda",taxi:"Taksi",climb:"Tırmanış",cruise:"Seyir",descent:"Alçalış",approach:"Yaklaşma",landed:"İndi"},loc:"tr-TR"},
- en:{n:function(k){return k===0?"No pilots flying right now":k===1?"1 pilot flying":k+" pilots flying"},upd:"Last update",err:"Can't load map data right now. Retrying shortly.",empty:"No CrossCheck pilots are flying right now. They'll appear here once someone takes off.",
+ en:{n:function(k){return k===0?"No pilots flying right now":k===1?"1 pilot flying":k+" pilots flying"},upd:"Last update",err:"Can't load map data right now. Retrying shortly.",empty:"No CrossCheck pilots are flying right now. They'll appear here once someone takes off.",ghost:" The faint lines on the map are the latest completed flights.",
   rank:"Rank",flight:"Flight",route:"Departure → arrival",plan:"Flight plan",alt:"Altitude",gs:"Ground speed",phase:"Phase",pilot:"Pilot page →",
   ph:{gate:"At gate",taxi:"Taxiing",climb:"Climbing",cruise:"Cruising",descent:"Descending",approach:"Approach",landed:"Landed"},loc:"en-GB"}};
 var lang=function(){return document.documentElement.dataset.l==="en"?"en":"tr"};
@@ -173,7 +181,7 @@ function upsert(p){var m=markers[p.pilotId];var ll=[p.lat,p.lon];
   setRot(m,p.hdg)}
 function status(){var t=T[lang()],k=Object.keys(data).length;document.getElementById("ccCount").textContent=t.n(k);
   document.getElementById("ccUpd").textContent=lastOk?t.upd+": "+new Date(lastOk).toLocaleTimeString(t.loc,{hour:"2-digit",minute:"2-digit",second:"2-digit"}):"";
-  var msg=document.getElementById("ccMsg");if(msg.dataset.k==="err"){msg.textContent=t.err;msg.hidden=false}else if(lastOk&&k===0){msg.textContent=t.empty;msg.hidden=false}else msg.hidden=true}
+  var msg=document.getElementById("ccMsg");if(msg.dataset.k==="err"){msg.textContent=t.err;msg.hidden=false}else if(lastOk&&k===0){msg.textContent=t.empty+(ghostN?t.ghost:"");msg.hidden=false}else msg.hidden=true}
 var panel=document.getElementById("ccPanel");
 function renderPanel(){if(!sel||!data[sel]){panel.hidden=true;panel.textContent="";return}
   panel.textContent="";var x=el("button","cc-panel-x","×");x.type="button";x.setAttribute("aria-label",lang()==="en"?"Close":"Kapat");x.addEventListener("click",deselect);
@@ -183,8 +191,45 @@ function renderPanel(){if(!sel||!data[sel]){panel.hidden=true;panel.textContent=
     if(rt.track&&rt.track.length>1){var b=el("span","lg-trk");b.appendChild(el("i"));b.appendChild(document.createTextNode(en?"Flown track":"Uçulan rota"));lg.appendChild(b)}
     if(lg.childNodes.length)panel.appendChild(lg)}
   panel.hidden=false}
-function select(id){sel=id;renderPanel();showRoute(id)}
-function deselect(){sel=null;clearRoute();renderPanel()}
+function select(id){if(gsel){gsel=null;markRows();drawGhosts()}sel=id;renderPanel();showRoute(id)}
+function deselect(){sel=null;clearRoute();renderPanel();if(gsel){gsel=null;markRows();drawGhosts()}}
+// ---------- Son uçuşlar: liste + soluk büyük daire çizgileri ----------
+var recent=[],rmeta={},ghost=null,ghostN=0,gsel=null,side=document.getElementById("ccRecentMap"),grid=document.getElementById("ccGrid");
+function fkey(f){return f.pilotId+"-"+f.ts}
+function geo(f){return typeof f.depLat==="number"&&typeof f.depLon==="number"&&typeof f.arrLat==="number"&&typeof f.arrLon==="number"}
+function gcLine(a,b){var R=Math.PI/180,la1=a[0]*R,lo1=a[1]*R,la2=b[0]*R,lo2=b[1]*R;
+  var d=2*Math.asin(Math.sqrt(Math.pow(Math.sin((la2-la1)/2),2)+Math.cos(la1)*Math.cos(la2)*Math.pow(Math.sin((lo2-lo1)/2),2)));
+  if(!(d>1e-6))return [a,b];var n=Math.max(8,Math.ceil(d/R/1.5)),out=[],prev=null;
+  for(var i=0;i<=n;i++){var f=i/n,A=Math.sin((1-f)*d)/Math.sin(d),B=Math.sin(f*d)/Math.sin(d),
+    x=A*Math.cos(la1)*Math.cos(lo1)+B*Math.cos(la2)*Math.cos(lo2),y=A*Math.cos(la1)*Math.sin(lo1)+B*Math.cos(la2)*Math.sin(lo2),z=A*Math.sin(la1)+B*Math.sin(la2),
+    lat=Math.atan2(z,Math.sqrt(x*x+y*y))/R,lon=Math.atan2(y,x)/R;
+    if(prev!==null){while(lon-prev>180)lon-=360;while(lon-prev<-180)lon+=360}prev=lon;out.push([lat,lon])}
+  return out}
+function drawGhosts(){if(ghost){map.removeLayer(ghost);ghost=null}ghostN=0;
+  var one=null;recent.forEach(function(f){if(fkey(f)===gsel)one=f});
+  var noLive=lastOk&&Object.keys(data).length===0,list=one?[one]:(noLive?recent.slice(0,10):[]),g=L.layerGroup(),o={interactive:false,lineCap:"round",lineJoin:"round"},b=[];
+  list.forEach(function(f){if(!geo(f))return;var ln=gcLine([f.depLat,f.depLon],[f.arrLat,f.arrLon]);ghostN++;b=b.concat(ln);
+    L.polyline(ln,Object.assign({color:CASE,weight:one?6:4,opacity:one?.75:.45},o)).addTo(g);
+    L.polyline(ln,Object.assign({color:RC,weight:one?3:2,opacity:one?.65:.4,dashArray:one?"8 6":"5 6"},o)).addTo(g);
+    [[ln[0],f.dep],[ln[ln.length-1],f.arr]].forEach(function(a){var m=L.circleMarker(a[0],{radius:one?5:3,color:CASE,weight:1.5,fillColor:RC,fillOpacity:one?.8:.5,opacity:one?1:.6,interactive:!!one});
+      if(one&&a[1])m.bindTooltip(a[1],{permanent:true,direction:"right",offset:[8,0],className:"cc-apt"});m.addTo(g)})});
+  if(ghostN)ghost=g.addTo(map);
+  if(one&&b.length)map.fitBounds(b,{padding:[50,50],maxZoom:8});
+  else if(noLive&&!fitted&&b.length){fitted=true;map.fitBounds(b,{padding:[40,40],maxZoom:7})}
+  status()}
+function markRows(){side.querySelectorAll(".rf-row").forEach(function(r){var on=r.dataset.k===gsel;r.classList.toggle("on",on);r.setAttribute("aria-pressed",on)})}
+function renderRecent(){var ol=side.querySelector(".rf-list");ol.textContent="";
+  recent.slice(0,10).forEach(function(f){var li=el("li"),r=ccRecent.row(f,rmeta,{tag:"div",pilotLink:true});r.dataset.k=fkey(f);
+    if(geo(f)){r.tabIndex=0;r.setAttribute("role","button");
+      var go=function(){var k=fkey(f);if(sel){sel=null;clearRoute();renderPanel()}gsel=gsel===k?null:k;markRows();drawGhosts();if(gsel&&window.innerWidth<=1000)document.getElementById("ccmap").scrollIntoView({behavior:"smooth",block:"center"})};
+      r.addEventListener("click",go);r.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}})}
+    else r.classList.add("rf-nogeo");
+    li.appendChild(r);ol.appendChild(li)});
+  var show=recent.length>0;if(side.hidden===show){side.hidden=!show;grid.classList.toggle("has-side",show);map.invalidateSize()}markRows()}
+function loadRecent(){if(!window.ccRecent||document.hidden)return;Promise.all([ccRecent.get(10),ccRecent.ranks()]).then(function(v){recent=v[0];rmeta=v[1];
+  if(gsel&&!recent.some(function(f){return fkey(f)===gsel}))gsel=null;renderRecent();drawGhosts()}).catch(function(){})}
+loadRecent();setInterval(loadRecent,120000);
+document.addEventListener("cc-lang",function(){if(recent.length)renderRecent()});
 function fitSel(){if(!sel)return;var rt=routes[sel],p=data[sel],b=[];if(rt&&rt.pts)b=rt.pts.slice();if(p)b.push([p.lat,p.lon]);if(b.length<2)return;
   var mob=map.getSize().x<640,ph=panel.hidden?0:panel.offsetHeight,pw=panel.hidden?0:panel.offsetWidth;
   map.fitBounds(b,mob?{paddingTopLeft:[30,30],paddingBottomRight:[30,ph+30],maxZoom:9}:{paddingTopLeft:[40,40],paddingBottomRight:[pw+40,40],maxZoom:9})}
@@ -195,7 +240,7 @@ function load(){if(busy||document.hidden)return;busy=true;
     var seen={};(Array.isArray(list)?list:[]).forEach(function(p){if(!p||typeof p.lat!=="number"||typeof p.lon!=="number")return;seen[p.pilotId]=1;data[p.pilotId]=p;upsert(p)});
     Object.keys(markers).forEach(function(id){if(!seen[id]){if(sel===id)deselect();map.removeLayer(markers[id]);delete markers[id];delete data[id];delete routes[id]}});
     if(!fitted&&list.length){fitted=true;if(list.length>1)map.fitBounds(list.map(function(p){return [p.lat,p.lon]}),{padding:[40,40],maxZoom:7});else map.setView([list[0].lat,list[0].lon],6)}
-    lastOk=Date.now();if(sel&&data[sel])refreshRoute(sel);document.getElementById("ccMsg").dataset.k="";status()})
+    lastOk=Date.now();if(sel&&data[sel])refreshRoute(sel);document.getElementById("ccMsg").dataset.k="";drawGhosts()})
   .catch(function(){document.getElementById("ccMsg").dataset.k="err";status()}).finally(function(){busy=false})}
 map.on("click",deselect);map.on("zoomend",function(){if(sel&&routes[sel])drawRoute(sel)});
 load();setInterval(load,30000);

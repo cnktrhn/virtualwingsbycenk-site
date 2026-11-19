@@ -172,3 +172,56 @@ test("uçulan iz: aynı uçuşta birikir, /route'ta döner, /live'da görünmez,
   await cc.position(post("/api/cc/position", pos({ ts: T + 90, flight: "VWG999", lat: 41, lon: 29 })), s, NOW + 90000);
   assert.equal((await cc.route(get("/api/cc/route?id=K7Q2M9XA"), s, NOW + 90000)).status, 404);
 });
+
+// ---------- Son uçuşlar ----------
+const fl = (o = {}) => ({ v: 1, pilotId: "AB3K9XQZ", secret: SECRET, name: "Cenk", rank: "captain",
+  flight: "VWG123", airline: "Virtual Wings", aircraft: "A321", reg: "TC-VWG", dep: "LTFM", arr: "LTAI",
+  depLat: 41.262, depLon: 28.742, arrLat: 36.899, arrLon: 30.8, blockMin: 95, airMin: 71, distNm: 362,
+  fpm: 142, score: 91, grade: "A", ts: 1763560000, ...o });
+
+test("flight: kayıt, sunucu saati, secret dönmez, auth /position ile ortak", async () => {
+  const s = memStore(), f = memStore();
+  await cc.position(post("/api/cc/position", pos({ pilotId: "AB3K9XQZ" })), s, NOW);
+  const r = await cc.flight(post("/api/cc/flight", fl()), s, f, NOW);
+  assert.equal(r.status, 200); assert.deepEqual(await r.json(), { ok: true });
+  assert.ok(![...f.m.values()].some((v) => v.includes(SECRET)));
+  const g = await cc.recent(get("/api/cc/recent?n=10"), f, NOW);
+  assert.equal(g.headers.get("cache-control"), "public, max-age=60");
+  const [x] = await g.json();
+  assert.equal(x.ts, T); assert.equal(x.pilotId, "AB3K9XQZ"); assert.equal(x.fpm, 142);
+  assert.equal(x.secret, undefined); assert.equal(x.score, undefined);
+  assert.equal((await cc.flight(post("/api/cc/flight", fl({ secret: "f".repeat(32) })), s, f, NOW + 700000)).status, 403);
+});
+
+test("flight: 10 dakikada 1 kayıt (429)", async () => {
+  const s = memStore(), f = memStore();
+  assert.equal((await cc.flight(post("/api/cc/flight", fl()), s, f, NOW)).status, 200);
+  assert.equal((await cc.flight(post("/api/cc/flight", fl()), s, f, NOW + 300000)).status, 429);
+  assert.equal((await cc.flight(post("/api/cc/flight", fl()), s, f, NOW + 601000)).status, 200);
+});
+
+test("flight: mantık kontrolü 400, kırpma, fpm null", async () => {
+  const s = memStore(), f = memStore();
+  for (const o of [{ blockMin: 4 }, { blockMin: 1201 }, { distNm: 9001 }, { score: 101 }, { fpm: 3001 }, { score: "91" }, { v: 2 }, { secret: "x" }]) {
+    assert.equal((await cc.flight(post("/api/cc/flight", fl(o)), s, f, NOW)).status, 400, JSON.stringify(o));
+  }
+  assert.equal((await cc.flight(post("/api/cc/flight", JSON.stringify(fl({ name: "x".repeat(5000) }))), s, f, NOW)).status, 400, "4 KB sınırı");
+  assert.equal(f.m.size, 0);
+  const r = await cc.flight(post("/api/cc/flight", fl({ fpm: null, name: "N".repeat(60), flight: "VWG1234567890", dep: "ltfm-x", arr: "", reg: "" })), s, f, NOW);
+  assert.equal(r.status, 200);
+  const [x] = await (await cc.recent(get("/api/cc/recent"), f, NOW)).json();
+  assert.equal(x.fpm, null); assert.equal(x.name.length, 40); assert.equal(x.flight, "VWG123456789"); assert.equal(x.dep, "LTFM"); assert.equal(x.arr, "");
+});
+
+test("recent: en yeni 50 saklanır, n en fazla 20, 30 günden eskiler çıkar", async () => {
+  const s = memStore(), f = memStore();
+  for (let i = 0; i < 55; i++) {
+    const id = "P" + String(i).padStart(7, "0");
+    await cc.flight(post("/api/cc/flight", fl({ pilotId: id, flight: "F" + i })), s, f, NOW + i * 1000);
+  }
+  assert.equal(JSON.parse(f.m.get("recent")).length, 50);
+  const a = await (await cc.recent(get("/api/cc/recent?n=99"), f, NOW + 60000)).json();
+  assert.equal(a.length, 20); assert.equal(a[0].flight, "F54");
+  const old = await (await cc.recent(get("/api/cc/recent"), f, NOW + 31 * 86400000)).json();
+  assert.equal(old.length, 0);
+});

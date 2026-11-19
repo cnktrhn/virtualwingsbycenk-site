@@ -562,3 +562,36 @@ footer .wrap{flex-wrap:wrap;gap:.5rem 1.5rem}
 .dc-box.dc-wide p{margin-bottom:0}
 @media (min-width:1381px) and (max-width:1600px){nav.menu{gap:.8rem}nav.menu a{font-size:.92rem}}
 [data-sale][hidden],[data-nosale][hidden]{display:none!important}
+/* Son uçuşlar / Latest flights */
+.rf-box{margin-top:1rem;padding:.85rem 1rem .6rem;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.rf-box[hidden],.rf-side[hidden]{display:none}
+.rf-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:.25rem 1rem;margin-bottom:.35rem}
+.rf-head b{font-family:var(--display);font-size:1.25rem;color:var(--text)}
+.rf-head a{color:var(--gold);font-weight:600;text-decoration:none;font-size:.92rem;white-space:nowrap}
+.rf-head a:hover{text-decoration:underline}
+.rf-list{list-style:none;margin:0;padding:0}
+.rf-list li+li{border-top:1px solid var(--line)}
+.rf-row{display:flex;flex-direction:column;gap:.15rem;padding:.5rem .45rem;border-radius:8px;text-decoration:none;color:var(--text);cursor:pointer;outline:none}
+.rf-row:hover,.rf-row:focus-visible{background:rgba(255,255,255,.05)}
+.rf-row:focus-visible{box-shadow:0 0 0 2px var(--gold)}
+.rf-row.on{background:rgba(245,197,24,.1);box-shadow:inset 3px 0 0 var(--gold)}
+.rf-row.rf-nogeo{cursor:default}
+.rf-top{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem;font-family:var(--display);font-size:1.08rem;line-height:1.2}
+.rf-rt{color:var(--silver);font-weight:600;letter-spacing:.03em}
+.rf-grade{margin-left:auto;min-width:1.6rem;text-align:center;padding:0 .4rem;border-radius:4px;background:var(--gold);color:var(--night);font-weight:700;font-size:.85rem;line-height:1.5}
+.rf-sub{display:flex;flex-wrap:wrap;align-items:center;gap:.15rem .4rem;font-size:.85rem;color:var(--text-soft)}
+.rf-dot{opacity:.45}
+.rf-fpm{padding:0 .45rem;border-radius:999px;border:1px solid var(--line);color:var(--silver);font-weight:600;white-space:nowrap}
+.rf-fpm i{font-style:normal}
+.rf-fpm.is-butter{border-color:#2EE6B8;color:#2EE6B8;background:rgba(46,230,184,.1)}
+.rf-fpm.is-hard{border-color:#ff5d5d;color:#ff5d5d;background:rgba(255,93,93,.1)}
+.rf-who{color:var(--silver)}
+a.rf-who{color:var(--gold)!important;text-decoration:none}
+a.rf-who:hover{text-decoration:underline}
+.cc-mapgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem}
+.cc-mapgrid.has-side{grid-template-columns:minmax(0,1fr) 340px}
+.rf-side{display:flex;flex-direction:column;min-height:0;max-height:min(70vh,640px);border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:.8rem .7rem .6rem}
+.rf-side .rf-head{padding:0 .3rem}
+.rf-side .rf-list{overflow:auto;flex:1;min-height:0}
+.rf-hint{margin:.5rem .3rem 0;font-size:.8rem;color:var(--text-soft)}
+@media (max-width:1000px){.cc-mapgrid.has-side{grid-template-columns:minmax(0,1fr)}.rf-side{max-height:none}}
