@@ -219,17 +219,19 @@ function drawGhosts(){if(ghost){map.removeLayer(ghost);ghost=null}ghostN=0;
   status()}
 function markRows(){side.querySelectorAll(".rf-row").forEach(function(r){var on=r.dataset.k===gsel;r.classList.toggle("on",on);r.setAttribute("aria-pressed",on)})}
 function renderRecent(){var ol=side.querySelector(".rf-list");ol.textContent="";
+  side.querySelector(".rf-hint").hidden=!recent.length;
   recent.slice(0,10).forEach(function(f){var li=el("li"),r=ccRecent.row(f,rmeta,{tag:"div",pilotLink:true});r.dataset.k=fkey(f);
     if(geo(f)){r.tabIndex=0;r.setAttribute("role","button");
       var go=function(){var k=fkey(f);if(sel){sel=null;clearRoute();renderPanel()}gsel=gsel===k?null:k;markRows();drawGhosts();if(gsel&&window.innerWidth<=1000)document.getElementById("ccmap").scrollIntoView({behavior:"smooth",block:"center"})};
       r.addEventListener("click",go);r.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}})}
     else r.classList.add("rf-nogeo");
     li.appendChild(r);ol.appendChild(li)});
-  var show=recent.length>0;if(side.hidden===show){side.hidden=!show;grid.classList.toggle("has-side",show);map.invalidateSize()}markRows()}
+  if(!recent.length){var e=el("li","rf-empty");e.appendChild(el("span",null,lang()==="en"?"No completed flights yet. Each CrossCheck flight appears here once it lands.":"Henüz tamamlanan uçuş yok. CrossCheck ile yapılan her uçuş indiğinde burada görünecek."));ol.appendChild(e)}
+  var show=true;if(side.hidden===show){side.hidden=!show;grid.classList.toggle("has-side",show);map.invalidateSize()}markRows()}
 function loadRecent(){if(!window.ccRecent||document.hidden)return;Promise.all([ccRecent.get(10),ccRecent.ranks()]).then(function(v){recent=v[0];rmeta=v[1];
   if(gsel&&!recent.some(function(f){return fkey(f)===gsel}))gsel=null;renderRecent();drawGhosts()}).catch(function(){})}
 loadRecent();setInterval(loadRecent,120000);
-document.addEventListener("cc-lang",function(){if(recent.length)renderRecent()});
+document.addEventListener("cc-lang",function(){if(!side.hidden)renderRecent()});
 function fitSel(){if(!sel)return;var rt=routes[sel],p=data[sel],b=[];if(rt&&rt.pts)b=rt.pts.slice();if(p)b.push([p.lat,p.lon]);if(b.length<2)return;
   var mob=map.getSize().x<640,ph=panel.hidden?0:panel.offsetHeight,pw=panel.hidden?0:panel.offsetWidth;
   map.fitBounds(b,mob?{paddingTopLeft:[30,30],paddingBottomRight:[30,ph+30],maxZoom:9}:{paddingTopLeft:[40,40],paddingBottomRight:[pw+40,40],maxZoom:9})}

@@ -595,3 +595,4 @@ a.rf-who:hover{text-decoration:underline}
 .rf-side .rf-list{overflow:auto;flex:1;min-height:0}
 .rf-hint{margin:.5rem .3rem 0;font-size:.8rem;color:var(--text-soft)}
 @media (max-width:1000px){.cc-mapgrid.has-side{grid-template-columns:minmax(0,1fr)}.rf-side{max-height:none}}
+.rf-empty{padding:.8rem .45rem;color:var(--text-soft);font-size:.92rem;line-height:1.5}.rf-hint[hidden]{display:none}
