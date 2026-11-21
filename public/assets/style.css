@@ -596,3 +596,24 @@ a.rf-who:hover{text-decoration:underline}
 .rf-hint{margin:.5rem .3rem 0;font-size:.8rem;color:var(--text-soft)}
 @media (max-width:1000px){.cc-mapgrid.has-side{grid-template-columns:minmax(0,1fr)}.rf-side{max-height:none}}
 .rf-empty{padding:.8rem .45rem;color:var(--text-soft);font-size:.92rem;line-height:1.5}.rf-hint[hidden]{display:none}
+/* Ürünlerim / My products */
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(440px,100%),1fr));gap:1.25rem}
+.prod{display:flex;gap:1.25rem;padding:1.1rem;border:1px solid var(--line);border-radius:14px;background:var(--panel);transition:border-color .2s,transform .2s}
+.prod:hover{border-color:var(--gold);transform:translateY(-2px)}
+.prod-img{flex:0 0 140px;display:block;border-radius:10px;overflow:hidden;background:#071629;aspect-ratio:200/282}
+.prod-img img{display:block;width:100%;height:100%;object-fit:cover}
+.prod-mark{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;height:100%;padding:.75rem;text-align:center;background:radial-gradient(circle at 50% 30%,rgba(245,197,24,.18),transparent 65%),linear-gradient(160deg,#0B2340,#06101e)}
+.prod-mark img{width:64px;height:auto;object-fit:contain}
+.prod-mark b{font-family:var(--display);font-size:1.25rem;letter-spacing:.06em;color:var(--text)}
+.prod-mark small{font-size:.7rem;letter-spacing:.14em;color:var(--gold);font-weight:700}
+.prod-body{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;min-width:0}
+.prod-body h3{margin:0;font-family:var(--display);font-size:1.6rem;line-height:1.1}
+.prod.is-new .prod-body h3::after{content:"NEW";margin-left:.5rem;padding:.05rem .4rem;border-radius:4px;background:var(--gold);color:var(--night);font-size:.7rem;letter-spacing:.1em;vertical-align:middle}
+html[lang="tr"] .prod.is-new .prod-body h3::after{content:"YENİ"}
+.prod-sub{margin:0;color:var(--silver)}
+.prod-price{margin:.1rem 0 .6rem;color:var(--text-soft);font-size:.95rem}
+.prod-price b{font-family:var(--display);font-size:1.3rem;color:var(--gold)}
+.prod-body .btn{margin-top:auto}
+@media (max-width:480px){.prod{flex-direction:column}.prod-img{flex-basis:auto;width:150px}}
+@media (min-width:1381px){header.top .wrap{width:min(1360px,100% - 2.5rem)}}
+.prod-img,.prod-img:hover{text-decoration:none}.prod-mark b{white-space:nowrap;text-decoration:none}.prod-mark small{white-space:nowrap}

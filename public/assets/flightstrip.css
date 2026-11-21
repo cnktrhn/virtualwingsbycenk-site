@@ -1,0 +1,16 @@
+/* Flight Strip ürün sayfası (crosscheck.css üstüne) */
+.fs-hero h1 small{display:block;font-size:.38em;letter-spacing:.06em;color:var(--silver);font-weight:600;margin-top:.2rem}
+.fs-price{margin:.4rem 0 1.1rem;color:var(--silver);font-size:1.05rem}
+.fs-price b{font-family:var(--display);font-size:1.6rem;color:var(--gold);margin-right:.15rem}
+.fs-shot{margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#071629}
+.fs-shot a{display:block}
+.fs-shot img{display:block;width:100%;height:auto}
+.fs-shot figcaption{padding:.6rem .9rem;color:var(--text-soft);font-size:.9rem;border-top:1px solid var(--line)}
+.fs-shot-hero{margin-top:1.75rem;box-shadow:0 20px 60px rgba(0,0,0,.45),0 0 0 1px rgba(46,230,184,.15)}
+.fs-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr));gap:1rem}
+.fs-cc{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem;padding:1.4rem 1.6rem;border:1px solid rgba(245,197,24,.55);border-radius:12px;background:linear-gradient(135deg,rgba(245,197,24,.14),rgba(245,197,24,.03))}
+.fs-cc > div{flex:1 1 22rem}
+.fs-cc b{display:block;font-family:var(--display);font-size:1.35rem;color:var(--text)}
+.fs-cc p{margin:.3rem 0 0;color:var(--silver)}
+.fs .cc-feat code{font-size:.9em;background:rgba(201,211,224,.08);border:1px solid var(--line);border-radius:4px;padding:0 .3rem;color:var(--text)}
+.btn[data-demo][hidden]{display:none}
