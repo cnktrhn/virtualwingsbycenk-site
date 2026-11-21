@@ -617,3 +617,31 @@ html[lang="tr"] .prod.is-new .prod-body h3::after{content:"YENİ"}
 @media (max-width:480px){.prod{flex-direction:column}.prod-img{flex-basis:auto;width:150px}}
 @media (min-width:1381px){header.top .wrap{width:min(1360px,100% - 2.5rem)}}
 .prod-img,.prod-img:hover{text-decoration:none}.prod-mark b{white-space:nowrap;text-decoration:none}.prod-mark small{white-space:nowrap}
+/* Son uçuşlar: açılır uçuş özeti */
+.rf-row[role=button]{cursor:pointer}
+.rf-row.open{background:rgba(245,197,24,.08);box-shadow:inset 3px 0 0 var(--gold);border-radius:8px 8px 0 0}
+.rf-sum{margin:0 0 .5rem;padding:.85rem .9rem 1rem;border-radius:0 0 10px 10px;background:rgba(7,22,41,.85);border:1px solid var(--line);border-top:0;box-shadow:inset 3px 0 0 var(--gold);display:flex;flex-direction:column;gap:.85rem;cursor:default}
+.rs-head{display:flex;flex-wrap:wrap;gap:.75rem 1.75rem;align-items:flex-end}
+.rs-lab{display:block;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-soft);font-weight:600}
+.rs-score b{font-family:var(--display);font-size:2.4rem;line-height:1;color:var(--gold);font-weight:800}
+.rs-score .rs-sep{font-style:normal;color:var(--text-soft);font-weight:600}
+.rs-score em{font-style:normal;color:var(--text)}
+.rs-land b{display:inline-block;font-family:var(--display);font-size:1.35rem;line-height:1.1;color:var(--text);margin-right:.45rem}
+.rs-tag{display:inline-block;font-style:normal;font-family:var(--display);font-weight:700;font-size:.8rem;letter-spacing:.1em;padding:.08rem .5rem;border-radius:999px;vertical-align:.15em;border:1px solid currentColor}
+.rs-tag.is-butter{color:#2EE6B8;background:rgba(46,230,184,.12)}
+.rs-tag.is-smooth{color:#5BC0FF;background:rgba(91,192,255,.12)}
+.rs-tag.is-firm{color:var(--gold);background:rgba(245,197,24,.12)}
+.rs-tag.is-hard{color:#ff9f43;background:rgba(255,159,67,.12)}
+.rs-tag.is-vhard{color:#ff5d5d;background:rgba(255,93,93,.12)}
+.rs-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.5rem,1fr));gap:.5rem}
+.rs-stat{padding:.45rem .6rem;border:1px solid var(--line);border-radius:8px}
+.rs-stat span{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-soft)}
+.rs-stat b{font-family:var(--display);font-size:1.15rem;color:var(--text)}
+.rs-bars{display:flex;flex-direction:column;gap:.55rem}
+.rs-bar-top{display:flex;justify-content:space-between;gap:1rem;font-size:.88rem;color:var(--silver)}
+.rs-bar-top b{font-family:var(--display);color:var(--text)}
+.rs-track{height:7px;border-radius:999px;background:rgba(201,211,224,.12);overflow:hidden;margin-top:.2rem}
+.rs-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#2EE6B8,var(--gold))}
+.rs-pilot{align-self:flex-start;color:var(--gold)!important;font-weight:600;text-decoration:none;font-size:.92rem}
+.rs-pilot:hover{text-decoration:underline}
+.rf-side .rs-score b{font-size:2rem}

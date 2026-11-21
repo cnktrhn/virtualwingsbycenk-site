@@ -218,15 +218,16 @@ function drawGhosts(){if(ghost){map.removeLayer(ghost);ghost=null}ghostN=0;
   if(one&&b.length)map.fitBounds(b,{padding:[50,50],maxZoom:8});
   else if(noLive&&!fitted&&b.length){fitted=true;map.fitBounds(b,{padding:[40,40],maxZoom:7})}
   status()}
-function markRows(){side.querySelectorAll(".rf-row").forEach(function(r){var on=r.dataset.k===gsel;r.classList.toggle("on",on);r.setAttribute("aria-pressed",on)})}
+function markRows(){side.querySelectorAll(".rf-row").forEach(function(r){var on=r.dataset.k===gsel;r.classList.toggle("on",on);
+  if(!on&&r.getAttribute("aria-expanded")==="true"){r.setAttribute("aria-expanded","false");r.classList.remove("open");var x=r.parentNode.querySelector(".rf-sum");if(x)x.remove()}})}
 function renderRecent(){var ol=side.querySelector(".rf-list");ol.textContent="";
   side.querySelector(".rf-hint").hidden=!recent.length;
   recent.slice(0,10).forEach(function(f){var li=el("li"),r=ccRecent.row(f,rmeta,{tag:"div",pilotLink:true});r.dataset.k=fkey(f);
-    if(geo(f)){r.tabIndex=0;r.setAttribute("role","button");
-      var go=function(){var k=fkey(f);if(sel){sel=null;clearRoute();renderPanel()}gsel=gsel===k?null:k;markRows();drawGhosts();if(gsel&&window.innerWidth<=1000)document.getElementById("ccmap").scrollIntoView({behavior:"smooth",block:"center"})};
-      r.addEventListener("click",go);r.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}})}
-    else r.classList.add("rf-nogeo");
-    li.appendChild(r);ol.appendChild(li)});
+    if(!geo(f))r.classList.add("rf-nogeo");
+    li.appendChild(r);ol.appendChild(li);
+    // Tıklayınca özet açılır/kapanır; kalkış–varış çizgisi haritada gösterilir (eski davranış)
+    ccRecent.toggleRow(r,f,function(open){var k=fkey(f);if(sel){sel=null;clearRoute();renderPanel()}gsel=open?k:null;markRows();drawGhosts()});
+    if(fkey(f)===gsel){li.appendChild(ccRecent.summary(f));r.setAttribute("aria-expanded","true");r.classList.add("open")}});
   if(!recent.length){var e=el("li","rf-empty");e.appendChild(el("span",null,lang()==="en"?"No completed flights yet. Each CrossCheck flight appears here once it lands.":"Henüz tamamlanan uçuş yok. CrossCheck ile yapılan her uçuş indiğinde burada görünecek."));ol.appendChild(e)}
   var show=true;if(side.hidden===show){side.hidden=!show;grid.classList.toggle("has-side",show);map.invalidateSize()}markRows()}
 function loadRecent(){if(!window.ccRecent||document.hidden)return;Promise.all([ccRecent.get(10),ccRecent.ranks()]).then(function(v){recent=v[0];rmeta=v[1];

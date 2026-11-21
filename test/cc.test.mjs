@@ -189,7 +189,7 @@ test("flight: kayıt, sunucu saati, secret dönmez, auth /position ile ortak", a
   assert.equal(g.headers.get("cache-control"), "public, max-age=60");
   const [x] = await g.json();
   assert.equal(x.ts, T); assert.equal(x.pilotId, "AB3K9XQZ"); assert.equal(x.fpm, 142);
-  assert.equal(x.secret, undefined); assert.equal(x.score, undefined);
+  assert.equal(x.secret, undefined); assert.equal(x.score, 91);
   assert.equal((await cc.flight(post("/api/cc/flight", fl({ secret: "f".repeat(32) })), s, f, NOW + 700000)).status, 403);
 });
 
@@ -228,7 +228,7 @@ test("recent: en yeni 50 saklanır, n en fazla 20, 30 günden eskiler çıkar", 
 
 // ---------- Mevcut sürüm: son uçuşlar canlı harita verisinden ----------
 const ID2 = "Z9Y8X7W6";
-async function fly(s, f, phases, { t0 = NOW, step = 60000, flight = "VWG777", dep = "LTFM", arr = "LTAI" } = {}) {
+async function fly(s, f, phases, { t0 = NOW, step = 180000, flight = "VWG777", dep = "LTFM", arr = "LTAI" } = {}) {
   let t = t0;
   for (let i = 0; i < phases.length; i++) {
     const r = await cc.position(post("/api/cc/position", pos({ pilotId: ID2, flight, dep, arr, phase: phases[i], ts: Math.floor(t / 1000),
@@ -246,7 +246,7 @@ test("auto: kalkıp inen uçuş /end ile son uçuşlara yazılır", async () => 
   assert.equal((await cc.end(post("/api/cc/end", { pilotId: ID2, secret: SECRET }), s, f, t)).status, 200);
   const [x, y] = await (await cc.recent(get("/api/cc/recent"), f, t)).json();
   assert.equal(y, undefined);
-  assert.equal(x.flight, "VWG777"); assert.equal(x.dep, "LTFM"); assert.equal(x.blockMin, 9);
+  assert.equal(x.flight, "VWG777"); assert.equal(x.dep, "LTFM"); assert.equal(x.blockMin, 27); assert.equal(x.airMin, 15);
   assert.equal(x.fpm, null); assert.equal(x.grade, ""); assert.ok(x.distNm > 100); assert.equal(typeof x.depLat, "number");
   assert.ok(!f.m.get("recent").includes(SECRET));
 });
@@ -288,4 +288,31 @@ test("auto: program özeti (/flight) gelirse otomatik kaydın yerine geçer", as
   await cc.flight(post("/api/cc/flight", fl({ pilotId: ID2, flight: "VWG777" })), s, f, t + 5000);
   const list = JSON.parse(f.m.get("recent"));
   assert.equal(list.length, 1); assert.equal(list[0].fpm, 142);
+});
+
+// ---------- Uçuş özeti alanları (Winter Update) ----------
+test("flight: g/service/pas/cats doğrulanır, saklanır ve /recent'te döner", async () => {
+  const s = memStore(), f = memStore();
+  const r = await cc.flight(post("/api/cc/flight", fl({ g: 1.183, service: 100, pas: 14, cats: { sop: 92, cabin: 88, air: 95, comfort: 80.4, junk: 5 } })), s, f, NOW);
+  assert.equal(r.status, 200);
+  const [x] = await (await cc.recent(get("/api/cc/recent"), f, NOW)).json();
+  assert.equal(x.g, 1.18); assert.equal(x.service, 100); assert.equal(x.pas, 14); assert.equal(x.score, 91); assert.equal(x.airMin, 71);
+  assert.deepEqual(x.cats, { sop: 92, cabin: 88, air: 95, comfort: 80 });
+});
+test("flight: eski kayıt (yeni alan yok) null döner; aralık dışı 400", async () => {
+  const s = memStore(), f = memStore();
+  for (const o of [{ g: 0.4 }, { g: 4.1 }, { service: 101 }, { pas: 501 }, { pas: -1 }, { cats: { sop: 120 } }, { cats: [1] }, { g: "1.2" }]) {
+    assert.equal((await cc.flight(post("/api/cc/flight", fl(o)), s, f, NOW)).status, 400, JSON.stringify(o));
+  }
+  assert.equal((await cc.flight(post("/api/cc/flight", fl({ cats: { sop: 90 } })), s, f, NOW)).status, 200);
+  const [x] = await (await cc.recent(get("/api/cc/recent"), f, NOW)).json();
+  assert.equal(x.g, null); assert.equal(x.service, null); assert.equal(x.pas, null); assert.deepEqual(x.cats, { sop: 90 });
+});
+test("flight: havada 15 dakikadan kısa uçuş kabul edilmez, eski kısa kayıtlar gizlenir", async () => {
+  const s = memStore(), f = memStore();
+  const r = await cc.flight(post("/api/cc/flight", fl({ airMin: 14 })), s, f, NOW);
+  assert.equal(r.status, 400); assert.equal((await r.json()).field, "airMin");
+  f.m.set("recent", JSON.stringify([{ ...fl({ airMin: 9 }), ts: T, secret: undefined }, { ...fl({ flight: "OK1" }), ts: T - 10 }]));
+  const list = await (await cc.recent(get("/api/cc/recent"), f, NOW)).json();
+  assert.equal(list.length, 1); assert.equal(list[0].flight, "OK1");
 });

@@ -168,6 +168,8 @@ async function finalizeFlight(fstore, r) {
   if (!fstore || !r || !r._air || !r._land || r._rec || typeof r._t0 !== "number") return false;
   const blockMin = Math.round((r.ts - r._t0) / 60);
   if (blockMin < 5 || blockMin > 1200) return false;
+  const airMin = r._tOff && r._tOn > r._tOff ? Math.round((r._tOn - r._tOff) / 60) : null;
+  if (typeof airMin === "number" && airMin < MIN_AIR) return false;
   const line = Array.isArray(r.pts) && r.pts.length >= 2 ? r.pts : Array.isArray(r.track) && r.track.length >= 2 ? r.track : null;
   const a = line ? line[0] : null, b = line ? line[line.length - 1] : null;
   const end = Math.floor((typeof r._rx === "number" ? r._rx : r.ts * 1000) / 1000);
@@ -176,7 +178,7 @@ async function finalizeFlight(fstore, r) {
     flight: cut(r.flight, 12), airline: "", aircraft: cut(r.aircraft, 8), reg: "",
     dep: icao(r.dep), arr: icao(r.arr),
     depLat: a ? a[0] : null, depLon: a ? a[1] : null, arrLat: b ? b[0] : null, arrLon: b ? b[1] : null,
-    blockMin, airMin: r._tOff && r._tOn > r._tOff ? Math.round((r._tOn - r._tOff) / 60) : null,
+    blockMin, airMin,
     distNm: a && b ? Math.round(nmBetween(a, b)) : null, fpm: null, score: null, grade: "",
     ts: end, src: "auto", t0: r._t0,
   };
@@ -313,7 +315,12 @@ const RECENT_KEEP = 50;
 const RECENT_MAX_AGE = 30 * 86400;     // sn: 30 günden eski uçuşlar listelenmez
 const AIR_PHASES = ["climb", "cruise", "descent", "approach"];
 const PUBLIC_FLIGHT = ["pilotId", "name", "rank", "flight", "airline", "aircraft", "reg", "dep", "arr",
-  "depLat", "depLon", "arrLat", "arrLon", "blockMin", "distNm", "fpm", "grade", "ts"];
+  "depLat", "depLon", "arrLat", "arrLon", "blockMin", "airMin", "distNm", "fpm", "score", "grade",
+  "g", "service", "pas", "cats", "ts"];
+const MIN_AIR = 15;                    // dk: havada 15 dakikadan kısa uçuşlar listeye girmez
+const CAT_KEYS = ["sop", "cabin", "air", "comfort"];
+// İsteğe bağlı sayı: yok/null → null, aralık dışı → undefined (400)
+const opt = (v, lo, hi, int) => (v === null || v === undefined ? null : num(int && typeof v === "number" ? Math.round(v) : v, lo, hi, { int }));
 
 // Metin alanları: boş olabilir, uzunsa kırpılır (reddedilmez).
 const cut = (v, max) => (typeof v === "string" || typeof v === "number" ? clean(String(v)).slice(0, max) : "");
@@ -336,6 +343,21 @@ export async function flight(req, store, fstore, now = Date.now()) {
     if (fpm === undefined) return bad("bad_request", "fpm");
   }
   const air = num(o.airMin, 0, 1200);
+  if (typeof air === "number" && air < MIN_AIR) return bad("bad_request", "airMin");
+  // Winter Update alanları (eski sürümde yok → null)
+  const g = opt(o.g, 0.5, 4), service = opt(o.service, 0, 100, true), pas = opt(o.pas, 0, 500, true);
+  for (const [f, v] of [["g", g], ["service", service], ["pas", pas]]) if (v === undefined) return bad("bad_request", f);
+  let cats = null;
+  if (o.cats !== null && o.cats !== undefined) {
+    if (typeof o.cats !== "object" || Array.isArray(o.cats)) return bad("bad_request", "cats");
+    cats = {};
+    for (const key of CAT_KEYS) {
+      const v = opt(o.cats[key], 0, 100, true);
+      if (v === undefined) return bad("bad_request", "cats." + key);
+      if (v !== null) cats[key] = v;
+    }
+    if (!Object.keys(cats).length) cats = null;
+  }
   const rec = {
     pilotId: c.pilotId,
     name: cut(o.name, 40), rank: cut(o.rank, 32),
@@ -345,6 +367,7 @@ export async function flight(req, store, fstore, now = Date.now()) {
     blockMin: Math.round(nums.blockMin), airMin: air === undefined ? null : Math.round(air),
     distNm: Math.round(nums.distNm), fpm: fpm === null ? null : Math.round(fpm),
     score: Math.round(nums.score), grade: cut(o.grade, 3),
+    g: g === null ? null : Math.round(g * 100) / 100, service, pas, cats,
     ts: Math.floor(now / 1000),        // programın ts'i yerine sunucu saati
   };
   if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
@@ -366,7 +389,8 @@ export async function recent(req, fstore, now = Date.now()) {
   const n = Number.isInteger(q) && q > 0 ? Math.min(q, 20) : 10;
   const cutoff = Math.floor(now / 1000) - RECENT_MAX_AGE;
   const list = await fstore.get("recent", { type: "json" }).catch(() => null);
-  const out = (Array.isArray(list) ? list : []).filter((f) => f && f.ts >= cutoff).sort((a, b) => b.ts - a.ts).slice(0, n)
+  const out = (Array.isArray(list) ? list : [])
+    .filter((f) => f && f.ts >= cutoff && !(typeof f.airMin === "number" && f.airMin < MIN_AIR)).sort((a, b) => b.ts - a.ts).slice(0, n)
     .map((f) => Object.fromEntries(PUBLIC_FLIGHT.map((k) => [k, f[k] ?? null])));
   return json(200, out, {
     "Cache-Control": "public, max-age=60",

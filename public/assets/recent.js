@@ -88,7 +88,77 @@
     return fetch("/api/cc/recent?n=" + n).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(fresh);
   }
 
-  window.ccRecent = { get: get, row: row, ranks: loadRanks, lang: lang, fresh: fresh };
+  // ---------- Uçuş özeti (satıra tıklayınca açılır). Ceza ayrıntısı yok; eski kayıtlarda olmayan satırlar gizli. ----------
+  var S = {
+    tr: { land: "İniş", block: "Blok", air: "Havada", dist: "Mesafe", svc: "Kabin servisi", done: "tamamlandı", pa: "anons", paL: "Anons",
+      cats: { sop: "Prosedür (SOP)", cabin: "Kabin", air: "Pilotaj", comfort: "Konfor" }, score: "Uçuş puanı", pilot: "Pilot sayfası →" },
+    en: { land: "Landing", block: "Block", air: "Airborne", dist: "Distance", svc: "Cabin service", done: "complete", pa: "announcements", paL: "PA", pa1: "announcement",
+      cats: { sop: "Procedures (SOP)", cabin: "Cabin", air: "Airmanship", comfort: "Comfort" }, score: "Flight score", pilot: "Pilot page →" }
+  };
+  function landLabel(fpm) {
+    return fpm < 100 ? ["BUTTER", "butter"] : fpm < 250 ? ["SMOOTH", "smooth"] : fpm < 400 ? ["FIRM", "firm"] : fpm < 600 ? ["HARD", "hard"] : ["VERY HARD", "vhard"];
+  }
+  function pct(v, l) { return l === "tr" ? "%" + v : v + "%"; }
+  function bar(label, v, l, suffix) {
+    var w = el("div", "rs-bar"), top = el("div", "rs-bar-top");
+    top.appendChild(el("span", null, label)); top.appendChild(el("b", null, pct(v, l) + (suffix ? " " + suffix : "")));
+    var t = el("div", "rs-track"), fill = el("i"); fill.style.width = Math.max(0, Math.min(100, v)) + "%";
+    t.appendChild(fill); w.appendChild(top); w.appendChild(t); return w;
+  }
+  function stat(label, value) { var d = el("div", "rs-stat"); d.appendChild(el("span", null, label)); d.appendChild(el("b", null, value)); return d; }
+  function summary(f) {
+    var l = lang(), t = S[l], box = el("div", "rf-sum");
+    var head = el("div", "rs-head");
+    if (typeof f.score === "number" || f.grade) {
+      var sc = el("div", "rs-score");
+      sc.appendChild(el("span", "rs-lab", t.score));
+      var big = el("b", null, typeof f.score === "number" ? pct(f.score, l) : "");
+      if (f.grade) { if (typeof f.score === "number") big.appendChild(el("i", "rs-sep", " · ")); big.appendChild(el("em", "rs-grade", f.grade)); }
+      sc.appendChild(big); head.appendChild(sc);
+    }
+    if (typeof f.fpm === "number") {
+      var ld = el("div", "rs-land"), lab = landLabel(f.fpm);
+      ld.appendChild(el("span", "rs-lab", t.land));
+      ld.appendChild(el("b", null, "-" + f.fpm + " fpm" + (typeof f.g === "number" ? " · " + f.g.toFixed(2) + " G" : "")));
+      ld.appendChild(el("em", "rs-tag is-" + lab[1], lab[0]));
+      head.appendChild(ld);
+    }
+    if (head.childNodes.length) box.appendChild(head);
+    var st = el("div", "rs-stats");
+    if (typeof f.blockMin === "number") st.appendChild(stat(t.block, block(f.blockMin)));
+    if (typeof f.airMin === "number") st.appendChild(stat(t.air, block(f.airMin)));
+    if (typeof f.distNm === "number") st.appendChild(stat(t.dist, f.distNm + " nm"));
+    if (typeof f.pas === "number") st.appendChild(stat(t.paL, f.pas + " " + (f.pas === 1 && t.pa1 ? t.pa1 : t.pa)));
+    if (st.childNodes.length) box.appendChild(st);
+    var bars = el("div", "rs-bars");
+    if (typeof f.service === "number") bars.appendChild(bar(t.svc, f.service, l, t.done));
+    var c = f.cats && typeof f.cats === "object" ? f.cats : {};
+    ["sop", "cabin", "air", "comfort"].forEach(function (k) { if (typeof c[k] === "number") bars.appendChild(bar(t.cats[k], c[k], l)); });
+    if (bars.childNodes.length) box.appendChild(bars);
+    if (f.pilotId) {
+      var a = el("a", "rs-pilot", t.pilot); a.href = "/crosscheck/pilot/?id=" + encodeURIComponent(f.pilotId);
+      a.addEventListener("click", function (e) { e.stopPropagation(); }); box.appendChild(a);
+    }
+    box.addEventListener("click", function (e) { e.stopPropagation(); });
+    return box;
+  }
+  // Satırı aç/kapa düğmesine çevirir; onToggle(açık mı) harita gibi ek davranışlar için
+  function toggleRow(r, f, onToggle) {
+    r.tabIndex = 0; r.setAttribute("role", "button"); r.setAttribute("aria-expanded", "false");
+    function go() {
+      var li = r.parentNode, open = r.getAttribute("aria-expanded") !== "true";
+      var list = li && li.parentNode;
+      if (list) list.querySelectorAll(".rf-row[aria-expanded=true]").forEach(function (o) { if (o !== r) close(o); });
+      if (open) { li.appendChild(summary(f)); r.setAttribute("aria-expanded", "true"); r.classList.add("open"); }
+      else close(r);
+      if (onToggle) onToggle(open);
+    }
+    function close(o) { o.setAttribute("aria-expanded", "false"); o.classList.remove("open"); var s = o.parentNode && o.parentNode.querySelector(".rf-sum"); if (s) s.remove(); }
+    r.addEventListener("click", go);
+    r.addEventListener("keydown", function (e) { if (e.target === r && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); go(); } });
+  }
+
+  window.ccRecent = { get: get, row: row, ranks: loadRanks, lang: lang, fresh: fresh, summary: summary, toggleRow: toggleRow };
 
   // Ana sayfa kutusu
   var box = document.getElementById("ccRecent");
@@ -98,7 +168,10 @@
     var list = v[0], map = v[1];
     if (list.length < 3) return;          // boş görünmesin: son 30 günde 3'ten az uçuş varsa hiç gösterme
     ol.textContent = "";
-    list.slice(0, N).forEach(function (f) { var li = el("li"); li.appendChild(row(f, map)); ol.appendChild(li); });
+    list.slice(0, N).forEach(function (f) {
+      var li = el("li"), r = row(f, map, { tag: "div", pilotLink: true });
+      li.appendChild(r); ol.appendChild(li); toggleRow(r, f);
+    });
     box.hidden = false;
   }).catch(function () {});
 })();
