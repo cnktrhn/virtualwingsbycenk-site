@@ -123,6 +123,9 @@ window.ccText=function(o,l,base){if(!o)return "";base=base||"name";return o[base
 </script>
 <script src="/assets/recent.js"></script>
 <script>
+// Admin görünümü: /crosscheck/map/#admin=<CC_ADMIN_TOKEN> (adres çubuğundan hemen silinir, sekme kapanınca unutulur); #admin=off çıkış.
+(function(){try{var h=location.hash.match(/(?:^#|&)admin=([^&]+)/);if(h){if(h[1]==="off")sessionStorage.removeItem("cc_admin");else sessionStorage.setItem("cc_admin",decodeURIComponent(h[1]));
+  history.replaceState(null,"",location.pathname+location.search)}window.ccAdmin=sessionStorage.getItem("cc_admin")||null}catch(e){window.ccAdmin=null}})();
 window.addEventListener("load",function(){
 var T={tr:{n:function(k){return k===0?"Şu an uçuşta pilot yok":k+" pilot uçuşta"},upd:"Son güncelleme",err:"Harita verisi şu an alınamıyor, birazdan tekrar denenecek.",empty:"Şu an uçuşta CrossCheck pilotu yok. Biri kalkışa geçtiğinde burada görünecek.",ghost:" Haritadaki soluk çizgiler son tamamlanan uçuşlar.",
   rank:"Rütbe",flight:"Uçuş",route:"Kalkış → varış",plan:"Uçuş planı",alt:"İrtifa",gs:"Yer hızı",phase:"Safha",pilot:"Pilot sayfası →",
@@ -187,6 +190,7 @@ var panel=document.getElementById("ccPanel");
 function renderPanel(){if(!sel||!data[sel]){panel.hidden=true;panel.textContent="";return}
   panel.textContent="";var x=el("button","cc-panel-x","×");x.type="button";x.setAttribute("aria-label",lang()==="en"?"Close":"Kapat");x.addEventListener("click",deselect);
   panel.appendChild(x);panel.appendChild(popup(data[sel]));
+  if(window.ccAdmin&&data[sel].licStatus){var lb=ccRecent.licBadge(data[sel].licStatus,data[sel].licHint);if(lb){var w=el("p","lic-row");w.appendChild(lb);panel.appendChild(w)}}
   var rt=routes[sel];if(rt){var lg=el("div","cc-legend"),en=lang()==="en";
     if(rt.pts&&rt.pts.length>1){var a=el("span","lg-plan");a.appendChild(el("i"));a.appendChild(document.createTextNode(en?"Planned route":"Planlanan rota"));lg.appendChild(a)}
     if(rt.track&&rt.track.length>1){var b=el("span","lg-trk");b.appendChild(el("i"));b.appendChild(document.createTextNode(en?"Flown track":"Uçulan rota"));lg.appendChild(b)}
@@ -240,12 +244,23 @@ function fitSel(){if(!sel)return;var rt=routes[sel],p=data[sel],b=[];if(rt&&rt.p
 function renderAll(){renderPanel();status()}
 var busy=false;
 function load(){if(busy||document.hidden)return;busy=true;
-  fetch("/api/cc/live",{cache:"no-store"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(list){
+  (window.ccAdmin?fetch("/api/cc/live?admin=1",{cache:"no-store",headers:{"x-cc-admin":window.ccAdmin}}):fetch("/api/cc/live",{cache:"no-store"})).then(function(r){
+    if(r.status===403&&window.ccAdmin){try{sessionStorage.removeItem("cc_admin")}catch(e){}window.ccAdmin=null;adminBar("Admin anahtarı geçersiz; normal görünüme dönüldü.");throw 0}
+    if(!r.ok)throw 0;return r.json()}).then(function(list){
     var seen={};(Array.isArray(list)?list:[]).forEach(function(p){if(!p||typeof p.lat!=="number"||typeof p.lon!=="number")return;seen[p.pilotId]=1;data[p.pilotId]=p;upsert(p)});
     Object.keys(markers).forEach(function(id){if(!seen[id]){if(sel===id)deselect();map.removeLayer(markers[id]);delete markers[id];delete data[id];delete routes[id]}});
     if(!fitted&&list.length){fitted=true;if(list.length>1)map.fitBounds(list.map(function(p){return [p.lat,p.lon]}),{padding:[40,40],maxZoom:7});else map.setView([list[0].lat,list[0].lon],6)}
-    lastOk=Date.now();if(sel&&data[sel])refreshRoute(sel);document.getElementById("ccMsg").dataset.k="";drawGhosts()})
+    lastOk=Date.now();if(sel&&data[sel])refreshRoute(sel);document.getElementById("ccMsg").dataset.k="";drawGhosts();if(window.ccAdmin){adminBar();if(sel)renderPanel()}})
   .catch(function(){document.getElementById("ccMsg").dataset.k="err";status()}).finally(function(){busy=false})}
+// Admin şeridi: her canlı uçuşun lisans rozeti (herkese açık görünümde hiç oluşturulmaz)
+function adminBar(note){var b=document.getElementById("ccAdminBar");
+  if(!b){b=el("div","cc-admin");b.id="ccAdminBar";var g=document.getElementById("ccGrid");g.parentNode.insertBefore(b,g)}
+  b.textContent="";var h=el("b",null,"ADMİN");b.appendChild(h);
+  if(note){b.appendChild(el("span",null,note));return}
+  var ids=Object.keys(data);if(!ids.length)b.appendChild(el("span",null,"Şu an canlı uçuş yok."));
+  ids.forEach(function(id){var p=data[id],c=el("button","cc-admin-f");c.type="button";c.appendChild(el("span",null,(p.flight||id)+" · "+(p.name||"")));
+    var lb=ccRecent.licBadge(p.licStatus,p.licHint);if(lb)c.appendChild(lb);c.addEventListener("click",function(){select(id)});b.appendChild(c)});
+  var out=el("a",null,"Çıkış");out.href="#admin=off";out.addEventListener("click",function(e){e.preventDefault();try{sessionStorage.removeItem("cc_admin")}catch(x){}location.reload()});b.appendChild(out)}
 map.on("click",deselect);map.on("zoomend",function(){if(sel&&routes[sel])drawRoute(sel)});
 load();setInterval(load,30000);
 document.addEventListener("visibilitychange",function(){if(!document.hidden&&Date.now()-lastOk>25000)load()});

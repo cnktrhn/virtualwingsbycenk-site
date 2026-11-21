@@ -61,6 +61,8 @@
     if (f.flight) parts.push(el("b", "rf-fl", f.flight));
     if (f.dep || f.arr) parts.push(el("span", "rf-rt", (f.dep || "?") + " → " + (f.arr || "?")));
     parts.forEach(function (p, i) { if (i) sep(top); top.appendChild(p); });
+    var lb = f.licStatus ? licBadge(f.licStatus, f.licHint) : null;
+    if (lb) top.appendChild(lb);
     if (f.grade) top.appendChild(el("span", "rf-grade", f.grade));
     var s = [];
     if (f.aircraft) s.push(el("span", null, f.aircraft));
@@ -85,7 +87,17 @@
     return r;
   }
   function get(n) {
-    return fetch("/api/cc/recent?n=" + n).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(fresh);
+    // Admin görünümü (yalnızca harita sayfası, #admin=… ile): lisans işaretleri de gelir; önbelleğe alınmaz.
+    var a = window.ccAdmin;
+    var req = a ? fetch("/api/cc/recent?admin=1&n=" + n, { cache: "no-store", headers: { "x-cc-admin": a } }) : fetch("/api/cc/recent?n=" + n);
+    return req.then(function (r) { if (!r.ok) throw r.status; return r.json(); }).then(fresh);
+  }
+  // Lisans rozeti (yalnızca admin yanıtlarında licStatus olur)
+  var LIC = { licensed: ["LİSANSLI", "ok"], trial: ["DENEME", "trial"], revoked: ["İPTAL", "bad"], invalid: ["DOĞRULANAMADI", "bad"], none: ["ESKİ SÜRÜM", "old"] };
+  function licBadge(st, hint) {
+    var d = LIC[st]; if (!d) return null;
+    var b = el("span", "lic-b is-" + d[1], d[0] + (st === "licensed" && hint ? " · " + hint : ""));
+    b.title = "Lisans durumu (yalnızca admin görür)"; return b;
   }
 
   // ---------- Uçuş özeti (satıra tıklayınca açılır). Ceza ayrıntısı yok; eski kayıtlarda olmayan satırlar gizli. ----------
@@ -158,7 +170,7 @@
     r.addEventListener("keydown", function (e) { if (e.target === r && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); go(); } });
   }
 
-  window.ccRecent = { get: get, row: row, ranks: loadRanks, lang: lang, fresh: fresh, summary: summary, toggleRow: toggleRow };
+  window.ccRecent = { get: get, row: row, ranks: loadRanks, lang: lang, fresh: fresh, summary: summary, toggleRow: toggleRow, licBadge: licBadge };
 
   // Ana sayfa kutusu
   var box = document.getElementById("ccRecent");

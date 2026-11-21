@@ -3,6 +3,11 @@
 // Blobs store "crosscheck", anahtarlar: live/<pilotId>, pilot/<pilotId>, auth/<pilotId>.
 // E-posta, şifre, IP adresi, gerçek ad SAKLANMAZ.
 import { createHash, timingSafeEqual } from "node:crypto";
+import { checkLic, liveLic, isAdmin, wantsAdmin } from "./lic.mjs";
+// Lisans işareti (licStatus/licHint) iç alandır: herkese açık yanıtlarda ASLA dönmez, yalnızca ?admin=1 + admin başlığıyla.
+const LIC_FIELDS = ["licStatus", "licHint"];
+const adminOnly = () => json(403, { ok: false, error: "forbidden" }, { "Cache-Control": "no-store" });
+const ADMIN_H = { "Cache-Control": "no-store, private" };
 
 export const STORE_NAME = "crosscheck";
 const LIVE_MAX_AGE = 180;     // sn: GET /live yalnızca son 3 dakikadaki kayıtları döner
@@ -77,9 +82,10 @@ function creds(o) {
   return pilotId && secret ? { pilotId, secret } : null;
 }
 const pick = (o, keys) => Object.fromEntries(keys.filter((k) => o[k] !== undefined).map((k) => [k, o[k]]));
+const pickSome = pick;
 
 // ---------- POST /api/cc/position ----------
-export async function position(req, store, now = Date.now(), fstore = null) {
+export async function position(req, store, now = Date.now(), fstore = null, lstore = null) {
   if (req.method !== "POST") return notAllowed("POST");
   const o = await readBody(req);
   if (!o || o.v !== 1) return bad();
@@ -148,11 +154,20 @@ export async function position(req, store, now = Date.now(), fstore = null) {
   extra._land = !!m._land || (extra._air && rec.phase === "landed");
   if (extra._land) extra._tOn = m._tOn || rec.ts;
   if (m._rec) extra._rec = true;
+  // Lisans işareti (bilgi amaçlı; istek bu yüzden reddedilmez). Bilet saklanmaz, yalnızca sonuç ve bilet özeti.
+  const L = await liveLic(o, prev, lstore, now).catch(() => null);
+  if (L) Object.assign(extra, L);
+  else if (prev && prev.licStatus) { extra.licStatus = prev.licStatus; if (prev.licHint) extra.licHint = prev.licHint; }
   await store.setJSON(`live/${c.pilotId}`, { ...rec, ...extra, _rx: now });  // üzerine yazar; geçmiş yok
   // Uçuşun ilk konumunda pilotun profili yoksa geçici bir profil aç: pilot sayfası ilk uçuştan itibaren açılır.
   // Program uçuş sonunda /profile gönderdiğinde gerçek değerlerle üzerine yazılır.
+  const licOf = (x) => (x && x.licStatus ? { licStatus: x.licStatus, ...(x.licHint ? { licHint: x.licHint } : {}) } : {});
   if (!prev && !(await store.get(`pilot/${c.pilotId}`, { type: "text" }))) {
-    await store.setJSON(`pilot/${c.pilotId}`, { pilotId: c.pilotId, name: rec.name, rank: rec.rank, xp: 0, flights: 0, hours: 0, badges: [], updated: Math.floor(now / 1000), provisional: true });
+    await store.setJSON(`pilot/${c.pilotId}`, { pilotId: c.pilotId, name: rec.name, rank: rec.rank, xp: 0, flights: 0, hours: 0, badges: [], updated: Math.floor(now / 1000), provisional: true, ...licOf(L) });
+  } else if (L && L._licAt === now && (!prev || prev.licStatus !== L.licStatus || prev.licHint !== L.licHint)) {
+    // Lisans durumu değiştiyse pilot kaydına da yaz (seyrek: yalnızca değişince)
+    const pr = await store.get(`pilot/${c.pilotId}`, { type: "json" }).catch(() => null);
+    if (pr) { delete pr.licHint; await store.setJSON(`pilot/${c.pilotId}`, { ...pr, ...licOf(L) }); }
   }
   return ok();
 }
@@ -182,6 +197,7 @@ async function finalizeFlight(fstore, r) {
     distNm: a && b ? Math.round(nmBetween(a, b)) : null, fpm: null, score: null, grade: "",
     ts: end, src: "auto", t0: r._t0,
   };
+  if (r.licStatus) { rec.licStatus = r.licStatus; if (r.licHint) rec.licHint = r.licHint; }
   const list = await fstore.get("recent", { type: "json" }).catch(() => null);
   const old = Array.isArray(list) ? list : [];
   if (old.some((f) => f && f.pilotId === rec.pilotId && f.t0 === rec.t0)) return false;   // aynı uçuş ikinci kez yazılmaz
@@ -204,16 +220,19 @@ export async function end(req, store, fstore = null, now = Date.now()) {
 // ---------- GET /api/cc/live ----------
 export async function live(req, store, now = Date.now(), fstore = null) {
   if (req.method !== "GET" && req.method !== "HEAD") return notAllowed("GET");
+  const admin = wantsAdmin(req);
+  if (admin && !isAdmin(req)) return adminOnly();
   const cutoff = Math.floor(now / 1000) - LIVE_MAX_AGE;
   const { blobs } = await store.list({ prefix: "live/" });
   const out = [], stale = [];
   await Promise.all(blobs.map(async ({ key }) => {
     const r = await store.get(key, { type: "json" }).catch(() => null);
     if (!r || typeof r.ts !== "number" || r.ts < cutoff) { stale.push(key); if (r) await finalizeFlight(fstore, r).catch(() => {}); }
-    else out.push(pick(r, PUBLIC_LIVE));      // secret ve _rx alanları çıkar
+    else out.push(admin ? { ...pick(r, PUBLIC_LIVE), ...pickSome(r, LIC_FIELDS) } : pick(r, PUBLIC_LIVE));  // secret, _rx, lisans çıkar
   }));
   await Promise.all(stale.map((k) => store.delete(k).catch(() => {})));
   out.sort((a, b) => a.pilotId.localeCompare(b.pilotId));
+  if (admin) return json(200, out, ADMIN_H);
   // Kısa CDN önbelleği: aynı anda haritayı açan herkes için fonksiyon tekrar çalışmaz (kredi tasarrufu).
   return json(200, out, {
     "Cache-Control": "public, max-age=0, must-revalidate",
@@ -223,7 +242,7 @@ export async function live(req, store, now = Date.now(), fstore = null) {
 }
 
 // ---------- POST /api/cc/profile ----------
-export async function profile(req, store, now = Date.now(), fstore = null) {
+export async function profile(req, store, now = Date.now(), fstore = null, lstore = null) {
   if (req.method !== "POST") return notAllowed("POST");
   const o = await readBody(req);
   if (!o || o.v !== 1) return bad();
@@ -247,6 +266,8 @@ export async function profile(req, store, now = Date.now(), fstore = null) {
   if (!has(rec, PUBLIC_PROFILE)) return bad("bad_request", missing(rec, PUBLIC_PROFILE));
   if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
   rec.hours = Math.round(rec.hours * 10) / 10;
+  const L = await checkLic(o.lic, lstore).catch(() => null);
+  if (L) Object.assign(rec, L);
   await store.setJSON(`pilot/${c.pilotId}`, rec);  // üzerine yazar; uçuş listesi yok
   // Program profili uçuş bitince gönderir: canlı kayıt inişi gördüyse uçuş "son uçuşlar"a yazılır ve işaretlenir.
   const lv = await store.get(`live/${c.pilotId}`, { type: "json" }).catch(() => null);
@@ -327,7 +348,7 @@ const cut = (v, max) => (typeof v === "string" || typeof v === "number" ? clean(
 const icao = (v) => (typeof v === "string" ? v.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4) : "");
 const coord = (v, lim) => (typeof v === "number" && Number.isFinite(v) && Math.abs(v) <= lim ? Math.round(v * 1e4) / 1e4 : null);
 
-export async function flight(req, store, fstore, now = Date.now()) {
+export async function flight(req, store, fstore, now = Date.now(), lstore = null) {
   if (req.method !== "POST") return notAllowed("POST");
   const o = await readBody(req, FLIGHT_MAX_BODY);
   if (!o || o.v !== 1) return bad();
@@ -371,6 +392,8 @@ export async function flight(req, store, fstore, now = Date.now()) {
     ts: Math.floor(now / 1000),        // programın ts'i yerine sunucu saati
   };
   if (!(await checkAuth(store, c.pilotId, c.secret))) return forbidden();
+  const L = await checkLic(o.lic, lstore).catch(() => null);
+  if (L) Object.assign(rec, L);
   const last = Number(await fstore.get(`rl/${c.pilotId}`, { type: "text" }));
   if (last && now - last < FLIGHT_INTERVAL * 1000) return tooMany();
   await fstore.set(`rl/${c.pilotId}`, String(now));
@@ -385,13 +408,16 @@ export async function flight(req, store, fstore, now = Date.now()) {
 // En fazla 20 uçuş, yeniden eskiye; 30 günden eskiler çıkar. secret hiç saklanmaz, pilotId döner.
 export async function recent(req, fstore, now = Date.now()) {
   if (req.method !== "GET" && req.method !== "HEAD") return notAllowed("GET");
+  const admin = wantsAdmin(req);
+  if (admin && !isAdmin(req)) return adminOnly();
   const q = Number(new URL(req.url).searchParams.get("n"));
   const n = Number.isInteger(q) && q > 0 ? Math.min(q, 20) : 10;
   const cutoff = Math.floor(now / 1000) - RECENT_MAX_AGE;
   const list = await fstore.get("recent", { type: "json" }).catch(() => null);
   const out = (Array.isArray(list) ? list : [])
     .filter((f) => f && f.ts >= cutoff && !(typeof f.airMin === "number" && f.airMin < MIN_AIR)).sort((a, b) => b.ts - a.ts).slice(0, n)
-    .map((f) => Object.fromEntries(PUBLIC_FLIGHT.map((k) => [k, f[k] ?? null])));
+    .map((f) => ({ ...Object.fromEntries(PUBLIC_FLIGHT.map((k) => [k, f[k] ?? null])), ...(admin ? pickSome(f, LIC_FIELDS) : {}) }));
+  if (admin) return json(200, out, ADMIN_H);
   return json(200, out, {
     "Cache-Control": "public, max-age=60",
     "Netlify-CDN-Cache-Control": "public, durable, s-maxage=60, stale-while-revalidate=60",
