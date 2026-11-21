@@ -3,10 +3,20 @@
 // Ortam değişkenleri (Netlify → Site configuration → Environment variables):
 //   CC_LICENSE_PRIVATE_KEY  : imza anahtarı (PEM, cc_license_private_pk8.pem dosyasının tamamı)   – GİZLİ
 //   CC_ADMIN_TOKEN          : yönetim parolası (uzun rastgele metin)                               – GİZLİ
+//   FS_KEY_HASHES           : (isteğe bağlı) Flight Strip seri özetleri, virgül/boşluk/satır ile ayrılmış – küçük partiler için
 // Veri: Netlify Blobs "cc-license" deposu – anahtar = seri özeti, değer = { machines:[{m,pc,first,last}], revoked }
+// Flight Strip Pro (app:"flightstrip"): VWFS- serileri FS listesinde, VWCC- serileri CROSS-CHECK listesinde aranır
+//   (CROSS-CHECK sahiplerine Flight Strip ücretsiz). Bilgisayar sayımı ürün başına ayrı: kayıt anahtarı = seri özeti + "|flightstrip".
+//   İptal (revoked) ortak: seri özetinin ana kaydındaki revoked bayrağı iki ürünü de kapatır. Flight Strip'te deneme (trial) yok.
 import crypto from "node:crypto";
 import { getStore } from "@netlify/blobs";
 import { KEY_HASHES } from "./cc-license-keys.mjs";
+import { FS_KEY_HASHES as FS_FILE_HASHES } from "./cc-license-fs-keys.mjs";
+
+// Flight Strip seri özetleri: dosya (cc-license-fs-keys.mjs) + isteğe bağlı FS_KEY_HASHES ortam değişkeni
+const FS_HASHES = new Set([...FS_FILE_HASHES,
+  ...String(process.env.FS_KEY_HASHES || "").toLowerCase().split(/[^0-9a-f]+/).filter((x) => x.length === 64)]);
+const FS_APP = "flightstrip";
 
 const PEPPER = "df6af5711259948f4a5b25210ffc64e6";   // License.cs ve tools/keygen.py ile AYNI
 const MAX_MACHINES = 2;
@@ -49,7 +59,7 @@ async function handle(req) {
   if (req.method !== "POST") return json({ ok: false, error: "method" }, 405);
   let b; try { b = await req.json(); } catch { return json({ ok: false, error: "bad" }, 400); }
   if (b.op === "health") {
-    const r = { ok: true, key: false, store: false, admin: !!process.env.CC_ADMIN_TOKEN };
+    const r = { ok: true, key: false, store: false, admin: !!process.env.CC_ADMIN_TOKEN, fsKeys: FS_HASHES.size };
     try { crypto.sign("sha256", Buffer.from("x"), { key: privKey(), dsaEncoding: "ieee-p1363" }); r.key = true; } catch (e) { r.keyErr = String(e.message).slice(0, 80); }
     try { await getStore("cc-license").get("health-probe"); r.store = true; } catch (e) { r.storeErr = String(e.message).slice(0, 80); }
     return json(r);
@@ -60,16 +70,21 @@ async function handle(req) {
   if (b.op === "admin") {
     if (!process.env.CC_ADMIN_TOKEN || b.token !== process.env.CC_ADMIN_TOKEN) return json({ ok: false, error: "auth" }, 403);
     const h = b.key ? hashKey(String(b.key).toUpperCase()) : String(b.hash || "");
-    if (!KEY_HASHES.has(h)) return json({ ok: false, error: "invalid" });
+    if (!KEY_HASHES.has(h) && !FS_HASHES.has(h)) return json({ ok: false, error: "invalid" });
     const rec = (await store.get(h, { type: "json" })) || { machines: [] };
+    // İptal ortak (ana kayıt). Bilgisayar sıfırlama ürün başına: app:"flightstrip" verilirse FS kaydı sıfırlanır.
+    const fsKey = h + "|" + FS_APP, fsRec = (await store.get(fsKey, { type: "json" })) || { machines: [] };
     if (b.action === "revoke") rec.revoked = true;
     else if (b.action === "unrevoke") rec.revoked = false;
+    else if (b.action === "reset" && b.app === FS_APP) { fsRec.machines = []; await store.setJSON(fsKey, fsRec); }
     else if (b.action === "reset") rec.machines = [];
     if (b.action !== "list") await store.setJSON(h, rec);
-    return json({ ok: true, record: rec });
+    return json({ ok: true, record: rec, flightstrip: fsRec });
   }
 
   // ---- 1 ücretsiz deneme uçuşu (Cenk 10.11): bilgisayar başına bir kez; 48 saat içinde aynı bilgisayara bilet tekrar verilir
+  const isFS = b.app === FS_APP;
+  if (isFS && b.op === "trial") return json({ ok: false, error: "invalid" });   // Flight Strip demosu filigranlı; deneme bileti yok
   if (b.op === "trial") {
     const tm = String(b.machine || "").slice(0, 32);
     if (!/^[0-9a-f]{8,32}$/.test(tm)) return json({ ok: false, error: "invalid" });
@@ -84,23 +99,27 @@ async function handle(req) {
   }
 
   const key = String(b.key || "").toUpperCase(), m = String(b.machine || "").slice(0, 32), pc = String(b.pc || "").slice(0, 40);
-  if (!/^VWCC-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}$/.test(key) || !/^[0-9a-f]{8,32}$/.test(m)) return json({ ok: false, error: "invalid" });
+  const shape = isFS ? /^VW(CC|FS)-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}$/ : /^VWCC-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}$/;
+  if (!shape.test(key) || !/^[0-9a-f]{8,32}$/.test(m)) return json({ ok: false, error: "invalid" });
   const h = hashKey(key);
-  if (!KEY_HASHES.has(h)) return json({ ok: false, error: "invalid" });
-  const rec = (await store.get(h, { type: "json" })) || { machines: [] };
-  if (rec.revoked) return json({ ok: false, error: "revoked" });
+  const list = key.startsWith("VWFS-") ? FS_HASHES : KEY_HASHES;
+  if (!list.has(h)) return json({ ok: false, error: "invalid" });
+  const base = (await store.get(h, { type: "json" })) || { machines: [] };
+  if (base.revoked) return json({ ok: false, error: "revoked" });              // iptal listesi ortak
+  const recKey = isFS ? h + "|" + FS_APP : h;                                     // bilgisayar sayımı ürün başına
+  const rec = isFS ? (await store.get(recKey, { type: "json" })) || { machines: [] } : base;
   const now = new Date().toISOString();
   const i = rec.machines.findIndex((x) => x.m === m);
 
   if (b.op === "release") {
-    if (i >= 0) { rec.machines.splice(i, 1); await store.setJSON(h, rec); }
+    if (i >= 0) { rec.machines.splice(i, 1); await store.setJSON(recKey, rec); }
     return json({ ok: true, machines: rec.machines.length });
   }
   if (b.op === "activate" || b.op === "check") {
     if (i >= 0) rec.machines[i].last = now;
     else if (rec.machines.length >= MAX_MACHINES) return json({ ok: false, error: "limit", machines: rec.machines.length });
     else rec.machines.push({ m, pc, first: now, last: now });
-    await store.setJSON(h, rec);
+    await store.setJSON(recKey, rec);
     return json({ ok: true, token: ticket(h, m), machines: rec.machines.length });
   }
   return json({ ok: false, error: "op" }, 400);
