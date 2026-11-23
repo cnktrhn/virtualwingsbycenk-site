@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /imza/
 
 Sitemap: https://virtualwingsbycenk.com/sitemap.xml

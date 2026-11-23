@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>E-posta imzası</title>
+<style>
+body{margin:0;background:#E9EDF2;font-family:Arial,Helvetica,sans-serif;color:#1B2A44}
+main{max-width:760px;margin:0 auto;padding:32px 16px}
+h1{font-size:20px;margin:0 0 6px}
+p.sub{margin:0 0 20px;color:#4A5A72;font-size:14px;line-height:1.5}
+.card{background:#fff;border-radius:12px;padding:28px 24px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow-x:auto}
+.btn{display:inline-block;margin:20px 0 8px;padding:12px 22px;border:0;border-radius:8px;background:#F2C230;color:#0E1F3A;font:bold 16px Arial,Helvetica,sans-serif;cursor:pointer}
+.btn.ok{background:#2EBD8B;color:#fff}
+ol{margin:12px 0 0;padding-left:20px;color:#4A5A72;font-size:14px;line-height:1.7}
+</style>
+</head>
+<body>
+<main>
+<h1>E-posta imzası</h1>
+<p class="sub">Düğmeye bas, sonra webmail'deki imza kutusuna yapıştır (Ctrl+V) ve Kaydet'e bas.</p>
+<div class="card" id="sig">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:#1B2A44;border-collapse:collapse">
+<tr>
+<td style="padding:0 18px 0 0;vertical-align:middle">
+<a href="https://virtualwingsbycenk.com" style="text-decoration:none"><img src="https://virtualwingsbycenk.com/img/vw-signature-logo.png" width="220" height="89" alt="Virtual Wings" style="display:block;border:0;border-radius:10px"></a>
+</td>
+<td style="padding:0 0 0 18px;border-left:3px solid #F2C230;vertical-align:middle">
+<div style="font-size:17px;font-weight:bold;color:#0E1F3A;line-height:22px">Cenk Tarhan</div>
+<div style="font-size:13px;color:#4A5A72;line-height:18px">Founder &amp; Developer · Virtual Wings</div>
+<div style="font-size:12px;color:#8A6D10;line-height:18px;padding-top:2px;font-weight:bold">CROSS-CHECK · Flight Strip · MSFS add-ons</div>
+<div style="font-size:12px;line-height:20px;padding-top:6px">
+<a href="https://virtualwingsbycenk.com" style="color:#1F5FBF;text-decoration:none">virtualwingsbycenk.com</a>
+<span style="color:#B0B8C4"> | </span>
+<a href="mailto:info@virtualwingsbycenk.com" style="color:#1F5FBF;text-decoration:none">info@virtualwingsbycenk.com</a>
+<span style="color:#B0B8C4"> | </span>
+<a href="https://discord.gg/QDbN7ZUv" style="color:#1F5FBF;text-decoration:none">Discord</a>
+<span style="color:#B0B8C4"> | </span>
+<a href="https://www.youtube.com/@VirtualWingsByCenk" style="color:#1F5FBF;text-decoration:none">YouTube</a>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<button type="button" class="btn" id="copyBtn">İmzayı kopyala</button>
+<ol>
+<li>Webmail → Ayarlar → İmza kutusundaki eski yazıyı sil.</li>
+<li>Kutuya tıkla ve <b>Ctrl+V</b> ile yapıştır.</li>
+<li><b>Kaydet</b>'e bas; kendine bir test e-postası gönder.</li>
+</ol>
+</main>
+<script>
+(function(){var b=document.getElementById("copyBtn"),s=document.getElementById("sig");
+function done(){b.textContent="Kopyalandı ✓ — şimdi webmail'e yapıştır";b.classList.add("ok");setTimeout(function(){b.textContent="İmzayı kopyala";b.classList.remove("ok")},4000)}
+function fallback(){var r=document.createRange();r.selectNodeContents(s);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);try{document.execCommand("copy");done()}catch(e){}sel.removeAllRanges()}
+b.addEventListener("click",function(){var h=s.innerHTML.trim(),t=s.innerText.trim();
+  if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([h],{type:"text/html"}),"text/plain":new Blob([t],{type:"text/plain"})})]).then(done,fallback)}else fallback()});
+})();
+</script>
+</body>
+</html>
