@@ -249,3 +249,11 @@ html[data-l="tr"] [data-l="en"],html[data-l="en"] [data-l="tr"]{display:none!imp
 .cc-sale{display:inline-block;margin:.1rem 0 .6rem;padding:.35rem .75rem;border-radius:6px;background:rgba(245,197,24,.12);border:1px solid rgba(245,197,24,.45);color:var(--gold);font-weight:600}
 .cc-sale[hidden],[data-sale][hidden],[data-nosale][hidden]{display:none!important}
 a.cc-update{text-decoration:none;color:inherit}
+/* E-posta + Kopyala (destek, SSS, Flight Strip) */
+.contact-mail{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .75rem;margin:.75rem 0}
+.contact-mail a{font-family:var(--display);font-weight:600;font-size:1.2rem;color:var(--gold)!important;text-decoration:none;overflow-wrap:anywhere}
+.contact-mail a:hover{text-decoration:underline}
+.cc .vw-copy{font:600 .85rem var(--body);color:var(--text);background:transparent;border:1px solid var(--silver);border-radius:4px;padding:.25rem .75rem;cursor:pointer;vertical-align:middle;margin-left:.35rem}
+.contact-mail .vw-copy{margin-left:0}
+.cc .vw-copy:hover{border-color:var(--gold);color:var(--gold)}
+.cc .vw-copy.ok{border-color:#2EE6B8;color:#2EE6B8}
