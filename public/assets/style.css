@@ -657,3 +657,10 @@ html[lang="tr"] .prod.is-new .prod-body h3::after{content:"YENİ"}
 .cc-admin-f{display:inline-flex;align-items:center;gap:.4rem;padding:.2rem .5rem;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--text);font:inherit;cursor:pointer}
 .cc-admin-f:hover{border-color:var(--gold)}
 .cc-admin a{margin-left:auto;color:var(--text-soft)}
+/* İletişim: e-posta + kopyala */
+.vw-contact-mail{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .75rem;margin-top:1.25rem;color:var(--silver)}
+.vw-contact-mail a{font-family:var(--display);font-weight:600;font-size:1.2rem;color:var(--gold);text-decoration:none;overflow-wrap:anywhere}
+.vw-contact-mail a:hover{text-decoration:underline}
+.vw-copy{font:600 .9rem var(--body);color:var(--text);background:transparent;border:1px solid var(--silver);border-radius:4px;padding:.3rem .8rem;cursor:pointer}
+.vw-copy:hover{border-color:var(--gold);color:var(--gold)}
+.vw-copy.ok{border-color:#2EE6B8;color:#2EE6B8}

@@ -526,7 +526,11 @@
       <a href="https://www.instagram.com/virtualwingsbycenk/" target="_blank" rel="noopener">Instagram</a>
       <a id="mailBtn" href="#">E-posta gönder</a>
     </div>
-    <p class="mail-note">E-posta adresim: <span id="mailText"></span></p>
+    <div class="vw-contact-mail">
+      <span class="vw-mail-lab">E-posta adresim:</span>
+      <a href="mailto:info@virtualwingsbycenk.com?subject=CROSS-CHECK%20-%20Question">info@virtualwingsbycenk.com</a>
+      <button type="button" class="vw-copy" data-copy="info@virtualwingsbycenk.com" data-done="Kopyalandı ✓">Kopyala</button>
+    </div>
   </div>
 </section>
 </main>
@@ -576,7 +580,11 @@ $("#yr").textContent = new Date().getFullYear();
 $("#channelLink").href = AYARLAR.kanalLinki + "?sub_confirmation=1";
 $("#ytLink2").href = AYARLAR.kanalLinki;
 $("#mailBtn").href = "mailto:" + AYARLAR.eposta + "?subject=" + encodeURIComponent("Virtual Wings sitesinden mesaj");
-$("#mailText").textContent = AYARLAR.eposta;
+// E-posta kopyala düğmesi
+document.querySelectorAll(".vw-copy").forEach(function(b){var t=b.textContent;b.addEventListener("click",function(){var v=b.dataset.copy;
+  function done(){b.textContent=b.dataset.done;b.classList.add("ok");setTimeout(function(){b.textContent=t;b.classList.remove("ok")},2000)}
+  function fb(){var i=document.createElement("textarea");i.value=v;i.style.position="fixed";i.style.opacity="0";document.body.appendChild(i);i.select();try{document.execCommand("copy");done()}catch(e){}i.remove()}
+  if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(v).then(done,fb);else fb()})});
 
 $("#menuBtn").addEventListener("click", () => {
   const open = $("#menu").classList.toggle("open");
