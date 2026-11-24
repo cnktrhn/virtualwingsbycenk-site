@@ -1,7 +1,9 @@
 {
-  "latest": "1.0.0",
+  "latest": "1.0.5",
   "min": "1.0.0",
-  "url": "https://virtualwingsbycenk.com/crosscheck/",
-  "notes_tr": "CrossCheck'in ilk sürümü.",
-  "notes_en": "The first release of CrossCheck."
+  "url": "https://secure.simmarket.com/account/downloads",
+  "notes_tr": "Winter Update: yer hizmetleri, NOTOC ve kargo şeması, yolcu mektupları, YouTube sohbetinde içecek, flap hız çağrıları.",
+  "notes_en": "Winter Update: ground services, NOTOC and cargo map, passenger letters, YouTube chat drinks, flap speed callouts.",
+  "notesTr": "Winter Update: yer hizmetleri, NOTOC ve kargo şeması, yolcu mektupları, YouTube sohbetinde içecek, flap hız çağrıları.",
+  "notesEn": "Winter Update: ground services, NOTOC and cargo map, passenger letters, YouTube chat drinks, flap speed callouts."
 }
