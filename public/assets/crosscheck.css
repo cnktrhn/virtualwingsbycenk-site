@@ -257,3 +257,32 @@ a.cc-update{text-decoration:none;color:inherit}
 .contact-mail .vw-copy{margin-left:0}
 .cc .vw-copy:hover{border-color:var(--gold);color:var(--gold)}
 .cc .vw-copy.ok{border-color:#2EE6B8;color:#2EE6B8}
+/* Canlı harita: Online ATC katmanı */
+.atc-ctl{display:flex;align-items:center;gap:2px;padding:3px;border-radius:8px;background:rgba(4,14,26,.88);border:1px solid rgba(201,211,224,.25);box-shadow:0 2px 8px rgba(0,0,0,.3);font:600 12px var(--body,system-ui)}
+.atc-ctl[hidden]{display:none}
+.atc-lab{color:#C9D3E0;padding:0 6px 0 4px;white-space:nowrap}
+.atc-ctl button{border:0;background:transparent;color:#C9D3E0;font:inherit;padding:4px 8px;border-radius:5px;cursor:pointer}
+.atc-ctl button:hover{color:#fff;background:rgba(255,255,255,.08)}
+.atc-ctl button.on{background:var(--gold,#F5C518);color:#071629}
+.atc-count{padding:4px 8px;border-radius:6px;background:rgba(4,14,26,.85);color:#E6ECF3;font:600 12px var(--body,system-ui);box-shadow:0 1px 6px rgba(0,0,0,.3)}
+.atc-count[hidden]{display:none}
+.atc-count.is-stale{color:#F5C518}
+.atc-ap{background:none;border:0}
+.atc-dots{display:flex;gap:2px;padding:1px 2px;border-radius:7px;background:rgba(255,255,255,.9);box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+.atc-dots i{display:block;width:8px;height:8px;border-radius:50%}
+.atc-tt,.atc-pop .leaflet-popup-content-wrapper{border-radius:8px}
+.atc-pop .leaflet-popup-content{margin:10px 12px}
+.atc-tip{font:12px/1.35 var(--body,system-ui);color:#0E1F3A;min-width:150px;max-width:260px;white-space:normal}
+.atc-h{font-weight:700;font-size:13px;margin-bottom:3px}
+.atc-row{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.atc-row i{display:inline-block;width:8px;height:8px;border-radius:50%;flex:none}
+.atc-row b{font-weight:700}
+.atc-t{color:#5A6A80;font-size:11px}
+.atc-f{margin-left:auto;font-variant-numeric:tabular-nums}
+.atc-atis{margin-top:5px;padding-top:4px;border-top:1px solid #E1E6EE;color:#3A4A60;font-size:11px}
+.atc-atis b{display:block;color:#0E1F3A;font-size:11px}
+.cc-atc-attr{margin:.4rem 0 0;font-size:.82rem;color:var(--text-soft)}
+.cc-atc-attr[hidden]{display:none}
+/* ATC seçim kutusu sağ üstte: uçak paneli onun altında açılır; telefonda panel açıkken sayaç gizlenir */
+@media (min-width:641px){.cc-panel{top:54px;max-height:calc(100% - 66px)}}
+@media (max-width:640px){.cc-mapbox:has(.cc-panel:not([hidden])) .atc-count{display:none}}

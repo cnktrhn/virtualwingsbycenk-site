@@ -84,6 +84,7 @@ document.title=CC_T[l];})();
     <p class="rf-hint"><span data-l="tr">Bir uçuşa tıkla: kalkış–varış hattı haritada soluk çizgiyle gösterilir.</span><span data-l="en" lang="en">Click a flight to show its departure–arrival line faintly on the map.</span></p>
   </aside>
   </div>
+  <p class="cc-atc-attr" id="ccAtcAttr" hidden></p>
   <p class="cc-map-msg" id="ccMsg" hidden></p>
   <p class="cc-soft cc-map-note"><span data-l="tr">CrossCheck ile uçan her pilot haritada kendiliğinden görünür. Uçağa tıklayınca planlanan rota (koyu mavi) ve simülatörde gerçekten uçulan iz (turuncu) haritada çizilir. Konumlar yaklaşık 30 saniyede bir yenilenir; uçuş bitince ya da 3 dakika veri gelmezse uçak haritadan düşer.</span><span data-l="en" lang="en">Every pilot flying with CrossCheck appears on the map automatically. Click an aircraft to draw its planned route (dark blue) and the track actually flown in the sim (orange) on the map. Positions refresh about every 30 seconds, and the aircraft drops off the map when the flight ends or after 3 minutes without data.</span></p>
 </section>
@@ -122,6 +123,7 @@ return {ranks:ranks,badges:badges}}})();
 window.ccText=function(o,l,base){if(!o)return "";base=base||"name";return o[base+"_"+l]||o[l]||o[base]||o.name||o.ad||o.title||""};
 </script>
 <script src="/assets/recent.js"></script>
+<script src="/assets/atc-layer.js"></script>
 <script>
 // Admin görünümü: /crosscheck/map/#admin=<CC_ADMIN_TOKEN> (adres çubuğundan hemen silinir, sekme kapanınca unutulur); #admin=off çıkış.
 (function(){try{var h=location.hash.match(/(?:^#|&)admin=([^&]+)/);if(h){if(h[1]==="off")sessionStorage.removeItem("cc_admin");else sessionStorage.setItem("cc_admin",decodeURIComponent(h[1]));
@@ -136,6 +138,7 @@ var T={tr:{n:function(k){return k===0?"Şu an uçuşta pilot yok":k+" pilot uçu
 var lang=function(){return document.documentElement.dataset.l==="en"?"en":"tr"};
 var meta={ranks:{},badges:[]};ccMeta().then(function(m){meta=m;renderAll()});
 var map=L.map("ccmap",{worldCopyJump:true,zoomControl:true}).setView([39.2,35],5);
+if(window.ccAtc)try{ccAtc(map,document.getElementById("ccAtcAttr"))}catch(e){}   // Online ATC katmanı (isteğe bağlı)
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:12,minZoom:2,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
 var PLANE='<svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><path d="M16 1.5c1.2 0 2 1.3 2 3.2v7.6l11 6.4v3l-11-3.2v6.1l3.4 2.6V30L16 28.6 10.6 30v-2.8l3.4-2.6v-6.1L3 21.7v-3l11-6.4V4.7c0-1.9.8-3.2 2-3.2z"/></svg>';
 var markers={},data={},routes={},routeLayer=null,lastOk=0,fitted=false;
