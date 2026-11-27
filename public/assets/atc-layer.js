@@ -14,6 +14,20 @@
     en: { off: "Off", online: "ATC online", stale: "last data", err: "data unavailable", loading: "loading…", atis: "ATIS",
       ago: function (s) { return s < 10 ? "updated just now" : "updated " + (s < 90 ? s + " s" : Math.round(s / 60) + " min") + " ago"; } }
   };
+  // FIR/UIR sınırları (VATSpy Data Project, CC BY-SA 4.0) – yalnızca katman açılınca bir kez yüklenir
+  var FIR = null, firP = null;
+  function loadFir() {
+    if (!firP) firP = fetch("/assets/fir-boundaries.json").then(function (r) { return r.json(); })
+      .then(function (j) { FIR = j && j.map ? j : { map: {}, fir: {} }; }).catch(function () { FIR = { map: {}, fir: {} }; });
+    return firP;
+  }
+  function firIds(cs) {
+    if (!FIR) return null;
+    var t = String(cs).toUpperCase().split("_"); t.pop();
+    var tries = [t.join("_"), t.slice(0, 2).join("_"), t[0]];
+    for (var i = 0; i < tries.length; i++) if (tries[i] && FIR.map[tries[i]]) return FIR.map[tries[i]];
+    return null;
+  }
   function lang() { return document.documentElement.dataset.l === "en" ? "en" : "tr"; }
   function el(t, c, txt) { var e = document.createElement(t); if (c) e.className = c; if (txt != null) e.textContent = txt; return e; }
 
@@ -55,7 +69,12 @@
     function renderAttr() {
       if (!attrEl) return;
       attrEl.hidden = cur === "off";
-      attrEl.textContent = cur === "off" ? "" : ATTR[cur];
+      attrEl.textContent = "";
+      if (cur === "off") return;
+      attrEl.appendChild(el("span", "atc-attr-net", ATTR[cur]));          // zorunlu atıf, birebir
+      var f = el("span", "atc-attr-fir", "FIR boundaries: ");
+      var a = el("a", null, "VATSpy Data Project"); a.href = "https://github.com/vatsimnetwork/vatspy-data-project"; a.target = "_blank"; a.rel = "noopener";
+      f.appendChild(a); f.appendChild(document.createTextNode(" (CC BY-SA 4.0)")); attrEl.appendChild(f);
     }
     function renderCount() {
       var t = TX[lang()];
@@ -102,10 +121,20 @@
         (groups[k] = groups[k] || []).push(s);
       });
       // CTR / FSS: mor nokta + soluk ~150 nm daire
+      var drawn = {};
       singles.forEach(function (s) {
+        // Yetki alanı: gerçek FIR/UIR sınırı; bulunamazsa ~150 nm daire
+        var ids = firIds(s.cs), area = null;
+        if (ids && FIR) {
+          var rings = [];
+          ids.forEach(function (id) { if (drawn[id]) return; drawn[id] = 1; (FIR.fir[id] || []).forEach(function (r) { rings.push(r.map(function (p) { return [p[1], p[0]]; })); }); });
+          if (rings.length) area = L.polygon(rings, { pane: "atc", color: COL.CTR, weight: 1.5, opacity: .85, fillColor: COL.CTR, fillOpacity: s.type === "FSS" ? .08 : .14, dashArray: s.type === "FSS" ? "6 4" : null });
+        } else if (s.lat != null && s.lon != null) {
+          area = L.circle([s.lat, s.lon], { pane: "atc", radius: 150 * NM, color: COL.CTR, weight: 1.5, opacity: .75, fillColor: COL.CTR, fillOpacity: .1, dashArray: "6 5" });
+        }
+        if (area) { bindInfo(area, null, [s], null); area.addTo(layer); }
         if (s.lat == null || s.lon == null) return;
         var ll = [s.lat, s.lon];
-        L.circle(ll, { pane: "atc", radius: 150 * NM, color: COL.CTR, weight: 1, opacity: .35, fillOpacity: .04, dashArray: "4 6", interactive: false }).addTo(layer);
         var m = L.circleMarker(ll, { pane: "atc", radius: 5, color: "#fff", weight: 1.5, fillColor: COL.CTR, fillOpacity: 1 });
         bindInfo(m, null, [s], null); m.addTo(layer);
       });
@@ -119,7 +148,7 @@
         if (!at || !list.length) return;                // yalnız ATIS ya da konumsuz: haritaya konmaz
         var ll = [at.lat, at.lon], types = {};
         list.forEach(function (s) { types[s.type] = 1; });
-        if (types.APP) L.circle(ll, { pane: "atc", radius: 40 * NM, color: COL.APP, weight: 1, opacity: .55, fillColor: COL.APP, fillOpacity: .07, interactive: false }).addTo(layer);
+        if (types.APP) L.circle(ll, { pane: "atc", radius: 40 * NM, color: COL.APP, weight: 1.5, opacity: .85, fillColor: COL.APP, fillOpacity: .12, interactive: false }).addTo(layer);
         var html = '<span class="atc-dots">' + ORDER.filter(function (t) { return types[t]; }).map(function (t) { return '<i style="background:' + COL[t] + '"></i>'; }).join("") + "</span>";
         var n = ORDER.filter(function (t) { return types[t]; }).length;
         var m = L.marker(ll, { pane: "atc", keyboard: false, icon: L.divIcon({ className: "atc-ap", html: html, iconSize: [n * 10 + 4, 12], iconAnchor: [(n * 10 + 4) / 2, 6] }) });
@@ -135,7 +164,7 @@
         if (k !== cur) return;
         if (j && j.disabled) { avail[k] = false; set("off"); return; }
         if (!j || !Array.isArray(j.stations)) throw 0;
-        last = j; draw(j); renderCount();
+        last = j; loadFir().then(function () { if (k === cur && last === j) draw(j); }); renderCount();
       }).catch(function () { loading = false; if (k !== cur) return; if (!last) last = { err: true }; else last.stale = true; renderCount(); });
     }
 
@@ -151,6 +180,6 @@
     setInterval(load, 30000);
     setInterval(function () { if (cur !== "off" && last && !last.err) renderCount(); }, 10000);
     document.addEventListener("visibilitychange", function () { if (!document.hidden) load(); });
-    document.addEventListener("cc-lang", function () { renderCtl(); renderCount(); if (last && !last.err) draw(last); });
+    document.addEventListener("cc-lang", function () { renderCtl(); renderCount(); if (last && !last.err && FIR) draw(last); });
   };
 })();

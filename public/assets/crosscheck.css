@@ -286,3 +286,17 @@ a.cc-update{text-decoration:none;color:inherit}
 /* ATC seçim kutusu sağ üstte: uçak paneli onun altında açılır; telefonda panel açıkken sayaç gizlenir */
 @media (min-width:641px){.cc-panel{top:54px;max-height:calc(100% - 66px)}}
 @media (max-width:640px){.cc-mapbox:has(.cc-panel:not([hidden])) .atc-count{display:none}}
+/* ATC balonları: koyu zemin, okunur yazı (genel .cc b rengi ezilmesin) */
+.leaflet-tooltip.atc-tt,.atc-pop .leaflet-popup-content-wrapper{background:#0A1D33;color:#E7EDF5;border:1px solid rgba(201,211,224,.35);box-shadow:0 6px 18px rgba(0,0,0,.45)}
+.leaflet-tooltip-top.atc-tt::before{border-top-color:#0A1D33}
+.leaflet-tooltip-bottom.atc-tt::before{border-bottom-color:#0A1D33}
+.atc-pop .leaflet-popup-tip{background:#0A1D33}
+.atc-pop a.leaflet-popup-close-button{color:#C9D3E0}
+.atc-tt .atc-tip,.atc-pop .atc-tip{color:#E7EDF5}
+.atc-tip .atc-h{color:#fff;font-size:14px;letter-spacing:.04em}
+.atc-tip .atc-row b{color:#fff}
+.atc-tip .atc-t{color:#9AA7B8}
+.atc-tip .atc-f{color:var(--gold,#F5C518);font-weight:700}
+.atc-tip .atc-atis{border-top-color:rgba(201,211,224,.25);color:#C9D3E0}
+.atc-tip .atc-atis b{color:#9AA7B8;letter-spacing:.06em}
+.cc-atc-attr .atc-attr-net{display:block}.cc-atc-attr .atc-attr-fir{display:block;font-size:.75rem;opacity:.8}.cc-atc-attr a{color:inherit}
