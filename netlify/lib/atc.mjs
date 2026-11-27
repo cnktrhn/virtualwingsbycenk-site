@@ -84,7 +84,9 @@ export function parseIvao(data) {
     if (!freq && type !== "ATIS") continue;
     seen.add(cs);
     const lat = coord(c.lastTrack?.latitude, 90), lon = coord(c.lastTrack?.longitude, 180);
-    stations.push(station(cs, type, freq, lat, lon, atisText(c.atis?.lines)));
+    // IVAO ATIS'inin ilk satırı sunucu/çağrı adıdır (ör. "ts-1.eu-west-2.ivao.aero/LDDU_TWR"): gösterilmez
+    const lines = Array.isArray(c.atis?.lines) ? c.atis.lines.filter((l) => typeof l === "string" && !/ivao\.aero\//i.test(l) && l.trim().toUpperCase() !== cs) : null;
+    stations.push(station(cs, type, freq, lat, lon, atisText(lines)));
   }
   const ts = Date.parse(data?.updatedAt || "");
   return { stations, updated: Number.isFinite(ts) ? new Date(ts).toISOString() : null };

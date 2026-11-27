@@ -1,9 +1,9 @@
 {
-  "latest": "1.0.5",
+  "latest": "1.0.6",
   "min": "1.0.0",
   "url": "https://secure.simmarket.com/account/downloads",
-  "notes_tr": "Winter Update: yer hizmetleri, NOTOC ve kargo şeması, yolcu mektupları, YouTube sohbetinde içecek, flap hız çağrıları.",
-  "notes_en": "Winter Update: ground services, NOTOC and cargo map, passenger letters, YouTube chat drinks, flap speed callouts.",
-  "notesTr": "Winter Update: yer hizmetleri, NOTOC ve kargo şeması, yolcu mektupları, YouTube sohbetinde içecek, flap hız çağrıları.",
-  "notesEn": "Winter Update: ground services, NOTOC and cargo map, passenger letters, YouTube chat drinks, flap speed callouts."
+  "notes_tr": "GSX boarding senkronu, otomatik kapılar, kabin ısısı, anons edilen iniş saati, Online ATC düzeltmeleri.",
+  "notes_en": "GSX boarding sync, automatic doors, cabin temperature, announced landing time, Online ATC fixes.",
+  "notesTr": "GSX boarding senkronu, otomatik kapılar, kabin ısısı, anons edilen iniş saati, Online ATC düzeltmeleri.",
+  "notesEn": "GSX boarding sync, automatic doors, cabin temperature, announced landing time, Online ATC fixes."
 }

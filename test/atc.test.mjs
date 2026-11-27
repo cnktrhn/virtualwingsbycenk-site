@@ -58,7 +58,7 @@ test("VATSIM: OBS/SUP yok, kişisel veri yok, konumsuz istasyon listede ama konu
 test("IVAO: frekans, konum, ATIS satırları; kişisel veri yok", () => {
   const { stations } = parseIvao(IVAO);
   assert.deepEqual(stations.map((s) => s.cs), ["LTAI_TWR", "LTAA_CTR"]);
-  assert.equal(stations[0].freq, "118.600"); assert.equal(stations[0].atis, "LTAI_TWR\nInformation B\nRWY 36C");
+  assert.equal(stations[0].freq, "118.600"); assert.equal(stations[0].atis, "Information B\nRWY 36C", "çağrı adı satırı atılır");
   assert.ok(!JSON.stringify(stations).includes("555555"));
 });
 
@@ -101,4 +101,10 @@ test("ağ hatası sonrası 30 sn içinde ağa tekrar gidilmez (önbellek yokken 
   assert.equal(calls, 1, "25 sn: ağa gidilmedi");
   await atcOnline(q, store, { fetcher: bad, now: T0 + 30000, env: {}, log: () => {} });
   assert.equal(calls, 2, "30 sn: yeniden denendi");
+});
+
+test("IVAO: ATIS'teki sunucu satırı atılır", async () => {
+  const { stations } = parseIvao({ clients: { atcs: [{ callsign: "LDDU_TWR", atcSession: { frequency: 129.5 }, lastTrack: { latitude: 42.56, longitude: 18.27 },
+    atis: { lines: ["ts-1.eu-west-2.ivao.aero/LDDU_TWR", "Dubrovnik ATIS Information GOLF", "RWY 11"] } }] } });
+  assert.equal(stations[0].atis.split("\n")[0], "Dubrovnik ATIS Information GOLF");
 });
