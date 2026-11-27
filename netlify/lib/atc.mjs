@@ -5,7 +5,7 @@
 export const ATC_STORE = "cc-atc";
 export const NETS = ["vatsim", "ivao"];
 const FRESH_MS = 30 * 1000;            // bu süreden yeni veri varsa ağa gidilmez
-const LOCK_MS = 20 * 1000;             // aynı anda gelen istekler ağa ikinci kez gitmesin
+const LOCK_MS = 30 * 1000;             // son denemeden (başarılı ya da hatalı) 30 sn geçmeden ağa tekrar gidilmez
 const TIMEOUT_MS = 10 * 1000;
 const UA = "VirtualWingsByCenk-LiveMap/1.0 (+https://virtualwingsbycenk.com/crosscheck/map/)";
 
@@ -118,7 +118,10 @@ export async function atcOnline(req, store, { fetcher = fetch, now = Date.now(),
   if (cached && now - cached.ts < FRESH_MS) return out(200, body(cached, false));
   // Kısa kilit: başka bir çağrı az önce ağa gittiyse eldeki veriyle dön
   const lock = Number(await store.get(net + ":lock", { type: "text" }).catch(() => 0));
-  if (cached && lock && now - lock < LOCK_MS) return out(200, body(cached, false));
+  if (lock && now - lock < LOCK_MS) {
+    // Son deneme 30 sn içinde (sürüyor ya da başarısız oldu): ağa tekrar gitme, eldekini dön
+    return cached ? out(200, body(cached, now - cached.ts >= FRESH_MS + LOCK_MS)) : out(502, { net, updated: null, stale: true, stations: [] });
+  }
   await store.set(net + ":lock", String(now)).catch(() => {});
   try {
     const data = await fetchNet(net, fetcher);

@@ -90,3 +90,15 @@ test("ağa en fazla 30 sn'de bir gidilir; hata olursa son veri stale:true", asyn
   assert.equal(r2.status, 502); assert.equal((await r2.json()).stale, true);
   assert.ok(!JSON.stringify([...s.m.values()]).includes("John"), "depoda da kişisel veri yok");
 });
+
+test("ağ hatası sonrası 30 sn içinde ağa tekrar gidilmez (önbellek yokken de)", async () => {
+  const m = new Map(), store = { async get(k, o) { if (!m.has(k)) return null; const v = m.get(k); return o && o.type === "json" ? JSON.parse(v) : v; },
+    async set(k, v) { m.set(k, String(v)); }, async setJSON(k, v) { m.set(k, JSON.stringify(v)); } };
+  let calls = 0; const bad = async () => { calls++; throw new Error("down"); };
+  const T0 = Date.parse("2026-11-27T12:00:00Z"), q = new Request("https://x/.netlify/functions/atc-online?net=ivao");
+  assert.equal((await atcOnline(q, store, { fetcher: bad, now: T0, env: {}, log: () => {} })).status, 502);
+  await atcOnline(q, store, { fetcher: bad, now: T0 + 25000, env: {}, log: () => {} });
+  assert.equal(calls, 1, "25 sn: ağa gidilmedi");
+  await atcOnline(q, store, { fetcher: bad, now: T0 + 30000, env: {}, log: () => {} });
+  assert.equal(calls, 2, "30 sn: yeniden denendi");
+});
