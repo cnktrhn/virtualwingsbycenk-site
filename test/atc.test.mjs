@@ -20,7 +20,7 @@ const TX = [
   { callsign: "LTBB_CTR", transceivers: [{ latDeg: 40.9, lonDeg: 29.3 }] },
 ];
 const IVAO = { updatedAt: "2026-11-26T08:55:10Z", clients: { atcs: [
-  { id: 1, userId: 555555, callsign: "LTAI_TWR", rating: 4, atcSession: { frequency: 118.6, position: "TWR" }, lastTrack: { latitude: 36.9, longitude: 30.8 }, atis: { lines: ["LTAI_TWR", "Information B", "RWY 36C"] } },
+  { id: 1, userId: 555555, callsign: "LTAI_TWR", rating: 4, atcSession: { frequency: 118.6, position: "TWR" }, lastTrack: { latitude: 36.9, longitude: 30.8 }, atis: { lines: ["ts-1.eu-west-2.ivao.aero/LTAI_TWR", "LTAI_TWR", "Information B", "RWY 36C"] } },
   { id: 2, userId: 666666, callsign: "LTAA_CTR", atcSession: { frequency: 127.3 }, lastTrack: { latitude: 39.9, longitude: 32.8 } },
   { id: 3, userId: 7, callsign: "LTAI_OBS", atcSession: { frequency: 199.998 }, lastTrack: null },
 ] } };

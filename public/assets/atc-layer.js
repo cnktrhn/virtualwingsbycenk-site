@@ -83,7 +83,7 @@
       if (atisSt || atisLines) {
         var a = el("div", "atc-atis");
         a.appendChild(el("b", null, TX[lang()].atis + (atisSt && atisSt.freq ? " " + atisSt.freq : "")));
-        atisLines.split("\n").slice(0, 2).forEach(function (l) { a.appendChild(el("div", null, l)); });
+        atisLines.split("\n").slice(0, 2).forEach(function (l) { a.appendChild(el("div", null, l.length > 160 ? l.slice(0, 157) + "…" : l)); });
         d.appendChild(a);
       }
       return d;

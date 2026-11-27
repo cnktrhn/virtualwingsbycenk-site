@@ -37,7 +37,9 @@ function freqStr(f) {
 }
 function atisText(lines) {
   if (!Array.isArray(lines)) return "";
-  return lines.filter((l) => typeof l === "string").map((l) => l.replace(/[\u0000-\u001f]/g, " ").trim()).filter(Boolean)
+  // IVAO'nun ilk satırı sunucu adı (ör. "ts-1.eu-west-2.ivao.aero/LDDU_TWR"): gösterilmez
+  return lines.filter((l) => typeof l === "string").map((l) => l.replace(/[\u0000-\u001f]/g, " ").trim())
+    .filter((l) => l && !/^[\w.-]+\.ivao\.aero\//i.test(l))
     .slice(0, 8).join("\n").slice(0, 600);
 }
 const station = (cs, type, freq, lat, lon, atis) => ({ cs, type, freq, lat, lon, atis });
