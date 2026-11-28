@@ -12,3 +12,10 @@
   [headers.values]
     Cache-Control = "no-cache"
     Content-Type = "application/json; charset=utf-8"
+
+# CROSS-CHECK programının güncelleme denetimi (kökteki adres)
+[[headers]]
+  for = "/cc-version.json"
+  [headers.values]
+    Cache-Control = "no-cache"
+    Content-Type = "application/json; charset=utf-8"
